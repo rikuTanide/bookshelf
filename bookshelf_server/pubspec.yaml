@@ -1,0 +1,5 @@
+name: bookshelf_server
+version: 1.0.0
+description: Hello World Sample Application
+dependencies:
+  stream: any
