@@ -1,0 +1,1 @@
+gcloud beta app deploy --project bookshell-isyumi --version flex
