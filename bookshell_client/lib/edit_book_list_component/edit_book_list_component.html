@@ -1,3 +1,6 @@
-<p>
-  edit-book-list-component works!
-</p>
+<div *ngIf="auth.login">
+    <edit-book [book]="addBook"></edit-book>
+    <div *ngFor="let book of books">
+        <edit-book [book]="book"></edit-book>
+    </div>
+</div>

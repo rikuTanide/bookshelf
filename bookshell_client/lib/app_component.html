@@ -1,6 +1,10 @@
-<nav>
-  <a [routerLink]="['YearSelect']">YearSelect</a>
-  <a [routerLink]="['EditBookList',{year:12}]">EditBookList</a>
-  <a [routerLink]="['Register']">Register</a>
-</nav>
+<div *ngIf="!auth.load">
+    Loading
+</div>
+<div *ngIf="auth.load && !auth.login">
+    <material-button (click)="auth.doTwitterLogin()">Twitter</material-button>
+    <material-button (click)="auth.doFacebookLogin()">Facebook</material-button>
+    <material-button (click)="auth.doGoogleLogin()">Google</material-button>
+</div>
 <router-outlet></router-outlet>
+
