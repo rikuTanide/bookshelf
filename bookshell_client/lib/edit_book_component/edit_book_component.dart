@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bookshell_client/model.dart';
@@ -12,10 +13,18 @@ class EditBookComponent implements OnInit {
 
   Book _book;
 
+  ElementRef elementRef;
+
   @Input()
   set book(Book book) => _book = book;
 
   Book get book => _book;
+
+  @Output()
+  EventEmitter<Book> onBook = new EventEmitter();
+
+  @Output()
+  EventEmitter<Book> onBlur = new EventEmitter();
 
   set datetime(String str) {
     try {
@@ -27,14 +36,32 @@ class EditBookComponent implements OnInit {
 
   String get datetime => new DateFormat('yyyy-MM-dd').format(_book.datetime);
 
-  EditBookComponent();
+  EditBookComponent(this.elementRef) {
+
+  }
 
   @override
   void ngOnInit() {}
 
-  void onEnter(int code) {
-    print(code);
-    print(code == 13);
+  void onTitleEnter(int code) {
+    if (code == 13) {
+      Element e = elementRef.nativeElement;
+      e.querySelectorAll('input')[1].focus();
+    }
   }
+
+  void onAuthorEnter(int code) {
+    if (code == 13) {
+      Element e = elementRef.nativeElement;
+      e.querySelectorAll('input')[2].focus();
+    }
+  }
+
+  void onDateTimeEnter(int code) {
+    if (code == 13) {
+      onBook.add(_book);
+    }
+  }
+
 
 }

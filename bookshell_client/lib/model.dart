@@ -4,8 +4,12 @@ import 'package:angular2/core.dart';
 
 
 abstract class PersistenceService {
-  List<Book> get book;
 
+  Stream<List<Book>> get books;
+
+  void addBook(Book book);
+
+  void setBook(Book book);
 }
 
 abstract class AuthService {
@@ -33,9 +37,24 @@ abstract class AuthService {
 @Injectable()
 class MockPersistenceService implements PersistenceService {
 
-  @override
-  List<Book> get book => [];
+  StreamController<List<Book>> _books = new StreamController();
 
+  @override
+  Stream<List<Book>> get books => _books.stream;
+
+  void setBookList(List<Book> books) {
+    _books.add(books);
+  }
+
+  @override
+  void addBook(Book book) {
+    // TODO: implement addBook
+  }
+
+  @override
+  void setBook(Book book) {
+    // TODO: implement setBook
+  }
 }
 
 @Injectable()
@@ -80,6 +99,7 @@ class MockAuthService implements AuthService {
 }
 
 class Book {
+  String id;
   String title;
   String author;
   DateTime datetime;

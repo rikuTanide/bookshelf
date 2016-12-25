@@ -1,2 +1,23 @@
-<material-input floatingLabel label="タイトル" (keypress)="onEnter($event.keyCode)"></material-input>
-<material-input floatingLabel leadingGlyph="date_range" label="読んだ日付" [(ngModel)]="datetime"></material-input>
+<material-input
+        class="title"
+        floatingLabel
+        label="タイトル"
+        (keypress)="onTitleEnter($event.keyCode)"
+        [(ngModel)]="book.title"
+        (blur)="onBlur.add(book)"
+></material-input>
+<material-input
+        floatingLabel
+        label="著者"
+        (keypress)="onAuthorEnter($event.keyCode)"
+        [(ngModel)]="book.author"
+        (blur)="onBlur.add(book)"
+></material-input>
+<material-input
+        floatingLabel
+        leadingGlyph="date_range"
+        label="読んだ日付"
+        (keypress)="onDateTimeEnter($event.keyCode)"
+        [(ngModel)]="datetime"
+        (blur)="onBlur.add(book)"
+></material-input>

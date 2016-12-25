@@ -9,7 +9,7 @@ import 'package:angular2/router.dart';
     templateUrl: 'edit_book_list_component.html',
     styleUrls: const <String>['edit_book_list_component.css'],
     directives: const[materialDirectives, EditBookComponent])
-class EditBookListComponent implements OnInit {
+class EditBookListComponent {
 
   RouteParams _routeParams;
   AuthService auth;
@@ -20,10 +20,23 @@ class EditBookListComponent implements OnInit {
     ..datetime = new DateTime.now();
   List<Book> books = [];
 
-  EditBookListComponent(this._routeParams, this.auth, this.store);
-
-  @override
-  void ngOnInit() {
+  EditBookListComponent(this._routeParams, this.auth, this.store) {
+    store.books.listen((b) => books = b);
   }
 
+  void onBookAdd(Book book) {
+    store.addBook(book);
+    addBook = new Book()
+      ..title = ''
+      ..author = ''
+      ..datetime = book.datetime;
+  }
+
+  void onBookEdit(Book book) {
+    store.setBook(book);
+  }
+
+  void onBlur(book){
+    store.setBook(book);
+  }
 }
