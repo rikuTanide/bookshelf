@@ -1,3 +1,3 @@
-<p>
-  register-component works!
-</p>
+<material-input required floatingLabel label="メールアドレス" [(ngModel)]="mailAddr"></material-input><br>
+<input type="password" placeholder="パスワード" [(ngModel)]="password"/><br>
+<button (click)="click()" [disabled]="disabled">新規登録</button>

@@ -1,7 +1,7 @@
-<div *ngIf="auth.login">
+<div>
     <edit-book [book]="addBook" (onBook)="onBookAdd($event)"></edit-book>
     <hr>
-    <div *ngFor="let book of books">
+    <div *ngFor="let book of store.books">
         <edit-book [book]="book" (onBook)="onBookEdit(book)" (onBlur)="onBookEdit(book)"></edit-book>
     </div>
 </div>

@@ -10,6 +10,7 @@ dependencies:
       git: git://github.com/dart-lang/angular2_components
     browser: ^0.10.0
     dart_to_js_script_rewriter: ^1.0.1
+    firebase3:
     # sass_transformer: ^0.1.0 ## if you use sass
     # less_dart: ^0.3.4 ## if you use less
 

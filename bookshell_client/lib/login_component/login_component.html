@@ -1,0 +1,21 @@
+<material-expansionpanel-set>
+    <material-expansionpanel name="ソーシャルログイン" showSaveCancel="false" [(expanded)]="expended">
+        <div>
+            <material-button raised class="twitter" (click)="auth.doTwitterLogin()">Twitter</material-button>
+            <material-button raised class="facebook" (click)="auth.doFacebookLogin()">Facebook</material-button>
+            <material-button raised class="google" (click)="auth.doGoogleLogin()">Google</material-button>
+        </div>
+    </material-expansionpanel>
+    <material-expansionpanel name="パスワードログイン" showSaveCancel="false">
+        <div>
+            <material-input required floatingLabel label="メールアドレス" [(ngModel)]="mailAddr"></material-input><br>
+            <input type="password" placeholder="パスワード" [(ngModel)]="password"/><br>
+            <button (click)="auth.doPasswordLogin(mailAddr,password)" [disabled]="disabled">ログイン</button>
+        </div>
+    </material-expansionpanel>
+    <material-expansionpanel name="新規登録" showSaveCancel="false">
+        <div>
+            <register></register>
+        </div>
+    </material-expansionpanel>
+</material-expansionpanel-set>

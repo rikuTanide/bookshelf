@@ -1,3 +1,4 @@
+import 'dart:async';
 import "dart:core";
 
 import 'package:angular2/platform/browser.dart';
@@ -16,20 +17,22 @@ main() async {
   ComponentRef ref = await bootstrap(
       AppComponent, [persistenceService, materialProviders, authService]);
 
-  mockAuthService.load = true;
+  mockAuthService.loading = false;
+  mockAuthService.login = true;
+
   mockPersistenceService.setBookList([
     new Book()
-    ..title = "タイトル１"
-    ..author = "著者１"
-    ..datetime = new DateTime.now(),
+      ..title = "タイトル１"
+      ..author = "著者１"
+      ..datetime = new DateTime.now(),
     new Book()
-    ..title = "タイトル２"
-    ..author = "著者２"
-    ..datetime = new DateTime.now(),
+      ..title = "タイトル２"
+      ..author = "著者２"
+      ..datetime = new DateTime.now(),
     new Book()
-    ..title = "タイトル３"
-    ..author = "著者３"
-    ..datetime = new DateTime.now(),
+      ..title = "タイトル３"
+      ..author = "著者３"
+      ..datetime = new DateTime.now(),
 
   ]);
 }

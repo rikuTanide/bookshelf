@@ -5,7 +5,7 @@ import 'package:angular2/core.dart';
 
 abstract class PersistenceService {
 
-  Stream<List<Book>> get books;
+  List<Book> get books;
 
   void addBook(Book book);
 
@@ -13,9 +13,15 @@ abstract class PersistenceService {
 }
 
 abstract class AuthService {
-  bool get load;
+
+
+  bool get loading;
 
   bool get login;
+
+  bool get register;
+
+  bool get edit;
 
   String get uid;
 
@@ -27,28 +33,27 @@ abstract class AuthService {
 
   void doGoogleLogin();
 
-  void doPasswordLogin();
+  void doPasswordLogin(String mailAddr, String password);
 
-  void doPasswordRegister();
+  void viewPasswordRegisterPage();
 
+  void doPasswordRegister(String mailAddr, String password);
 
 }
 
 @Injectable()
 class MockPersistenceService implements PersistenceService {
 
-  StreamController<List<Book>> _books = new StreamController();
-
   @override
-  Stream<List<Book>> get books => _books.stream;
+  List<Book> books = [];
 
   void setBookList(List<Book> books) {
-    _books.add(books);
+    this.books = books;
   }
 
   @override
   void addBook(Book book) {
-    // TODO: implement addBook
+    books.add(book);
   }
 
   @override
@@ -60,11 +65,21 @@ class MockPersistenceService implements PersistenceService {
 @Injectable()
 class MockAuthService implements AuthService {
 
-  @override
-  bool load = false;
+  bool loading = false;
 
-  @override
-  bool login = false;
+//  bool loading = true;
+
+//  bool login = false;
+  bool login = true;
+
+  bool register = false;
+
+//  bool register = true;
+
+  bool edit = false;
+
+//  bool edit = true;
+
 
   @override
   String get uid => null;
@@ -74,27 +89,41 @@ class MockAuthService implements AuthService {
 
   @override
   void doFacebookLogin() {
-    login = true;
+    loading = false;
+    login = false;
+    edit = true;
   }
 
   @override
   void doGoogleLogin() {
-    login = true;
-  }
-
-  @override
-  void doPasswordLogin() {
-    login = true;
-  }
-
-  @override
-  void doPasswordRegister() {
-
+    loading = false;
+    login = false;
+    edit = true;
   }
 
   @override
   void doTwitterLogin() {
-    login = true;
+    loading = false;
+    login = false;
+    edit = true;
+  }
+
+
+  @override
+  void doPasswordLogin(String mailAddr, String password) {
+    print([mailAddr, password]);
+  }
+
+  @override
+  void viewPasswordRegisterPage() {
+    loading = false;
+    login = false;
+    register = true;
+  }
+
+  @override
+  void doPasswordRegister(String mailAddr, String password) {
+    print([mailAddr, password]);
   }
 }
 

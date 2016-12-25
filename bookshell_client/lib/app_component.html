@@ -1,10 +1,4 @@
-<div *ngIf="!auth.load">
-    Loading
-</div>
-<div *ngIf="auth.load && !auth.login">
-    <material-button (click)="auth.doTwitterLogin()">Twitter</material-button>
-    <material-button (click)="auth.doFacebookLogin()">Facebook</material-button>
-    <material-button (click)="auth.doGoogleLogin()">Google</material-button>
-</div>
-<router-outlet></router-outlet>
-
+<div *ngIf="auth.loading">Loading</div>
+<login *ngIf="auth.login"></login>
+<register *ngIf="auth.register"></register>
+<edit-book-list *ngIf="auth.edit"></edit-book-list>
