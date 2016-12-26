@@ -6,13 +6,12 @@ import 'dart:io';
 class User {
   final String uid;
   final String userID;
-  final String name;
 
   final HtmlEscape sanitizer = new HtmlEscape();
 
-  User(this.uid, this.userID, this.name);
+  User(this.uid, this.userID);
 
-  String getEscapedName() => name != null ? sanitizer.convert(name) : null;
+  String getEscapedID() => userID != null ? sanitizer.convert(userID) : null;
 }
 
 class Book {
@@ -57,10 +56,10 @@ class MockDataBase implements DataBase {
 
   @override
   List<User> getUsers() => [
-    new User("1111", "user1", "ユーザー１"),
-    new User("2222", "user2", "ユーザー２"),
-    new User("3333", "user3", "ユーザー３"),
-    new User("4444", "user4", "ユーザー４"),
+    new User("user1", "ユーザー１"),
+    new User("user2", "ユーザー２"),
+    new User( "user3", "ユーザー３"),
+    new User("user4", "ユーザー４"),
   ];
 }
 
@@ -75,11 +74,11 @@ class Handler {
         "<html><title>bookshell</title><body><h1>bookshell</h1><ul>");
     for (var user in dataBase.getUsers()) {
       var pagePath = "/user/" + user.userID;
-      var userName = user.getEscapedName();
+      var userName = user.getEscapedID();
       connect.response.writeln(
           "<li><a href=\"$pagePath\">$userName</a></li>");
     }
-    connect.response.writeln("</ul></body></html>");
+    connect.response.writeln("</ul><a href='https://bookshell-isyumi.appspot.com.storage.googleapis.com/index.html?a'>編集</a></body></html>");
     connect.response.close();
   }
 
@@ -88,16 +87,17 @@ class Handler {
     var userID = connect.request.uri.pathSegments[1];
     var user = dataBase.getUser(userID);
     var uid = user.uid;
-    var userName = user.getEscapedName();
     var bookList = dataBase.getBooks(uid);
+    var escapedUserID = user.getEscapedID();
     var res = connect.response;
-    printBookList(userName, bookList, res);
+    printBookList(userID, escapedUserID, bookList, res);
   }
 
-  void printBookList(String userName, List<Book> bookList, HttpResponse res) {
+  void printBookList(String userID, String escapedUserID, List<Book> bookList,
+      HttpResponse res) {
     res.headers.contentType = ContentType.HTML;
     res.writeln(
-        "<html><title>$userName bookshell</title><body><h1>$userName bookshell</h1><ul>");
+        "<html><title>$escapedUserID bookshell</title><body><h1>$escapedUserID bookshell</h1><ul>");
     for (var book in bookList) {
       var title = book.getEscapedTitle();
       var author = book.getEscapedAuthor();
@@ -150,7 +150,7 @@ class FirebaseDatabase implements DataBase {
       var list = <User>[];
       for (var uid in users_map.keys) {
         var user_map = users_map[uid];
-        var user = new User(uid, user_map["id"], user_map["name"]);
+        var user = new User(uid, user_map["id"]);
         list.add(user);
       }
       _users = list;
@@ -164,6 +164,9 @@ class FirebaseDatabase implements DataBase {
       Map<String, Map<String, Map<String, String>>> books_map = books.snapshot
           .val;
       var map = <String, List<Book>>{};
+      if(books_map == null){
+        continue;
+      }
       for (var userID in books_map.keys) {
         var list = <Book>[];
         for (var historyID in books_map[userID].keys) {
