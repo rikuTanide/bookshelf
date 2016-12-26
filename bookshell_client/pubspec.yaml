@@ -5,12 +5,13 @@ author:
 homepage:
 
 dependencies:
-    angular2: ^2.0.0-beta.22
+    angular2:
     angular2_components:
       git: git://github.com/dart-lang/angular2_components
     browser: ^0.10.0
     dart_to_js_script_rewriter: ^1.0.1
-    firebase3:
+    firebase:
+
     # sass_transformer: ^0.1.0 ## if you use sass
     # less_dart: ^0.3.4 ## if you use less
 

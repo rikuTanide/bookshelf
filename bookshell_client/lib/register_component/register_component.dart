@@ -26,6 +26,9 @@ class RegisterComponent implements OnInit {
   }
 
   void click() {
+    if(password.length < 6){
+      return;
+    }
     print([mailAddr, password]);
     disabled = true;
     authService.doPasswordRegister(mailAddr, password);

@@ -19,6 +19,8 @@ class EditBookListComponent {
     ..author = ''
     ..datetime = new DateTime.now();
 
+  String userID = "";
+
   EditBookListComponent(this.store, this.auth);
 
   void onBookAdd(Book book) {
@@ -31,6 +33,12 @@ class EditBookListComponent {
 
   void onBookEdit(Book book) {
     store.setBook(book);
+  }
+
+  void setUserID(int code) {
+    if (code == 13) {
+      auth.setUserID();
+    }
   }
 
 }

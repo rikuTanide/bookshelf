@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:angular2/core.dart';
-
+import 'package:firebase/firebase.dart' as firebase;
 
 abstract class PersistenceService {
 
@@ -10,6 +10,8 @@ abstract class PersistenceService {
   void addBook(Book book);
 
   void setBook(Book book);
+
+  void onLogin(String uid);
 }
 
 abstract class AuthService {
@@ -35,17 +37,177 @@ abstract class AuthService {
 
   void doPasswordLogin(String mailAddr, String password);
 
-  void viewPasswordRegisterPage();
-
   void doPasswordRegister(String mailAddr, String password);
+
+  void logout();
+
+
+  void setUserID();
+}
+
+@Injectable()
+class FirebaseAuthService implements AuthService {
+
+  final firebase.Auth fbAuth;
+
+  final PersistenceService store;
+
+  FirebaseAuthService(this.store) :fbAuth = firebase.auth() {
+//    firebase.auth().signOut().then((_) {
+    fbAuth
+      ..onAuthStateChanged
+          .listen(onUserChange);
+//    });
+  }
+
+  @override
+  void doFacebookLogin() {
+    fbAuth.signInWithRedirect(new firebase.FacebookAuthProvider());
+  }
+
+  @override
+  void doGoogleLogin() {
+    fbAuth.signInWithRedirect(new firebase.GoogleAuthProvider());
+  }
+
+  @override
+  void doPasswordLogin(String mailAddr, String password) {
+    fbAuth.signInWithEmailAndPassword(mailAddr, password);
+  }
+
+  @override
+  void doPasswordRegister(String mailAddr, String password) {
+    fbAuth.createUserWithEmailAndPassword(mailAddr, password);
+  }
+
+  @override
+  void doTwitterLogin() {
+    fbAuth.signInWithRedirect(new firebase.TwitterAuthProvider());
+  }
+
+
+  @override
+  bool loading = true;
+
+  @override
+  bool login = false;
+
+  @override
+  bool register = false;
+
+  @override
+  bool edit = false;
+
+  @override
+  String uid = null;
+
+  @override
+  String userID = "";
+
+
+  void onUserChange(firebase.AuthEvent event) {
+    if (event.user == null) {
+      loading = false;
+      login = true;
+      edit = false;
+    } else {
+      loading = false;
+      login = false;
+      uid = event.user.uid;
+      loading = false;
+      edit = true;
+      store.onLogin(uid);
+      fetchUserID();
+    }
+  }
+
+  Future fetchUserID() async {
+    var e = await firebase.database().ref("/Users/$uid/id").once("value");
+    userID = e.snapshot.val();
+  }
+
+  @override
+  void logout() {
+    fbAuth.signOut();
+  }
+
+  @override
+  void setUserID() {
+    var ref = firebase.database().ref("/Users/$uid/id").set(userID);
+  }
+}
+
+@Injectable()
+class FirebasePersistenceService implements PersistenceService {
+
+  final firebase.Database db;
+  String uid;
+
+  FirebasePersistenceService() :db = firebase.database();
+
+  @override
+  void addBook(Book book) {
+    db.ref("/Books/$uid/").push({
+      "author" : book.author,
+      "title" : book.title,
+      "datetime" : book.datetime.toString()
+    });
+  }
+
+  @override
+  List<Book> books = [];
+
+  @override
+  void setBook(Book book) {
+    db.ref("/Books/$uid/${book.id}").set({
+      "author" : book.author,
+      "title" : book.title,
+      "datetime" : book.datetime.toString()
+    });
+  }
+
+
+  @override
+  void onLogin(String uid) {
+    this.uid = uid;
+    listenBookList(uid).listen(print);
+  }
+
+  Stream listenBookList(String uid) async* {
+    await for (var e in db
+        .ref("/Books/$uid/")
+        .onValue) {
+      Map<String, Map<String, String>> val = e.snapshot.val();
+      if (val == null) {
+        continue;
+      }
+      var list = <Book>[];
+      for (var historyID in val.keys) {
+        var book_map = val[historyID];
+        var title = book_map["title"];
+        var author = book_map["author"];
+        var date = DateTime.parse(book_map["datetime"]);
+        var book = new Book()
+          ..id = historyID
+          ..title = title
+          ..author = author
+          ..datetime = date;
+        list.add(book);
+      }
+      this.books = list;
+    }
+  }
+
 
 }
 
 @Injectable()
 class MockPersistenceService implements PersistenceService {
 
+
   @override
   List<Book> books = [];
+
 
   void setBookList(List<Book> books) {
     this.books = books;
@@ -112,13 +274,6 @@ class MockAuthService implements AuthService {
   @override
   void doPasswordLogin(String mailAddr, String password) {
     print([mailAddr, password]);
-  }
-
-  @override
-  void viewPasswordRegisterPage() {
-    loading = false;
-    login = false;
-    register = true;
   }
 
   @override

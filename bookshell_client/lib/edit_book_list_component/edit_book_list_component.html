@@ -1,7 +1,22 @@
-<div>
-    <edit-book [book]="addBook" (onBook)="onBookAdd($event)"></edit-book>
-    <hr>
-    <div *ngFor="let book of store.books">
-        <edit-book [book]="book" (onBook)="onBookEdit(book)" (onBlur)="onBookEdit(book)"></edit-book>
-    </div>
-</div>
+<material-tab-panel class="white">
+    <material-tab label="編集">
+        <div class="edit">
+            <edit-book [book]="addBook" (onBook)="onBookAdd($event)"></edit-book>
+            <hr>
+            <div *ngFor="let book of store.books">
+                <edit-book [book]="book" (onBook)="onBookEdit(book)" (onBlur)="onBookEdit(book)"></edit-book>
+            </div>
+        </div>
+    </material-tab>
+    <material-tab label="プロフィール">
+        <div>
+            <material-input floatingLabel label="ユーザーID" [(ngModel)]="auth.userID" (blur)="setUserID(13)"
+                            (keypress)="setUserID($event.keyCode)"></material-input>
+        </div>
+    </material-tab>
+    <material-tab label="ログアウト">
+        <div>
+            <material-button raised (click)="auth.logout()">ログアウト</material-button>
+        </div>
+    </material-tab>
+</material-tab-panel>

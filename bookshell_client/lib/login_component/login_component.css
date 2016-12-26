@@ -1,9 +1,9 @@
 .twitter {
-    background: #3b5998;
+    background: #55ACEE;
 }
 
 .facebook {
-    background: #55ACEE;
+    background: #3b5998;
 }
 
 .google {
@@ -11,6 +11,6 @@
 }
 
 .row {
-    margin:10px;
-    border:solid 1px black;
+    margin: 10px;
+    border: solid 1px black;
 }
