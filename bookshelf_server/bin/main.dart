@@ -58,7 +58,7 @@ class MockDataBase implements DataBase {
   List<User> getUsers() => [
     new User("user1", "ユーザー１"),
     new User("user2", "ユーザー２"),
-    new User( "user3", "ユーザー３"),
+    new User("user3", "ユーザー３"),
     new User("user4", "ユーザー４"),
   ];
 }
@@ -78,7 +78,7 @@ class Handler {
       connect.response.writeln(
           "<li><a href=\"$pagePath\">$userName</a></li>");
     }
-    connect.response.writeln("</ul><a href='https://bookshell-isyumi.appspot.com.storage.googleapis.com/index.html?a'>編集</a></body></html>");
+    connect.response.writeln("</ul><a href='/admin/'>編集</a></body></html>");
     connect.response.close();
   }
 
@@ -113,6 +113,17 @@ class Handler {
     var res = connect.response;
     res.statusCode = HttpStatus.OK;
     res.close();
+  }
+
+  void letsencrypt(HttpConnect connect) {
+    var challenge = new File("secret/letsencrypt").readAsStringSync().split(
+        "\n");
+    var segments = connect.request.uri.pathSegments;
+    if (segments[2] == challenge[0]) {
+      connect
+        ..response.write(challenge[1])
+        ..response.close();
+    }
   }
 }
 
@@ -164,7 +175,7 @@ class FirebaseDatabase implements DataBase {
       Map<String, Map<String, Map<String, String>>> books_map = books.snapshot
           .val;
       var map = <String, List<Book>>{};
-      if(books_map == null){
+      if (books_map == null) {
         continue;
       }
       for (var userID in books_map.keys) {
@@ -192,6 +203,8 @@ class FirebaseDatabase implements DataBase {
 
   @override
   List<User> getUsers() => _users;
+
+
 }
 
 void main() {
@@ -201,7 +214,8 @@ void main() {
   new StreamServer(uriMapping: {
     "/": handler.top,
     "/user/.*": handler.user,
+    "/.well-known/acme-challenge/.*":handler.letsencrypt,
     "/.*": handler.health,
-  }).start();
+  }).start(port: 8000);
 }
 
