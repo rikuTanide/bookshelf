@@ -71,7 +71,7 @@ class Handler {
   void top(HttpConnect connect) {
     connect.response.headers.contentType = ContentType.HTML;
     connect.response.writeln(
-        "<html><title>bookshell</title><body><h1>bookshell</h1><ul>");
+        "<html><title>bookshelf</title><body><h1>bookshelf</h1><ul>");
     for (var user in dataBase.getUsers()) {
       var pagePath = "/user/" + user.userID;
       var userName = user.getEscapedID();
