@@ -78,7 +78,7 @@ class Handler {
       connect.response.writeln(
           "<li><a href=\"$pagePath\">$userName</a></li>");
     }
-    connect.response.writeln("</ul><a href='/admin/'>編集</a></body></html>");
+    connect.response.writeln("</ul><a href='/mypage/'>編集</a></body></html>");
     connect.response.close();
   }
 
@@ -218,4 +218,3 @@ void main() {
     "/.*": handler.health,
   }).start(port: 8000);
 }
-
