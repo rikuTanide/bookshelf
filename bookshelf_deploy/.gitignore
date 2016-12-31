@@ -1,0 +1,4 @@
+s3/
+ecs/deploy_ignore.sh
+ecs/bin/
+ecs/secret/

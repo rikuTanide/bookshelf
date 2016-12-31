@@ -97,7 +97,7 @@ class Handler {
       HttpResponse res) {
     res.headers.contentType = ContentType.HTML;
     res.writeln(
-        "<html><title>$escapedUserID bookshell</title><body><h1>$escapedUserID bookshell</h1><ul>");
+        "<html><title>$escapedUserID bookshelf</title><body><h1>$escapedUserID bookshell</h1><ul>");
     for (var book in bookList) {
       var title = book.getEscapedTitle();
       var author = book.getEscapedAuthor();
@@ -216,5 +216,5 @@ void main() {
     "/user/.*": handler.user,
     "/.well-known/acme-challenge/.*":handler.letsencrypt,
     "/.*": handler.health,
-  }).start(port: 8000);
+  }).start();
 }
