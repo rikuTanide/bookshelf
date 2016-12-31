@@ -78,7 +78,7 @@ class Handler {
       connect.response.writeln(
           "<li><a href=\"$pagePath\">$userName</a></li>");
     }
-    connect.response.writeln("</ul><a href='/mypage/'>編集</a></body></html>");
+    connect.response.writeln("</ul><a href='/mypage'>編集</a></body></html>");
     connect.response.close();
   }
 
@@ -124,6 +124,39 @@ class Handler {
         ..response.write(challenge[1])
         ..response.close();
     }
+  }
+
+  void mypage(HttpConnect connect) {
+    connect.response
+      ..headers.contentType = ContentType.HTML
+      ..write("""<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: lightgray;
+        }
+
+        #my-app {
+            background: white;
+        }
+    </style>
+    <title>Angular 2</title>
+    <base href="/mypage/">
+    <!--<base href="http://localhost:63342/bookshelf/bookshell_client/web/mypage/index.html">-->
+    <meta charset="utf-8"/>
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script async src="main.dart" type="application/dart"></script>
+    <script async src="packages/browser/dart.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+</head>
+<body>
+<my-app id="my-app">Loading...</my-app>
+
+</body>
+</html>""")
+      ..close();
   }
 }
 
@@ -214,6 +247,7 @@ void main() {
   new StreamServer(uriMapping: {
     "/": handler.top,
     "/user/.*": handler.user,
+    "/mypage":handler.mypage,
     "/.well-known/acme-challenge/.*":handler.letsencrypt,
     "/.*": handler.health,
   }).start();
