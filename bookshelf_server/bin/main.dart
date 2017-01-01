@@ -71,7 +71,22 @@ class Handler {
   void top(HttpConnect connect) {
     connect.response.headers.contentType = ContentType.HTML;
     connect.response.writeln(
-        "<html><title>bookshelf</title><body><h1>bookshelf</h1><ul>");
+        """<html>
+        <head>
+        <title>bookshelf</title>
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-89660523-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+        </head>
+        <body>
+        <h1>bookshelf</h1>
+        <ul>""");
     for (var user in dataBase.getUsers()) {
       var pagePath = "/user/" + user.userID;
       var userName = user.getEscapedID();
@@ -97,7 +112,23 @@ class Handler {
       HttpResponse res) {
     res.headers.contentType = ContentType.HTML;
     res.writeln(
-        "<html><title>$escapedUserID bookshelf</title><body><h1>$escapedUserID bookshell</h1><ul>");
+        """<html>
+        <head>
+        <title>$escapedUserID bookshelf</title>
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-89660523-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+        </head>
+        <body>
+        <h1>$escapedUserID bookshell</h1>
+        <ul>""");
     for (var book in bookList) {
       var title = book.getEscapedTitle();
       var author = book.getEscapedAuthor();
@@ -148,6 +179,16 @@ class Handler {
     <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
     <script async src="main.dart" type="application/dart"></script>
     <script async src="packages/browser/dart.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-89660523-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 </head>
