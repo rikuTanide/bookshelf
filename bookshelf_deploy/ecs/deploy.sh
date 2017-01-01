@@ -1,5 +1,6 @@
 #!/bin/bash
 
+$(aws ecr get-login --region ap-northeast-1)
 docker build -t isyumi/bookshelf .
 docker tag isyumi/bookshelf:latest $docker_repository
 docker push $docker_repository
