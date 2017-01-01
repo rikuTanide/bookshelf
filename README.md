@@ -19,26 +19,12 @@
 
 ## ToDO
 
- - GAEでDartを動かす
- - 静的ファイルの配信具合を見る
- - Firebaseのデータをメモリに乗せとけるか確認
- - メモリから応答できるか確認
- - Swaggerを試してみる
- - APIと静的ファイルのパスを決める
- - Firebaseのデータ構造と各クラスのInterfaceを決定
- - Angular.dartで読了リストを表示する
- - SSRで読了リストを表示する
- - Angular.dartでTopページを作る
- - Angular.dartでユーザー一覧を作る
- - SSRでTopページとユーザー一覧を表示する
- - 静的ファイルで編集ページを表示する
- - Googleログインを登録
- - Twitterログインを登録
- - Facebookログインを登録
- - パスワードログインを登録
- - Firebaseのログインのモックを作成
- - ログイン画面を作成
- - 新規登録画面を作成
- - Firebaseの編集画面のモックを作成
- - 編集画面を作成
+ - Google Analyticsを入れる
+ - 戻るボタンを設置
+ - CSSを入れる
+ - User名のReq/Resを実装
+ - User名の表示
+ - 自動補完
+   - サーバー
+   - クライアント
  - Flutterを試してみる
