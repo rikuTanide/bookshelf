@@ -4,3 +4,7 @@ description: Hello World Sample Application
 dependencies:
   stream: any
   firebase_dart:
+  http:
+  awsdart:
+    git: git://github.com/gjersvik/awsdart.git
+  xml:
