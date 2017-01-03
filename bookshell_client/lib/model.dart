@@ -196,6 +196,7 @@ class FirebasePersistenceService implements PersistenceService {
           ..datetime = date;
         list.add(book);
       }
+      list.sort((a,b)=> b.datetime.compareTo(a.datetime));
       this.books = list;
     }
   }
