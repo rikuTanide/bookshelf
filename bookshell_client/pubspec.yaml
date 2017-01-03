@@ -11,6 +11,8 @@ dependencies:
     browser: ^0.10.0
     dart_to_js_script_rewriter: ^1.0.1
     firebase:
+    http:
+    
 
     # sass_transformer: ^0.1.0 ## if you use sass
     # less_dart: ^0.3.4 ## if you use less

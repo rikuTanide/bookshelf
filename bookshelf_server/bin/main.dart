@@ -1,3 +1,4 @@
+import 'itemsearch.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
 import 'dart:convert';
@@ -65,6 +66,7 @@ class MockDataBase implements DataBase {
 
 class Handler {
   final DataBase dataBase;
+  final AmazonAPI amazon = new AmazonAPI();
 
   Handler(this.dataBase);
 
@@ -143,6 +145,7 @@ class Handler {
   void health(HttpConnect connect) {
     var res = connect.response;
     res.statusCode = HttpStatus.OK;
+    res.write(connect.request.uri.toString());
     res.close();
   }
 
@@ -199,6 +202,19 @@ class Handler {
 </html>""")
       ..close();
   }
+
+  search(HttpConnect connect) async {
+    var keyword = connect.request.uri.pathSegments[1];
+    var result = await amazon.search(keyword);
+    var json = JSON.encode(result);
+    var res = connect.response;
+    res
+      ..statusCode = HttpStatus.OK
+      ..headers.contentType = ContentType.JSON
+      ..write(json)
+      ..close();
+  }
+
 }
 
 class FirebaseDatabase implements DataBase {
@@ -289,6 +305,8 @@ void main() {
     "/": handler.top,
     "/user/.*": handler.user,
     "/mypage":handler.mypage,
+    "/mypage/":handler.mypage,
+    "/search/.*":handler.search,
     "/.well-known/acme-challenge/.*":handler.letsencrypt,
     "/.*": handler.health,
   }).start();

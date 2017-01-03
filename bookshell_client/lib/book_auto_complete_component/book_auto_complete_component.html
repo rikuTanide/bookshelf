@@ -1,0 +1,5 @@
+<div *ngIf="focus" class="auto-complete">
+<div *ngFor="let candidate of candidates" class="auto-complete-row" (click)="onClick(candidate)">
+    {{candidate.title}} {{candidate.author}}
+</div>
+</div>

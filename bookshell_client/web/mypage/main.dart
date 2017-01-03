@@ -22,8 +22,12 @@ main() async {
   var persistenceService = new Provider(
       PersistenceService, useClass: FirebasePersistenceService);
   var authService = new Provider(AuthService, useClass: FirebaseAuthService);
+  var autoCompleteService = new Provider(
+      AutoComplete, useClass: ServerAutoComplete);
   ComponentRef ref = await bootstrap(
-      AppComponent, [persistenceService, materialProviders, authService]);
+      AppComponent,
+      [persistenceService, materialProviders, authService, autoCompleteService
+      ]);
 
 //  mockAuthService.loading = false;
 //  mockAuthService.login = true;

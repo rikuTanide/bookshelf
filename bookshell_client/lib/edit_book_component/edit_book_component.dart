@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:html';
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
+import 'package:bookshell_client/book_auto_complete_component/book_auto_complete_component.dart';
 import 'package:bookshell_client/model.dart';
 import 'package:intl/intl.dart';
 
@@ -8,12 +10,14 @@ import 'package:intl/intl.dart';
     selector: 'edit-book',
     templateUrl: 'edit_book_component.html',
     styleUrls: const <String>['edit_book_component.css'],
-    directives: const[materialDirectives])
+    directives: const[materialDirectives, BookAutoCompleteComponent])
 class EditBookComponent implements OnInit {
 
   Book _book;
 
   ElementRef elementRef;
+
+  bool titleFocus = false;
 
   @Input()
   set book(Book book) => _book = book;
@@ -63,5 +67,20 @@ class EditBookComponent implements OnInit {
     }
   }
 
+  void onTitleBlur() {
+    onBlur.add(book);
+    new Timer(new Duration(milliseconds: 100),()=>titleFocus = false);
+  }
+
+  void onFocus() {
+    titleFocus = true;
+  }
+
+  void onAutoCompleteSelect(Candidate candidate) {
+    print(candidate);
+    _book
+      ..title = candidate.title
+      ..author = candidate.author;
+  }
 
 }

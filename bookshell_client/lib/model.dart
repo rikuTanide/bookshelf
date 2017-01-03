@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'dart:convert';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
+import 'package:http/browser_client.dart' as http;
 
 abstract class PersistenceService {
 
@@ -287,4 +289,32 @@ class Book {
   String title;
   String author;
   DateTime datetime;
+}
+
+class Candidate {
+  String title;
+  String author;
+}
+
+abstract class AutoComplete {
+  Future<List<Candidate>> autoComplete(String keywords);
+}
+
+@Injectable()
+class ServerAutoComplete implements AutoComplete {
+  @override
+  Future<List<Candidate>> autoComplete(String keyword) async {
+    var res = await new http.BrowserClient().get("/search/" + Uri.encodeComponent(keyword));
+    return parseList(res.body).toList();
+  }
+
+  Iterable<Candidate> parseList(String body) sync* {
+    var json = JSON.decode(body);
+    for (var item in json) {
+      yield new Candidate()
+        ..author = item["author"]
+        ..title = item["title"];
+    }
+  }
+
 }

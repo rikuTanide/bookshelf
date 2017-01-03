@@ -4,7 +4,8 @@
         label="タイトル"
         (keypress)="onTitleEnter($event.keyCode)"
         [(ngModel)]="book.title"
-        (blur)="onBlur.add(book)"
+        (blur)="onTitleBlur()"
+        (focus)="onFocus()"
 ></material-input>
 <material-input
         floatingLabel
@@ -21,3 +22,4 @@
         [(ngModel)]="datetime"
         (blur)="onBlur.add(book)"
 ></material-input>
+<book-auto-complete [keyword]="book.title" [focus]="titleFocus" (onSelect)="onAutoCompleteSelect($event)"></book-auto-complete>

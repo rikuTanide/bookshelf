@@ -22,10 +22,10 @@ class AmazonAPI {
         _secretKey = new File("secret/awssecretkey").readAsStringSync(),
         _associateTag = new File("secret/associateTag").readAsStringSync();
 
-  Future getItem(String keyword) async {
+  Future search(String keyword) async {
     var dt = new DateTime.now().toUtc();
-    String signature = getSignature(keyword, dt);
-    var res = await request(keyword, dt, signature);
+    String signature = _getSignature(keyword, dt);
+    var res = await _request(keyword, dt, signature);
     return _parseItems(res).toList();
 
   }
@@ -53,7 +53,7 @@ class AmazonAPI {
     }
   }
 
-  String getSignature(String keyword, DateTime utcDateTime) {
+  String _getSignature(String keyword, DateTime utcDateTime) {
     var escKeyword = Uri.encodeComponent(keyword);
     var escDateTime = Uri.encodeComponent(_format.format(utcDateTime));
     var canonical = "GET\n"
@@ -66,7 +66,7 @@ class AmazonAPI {
     return BASE64.encode(signature);
   }
 
-  Future request(String keyword, DateTime utcDateTime,
+  Future _request(String keyword, DateTime utcDateTime,
       String signature) async {
     var formatDateTime = _format.format(utcDateTime);
     var uri = new Uri.https('ecs.amazonaws.jp', '/onca/xml', {
