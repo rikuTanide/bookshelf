@@ -105,6 +105,7 @@ class Handler {
     var user = dataBase.getUser(userID);
     var uid = user.uid;
     var bookList = dataBase.getBooks(uid);
+    bookList.sort((a, b) => b.datetime.compareTo(a.datetime));
     var escapedUserID = user.getEscapedID();
     var res = connect.response;
     printBookList(userID, escapedUserID, bookList, res);
@@ -278,7 +279,6 @@ class FirebaseDatabase implements DataBase {
           var book = new Book(title, author, date);
           list.add(book);
         }
-        list.sort((a,b)=> b.datetime.compareTo(a.datetime));
         map[userID] = list;
       }
       this._bookMap = map;
