@@ -278,6 +278,7 @@ class FirebaseDatabase implements DataBase {
           var book = new Book(title, author, date);
           list.add(book);
         }
+        list.sort((a,b)=> b.datetime.compareTo(a.datetime));
         map[userID] = list;
       }
       this._bookMap = map;
