@@ -17,7 +17,7 @@ class BookAutoCompleteComponent {
 
   @Input()
   set keyword(String k) {
-    if (focus) {
+    if (k != "") {
       setCandidates(k);
     }
   }
@@ -29,7 +29,7 @@ class BookAutoCompleteComponent {
   List<Candidate> candidates = [];
 
   @Input()
-  bool focus = false;
+  bool open = false;
 
   void onClick(Candidate candidate) {
     onSelect.add(candidate);

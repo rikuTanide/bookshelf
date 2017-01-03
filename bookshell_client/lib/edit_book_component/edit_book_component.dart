@@ -14,10 +14,11 @@ import 'package:intl/intl.dart';
 class EditBookComponent implements OnInit {
 
   Book _book;
+  String autoCompleteKeyword = "";
 
   ElementRef elementRef;
 
-  bool titleFocus = false;
+  bool isOpenAutoComplete = false;
 
   @Input()
   set book(Book book) => _book = book;
@@ -47,11 +48,20 @@ class EditBookComponent implements OnInit {
   @override
   void ngOnInit() {}
 
-  void onTitleEnter(int code) {
+  bool onTitleEnter(int code, bool shift, bool ctrl) {
+    print(code);
+    print(shift);
+    print(ctrl);
     if (code == 13) {
       Element e = elementRef.nativeElement;
       e.querySelectorAll('input')[1].focus();
+      return false;
+    } else if ((ctrl || shift) && (code == 32 || code == 0)) {
+      isOpenAutoComplete = true;
+      autoCompleteKeyword = book.title;
+      return false;
     }
+    return true;
   }
 
   void onAuthorEnter(int code) {
@@ -69,15 +79,11 @@ class EditBookComponent implements OnInit {
 
   void onTitleBlur() {
     onBlur.add(book);
-    new Timer(new Duration(milliseconds: 100),()=>titleFocus = false);
-  }
-
-  void onFocus() {
-    titleFocus = true;
+    new Timer(
+        new Duration(milliseconds: 1000), () => isOpenAutoComplete = false);
   }
 
   void onAutoCompleteSelect(Candidate candidate) {
-    print(candidate);
     _book
       ..title = candidate.title
       ..author = candidate.author;
