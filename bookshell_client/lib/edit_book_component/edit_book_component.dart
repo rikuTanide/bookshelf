@@ -74,6 +74,8 @@ class EditBookComponent implements OnInit {
   void onDateTimeEnter(int code) {
     if (code == 13) {
       onBook.add(_book);
+      Element e = elementRef.nativeElement;
+      e.querySelectorAll('input')[0].focus();
     }
   }
 
@@ -87,6 +89,9 @@ class EditBookComponent implements OnInit {
     _book
       ..title = candidate.title
       ..author = candidate.author;
+    Element e = elementRef.nativeElement;
+    e.querySelectorAll('input')[0].focus();
+
   }
 
 }
