@@ -149,6 +149,7 @@ class FirebasePersistenceService implements PersistenceService {
 
   @override
   void addBook(Book book) {
+    book = _trim(book);
     db.ref("/Books/$uid/").push({
       "author" : book.author,
       "title" : book.title,
@@ -161,11 +162,19 @@ class FirebasePersistenceService implements PersistenceService {
 
   @override
   void setBook(Book book) {
+    book = _trim(book);
     db.ref("/Books/$uid/${book.id}").set({
       "author" : book.author,
       "title" : book.title,
       "datetime" : book.datetime.toString()
     });
+  }
+
+  Book _trim(Book book) {
+    return new Book()
+        ..title = book.title.trim()
+        ..author = book.author.trim()
+        ..datetime = book.datetime;
   }
 
 
