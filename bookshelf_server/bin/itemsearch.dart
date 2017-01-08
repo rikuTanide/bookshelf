@@ -45,6 +45,7 @@ class AmazonAPI {
             .findElements("Title")
             .first
             .text
+            .split(" ")[0]
             .trim();
         yield {
           "author" : author,
