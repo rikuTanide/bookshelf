@@ -27,7 +27,6 @@ class AmazonAPI {
     String signature = _getSignature(keyword, dt);
     var res = await _request(keyword, dt, signature);
     return _parseItems(res).toList();
-
   }
 
   DateFormat get _format => new DateFormat("yyyy-MM-ddTHH:mm:ss.000'Z'");
@@ -36,20 +35,24 @@ class AmazonAPI {
     var resXml = xml.parse(res);
     var items = resXml.findAllElements("ItemAttributes");
     for (var e in items) {
-      var author = e
-          .findElements("Author")
-          .first
-          .text
-          .trim();
-      var title = e
-          .findElements("Title")
-          .first
-          .text
-          .trim();
-      yield {
-        "author" : author,
-        "title" : title,
-      };
+      try {
+        var author = e
+            .findElements("Author")
+            .first
+            .text
+            .trim();
+        var title = e
+            .findElements("Title")
+            .first
+            .text
+            .trim();
+        yield {
+          "author" : author,
+          "title" : title,
+        };
+      } catch (e) {
+
+      }
     }
   }
 
