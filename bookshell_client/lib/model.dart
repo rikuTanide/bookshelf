@@ -172,6 +172,7 @@ class FirebasePersistenceService implements PersistenceService {
 
   Book _trim(Book book) {
     return new Book()
+        ..id = book.id
         ..title = book.title.trim()
         ..author = book.author.trim()
         ..datetime = book.datetime;
