@@ -1,35 +1,14 @@
+import 'dart:async';
 import 'itemsearch.dart';
+import 'package:bookshelf_server/book.dart';
+import 'package:bookshelf_server/index.rsp.dart';
+import 'package:bookshelf_server/list-page.rsp.dart';
+import 'package:bookshelf_server/user.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
 import 'dart:convert';
 import 'dart:io';
 
-class User {
-  final String uid;
-  final String userID;
-
-  final HtmlEscape sanitizer = new HtmlEscape();
-
-  User(this.uid, this.userID);
-
-  String getEscapedID() => userID != null ? sanitizer.convert(userID) : null;
-}
-
-class Book {
-  final String title;
-  final String author;
-  final DateTime datetime;
-
-  final HtmlEscape sanitizer = new HtmlEscape();
-
-  Book(this.title, this.author, this.datetime);
-
-  String getEscapedTitle() => sanitizer.convert(title);
-
-  String getEscapedAuthor() => sanitizer.convert(author);
-
-  String getFormattedDateTime() => "${datetime.year}/${datetime.month}";
-}
 
 abstract class DataBase {
   List<User> getUsers();
@@ -70,37 +49,14 @@ class Handler {
 
   Handler(this.dataBase);
 
-  void top(HttpConnect connect) {
-    connect.response.headers.contentType = ContentType.HTML;
-    connect.response.writeln(
-        """<html>
-        <head>
-        <title>bookshelf</title>
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-89660523-1', 'auto');
-          ga('send', 'pageview');
-        </script>
-        </head>
-        <body>
-        <h1>bookshelf</h1>
-        <ul>""");
-    for (var user in dataBase.getUsers()) {
-      var pagePath = "/user/" + user.userID;
-      var userName = user.getEscapedID();
-      connect.response.writeln(
-          "<li><a href=\"$pagePath\">$userName</a></li>");
-    }
-    connect.response.writeln("</ul><a href='/mypage'>編集</a></body></html>");
+  Future top(HttpConnect connect) async {
+    var users = dataBase.getUsers();
+    await index(connect, users: users);
     connect.response.close();
   }
 
 
-  void user(HttpConnect connect) {
+  Future user(HttpConnect connect) async {
     var userID = connect.request.uri.pathSegments[1];
     var user = dataBase.getUser(userID);
     var uid = user.uid;
@@ -108,40 +64,10 @@ class Handler {
     bookList.sort((a, b) => b.datetime.compareTo(a.datetime));
     var escapedUserID = user.getEscapedID();
     var res = connect.response;
-    printBookList(userID, escapedUserID, bookList, res);
-  }
-
-  void printBookList(String userID, String escapedUserID, List<Book> bookList,
-      HttpResponse res) {
-    res.headers.contentType = ContentType.HTML;
-    res.writeln(
-        """<html>
-        <head>
-        <title>$escapedUserID bookshelf</title>
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-89660523-1', 'auto');
-          ga('send', 'pageview');
-
-        </script>
-        </head>
-        <body>
-        <h1>$escapedUserID bookshell</h1>
-        <ul>""");
-    for (var book in bookList) {
-      var title = book.getEscapedTitle();
-      var author = book.getEscapedAuthor();
-      var date = book.getFormattedDateTime();
-      res.writeln(
-          "<li>$title $author $date</li>");
-    }
-    res.writeln("</body></html>");
+    await listPage(connect, books: bookList, escapedUserID: escapedUserID);
     res.close();
   }
+
 
   void health(HttpConnect connect) {
     var res = connect.response;
