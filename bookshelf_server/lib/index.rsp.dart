@@ -99,7 +99,7 @@ var pagePath = "/user/" + user.userID;
         crossorigin="anonymous"></script>
 <!-- """); //#47
 
-  response.write(Rsp.nnx(new DateTime())); //#71
+  response.write(Rsp.nnx(new DateTime.now().toString())); //#71
 
 
   response.write(""" -->
