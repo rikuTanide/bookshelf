@@ -7,9 +7,10 @@ import 'dart:io';
 import 'package:stream/stream.dart';
 import 'package:bookshelf_server/user.dart';
 import 'package:bookshelf_server/book.dart';
+import 'package:bookshelf_server/year.dart';
 
 /** Template, listPage, for rendering the view. */
-Future listPage(HttpConnect connect, {List<Book>books,escapedUserID}) async { //#2
+Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>years}) async { //#4
   HttpResponse response = connect.response;
   if (!Rsp.init(connect, "text/html; charset=utf-8"))
     return null;
@@ -17,9 +18,9 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID}) async { //
   response.write("""<!DOCTYPE html>
 <html>
 <head>
-    <title>"""); //#2
+    <title>"""); //#4
 
-  response.write(Rsp.nnx(escapedUserID)); //#5
+  response.write(Rsp.nnx(escapedUserID)); //#7
 
 
   response.write(""" さんのbookshelf</title>
@@ -53,42 +54,170 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID}) async { //
 </nav>
 <div class="container">
     <div class="jumbotron">
-        <h1>"""); //#5
+        <h1>"""); //#7
 
-  response.write(Rsp.nnx(escapedUserID)); //#36
+  response.write(Rsp.nnx(escapedUserID)); //#38
 
 
   response.write(""" さんのbookshelf</h1>
         <p>つながりを作ろう</p>
     </div>
 
-    <ul class="list-group">
-"""); //#36
+    <div class="calendar">
+        <ul class="years nav nav-pills">
+"""); //#38
 
-  for (var book in books) { //for#41
+  for (var year in years) { //for#44
+
+    if (year.isActive) { //if#45
+
+      response.write("""                <li role="presentation" class="enable active"><a href="#calendar-"""); //#46
+
+      response.write(Rsp.nnx(year.year)); //#46
+
+
+      response.write("""">"""); //#46
+
+      response.write(Rsp.nnx(year.year)); //#46
+
+
+      response.write("""</a></li>
+"""); //#46
+
+    } else if (year.isEnable) { //else#47
+
+      response.write("""                <li role="presentation" class="enable"><a href="#calendar-"""); //#48
+
+      response.write(Rsp.nnx(year.year)); //#48
+
+
+      response.write("""">"""); //#48
+
+      response.write(Rsp.nnx(year.year)); //#48
+
+
+      response.write("""</a></li>
+"""); //#48
+
+    } else { //else#49
+
+      response.write("""                <li role="presentation" class="disabled"><a href="javascript:void(0)">"""); //#50
+
+      response.write(Rsp.nnx(year.year)); //#50
+
+
+      response.write("""</a></li>
+"""); //#50
+    } //if
+  } //for
+
+  response.write("""        </ul>
+
+        <div class="tab-content">
+"""); //#53
+
+  for (var year in years) { //for#56
+
+    response.write("""            <div role="tabpanel" class="tab-pane """); //#57
+
+    response.write(Rsp.nnx(year.isActive ? 'active' : '')); //#57
+
+
+    response.write("""" id="calendar-"""); //#57
+
+    response.write(Rsp.nnx(year.year)); //#57
+
+
+    response.write("""">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+"""); //#57
+
+    for (var month in year.months) { //for#60
+
+      if (month.isActive) { //if#61
+
+        response.write("""                                <li class="active"><a href="javascript:void(0)">"""); //#62
+
+        response.write(Rsp.nnx(month.month)); //#62
+
+
+        response.write("""</a></li>
+"""); //#62
+
+      } else if (month.isEnable) { //else#63
+
+        response.write("""                                <li><a href="/"""); //#64
+
+        response.write(Rsp.nnx(escapedUserID)); //#64
+
+
+        response.write("""/"""); //#64
+
+        response.write(Rsp.nnx(year.year)); //#64
+
+
+        response.write("""/"""); //#64
+
+        response.write(Rsp.nnx(month.month)); //#64
+
+
+        response.write("""">"""); //#64
+
+        response.write(Rsp.nnx(month.month)); //#64
+
+
+        response.write("""</a></li>
+"""); //#64
+
+      } else { //else#65
+
+        response.write("""                                <li class="disabled"><a href="javascript:void(0)">"""); //#66
+
+        response.write(Rsp.nnx(month.month)); //#66
+
+
+        response.write("""</a></li>
+"""); //#66
+      } //if
+    } //for
+
+    response.write("""                    </ul>
+                </nav>
+            </div>
+"""); //#69
+  } //for
+
+  response.write("""        </div>
+    </div>
+
+    <ul class="list-group">
+"""); //#73
+
+  for (var book in books) { //for#77
 var title = book.getEscapedTitle();
         var author = book.getEscapedAuthor();
         var date = book.getFormattedDateTime();
 
     response.write("""
 
-        <li class="list-group-item">"""); //#46
+        <li class="list-group-item">"""); //#82
 
-    response.write(Rsp.nnx(title)); //#47
-
-
-    response.write(""" """); //#47
-
-    response.write(Rsp.nnx(author)); //#47
+    response.write(Rsp.nnx(title)); //#83
 
 
-    response.write(""" """); //#47
+    response.write(""" """); //#83
 
-    response.write(Rsp.nnx(date)); //#47
+    response.write(Rsp.nnx(author)); //#83
+
+
+    response.write(""" """); //#83
+
+    response.write(Rsp.nnx(date)); //#83
 
 
     response.write("""</li>
-"""); //#47
+"""); //#83
   } //for
 
   response.write("""    </ul>
@@ -115,8 +244,15 @@ var title = book.getEscapedTitle();
         src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<script>
+    \$('.calendar .years li.enable a').click(function (e) {
+        console.log("aa")
+        e.preventDefault();
+        \$(this).tab('show');
+    })
+</script>
 </body>
-</html>"""); //#49
+</html>"""); //#85
 
   return null;
 }
