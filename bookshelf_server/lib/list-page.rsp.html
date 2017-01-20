@@ -61,7 +61,7 @@
                             [:if month.isActive]
                                 <li class="active"><a href="javascript:void(0)">[=month.month]</a></li>
                             [:else if month.isEnable]
-                                <li><a href="/[=escapedUserID]/[=year.year]/[=month.month]">[=month.month]</a></li>
+                                <li><a href="/user/[=escapedUserID]/[=year.year]/[=month.month]">[=month.month]</a></li>
                             [:else]
                                 <li class="disabled"><a href="javascript:void(0)">[=month.month]</a></li>
                             [/if]
