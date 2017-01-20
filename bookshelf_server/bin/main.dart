@@ -67,12 +67,16 @@ class Handler {
     var user = dataBase.getUser(userID);
     var uid = user.uid;
     var bookList = dataBase.getBooks(uid);
-    bookList.sort((a, b) => b.datetime.compareTo(a.datetime));
     var escapedUserID = user.getEscapedID();
     var res = connect.response;
-    var years = anchor.createBookAnchor(bookList,year, month);
+    var years = anchor.createBookAnchor(bookList, year, month);
+    var activeBooks = bookList
+        .where((b) => b.datetime.year == year)
+        .where((b) => b.datetime.month == month)
+        .toList()
+      ..sort((b1, b2) => b1.title.compareTo(b2.title));
     await listPage(
-        connect, books: bookList, escapedUserID: escapedUserID, years: years);
+        connect, books: activeBooks, escapedUserID: escapedUserID, years: years);
     res.close();
   }
 
