@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'itemsearch.dart';
+import 'package:bookshelf_server/Month.dart';
 import 'package:bookshelf_server/book.dart';
 import 'package:bookshelf_server/index.rsp.dart';
 import 'package:bookshelf_server/list-page.rsp.dart';
 import 'package:bookshelf_server/user.dart';
+import 'package:bookshelf_server/year.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
 import 'dart:convert';
@@ -64,7 +66,66 @@ class Handler {
     bookList.sort((a, b) => b.datetime.compareTo(a.datetime));
     var escapedUserID = user.getEscapedID();
     var res = connect.response;
-    await listPage(connect, books: bookList, escapedUserID: escapedUserID);
+    var years = <Year>[
+      new Year()
+        ..year = 2016
+        ..isActive = false
+        ..isEnable = true
+        ..months = [
+          new Month()
+            ..month = 1
+            ..isActive = false
+            ..isEnable = false,
+          new Month()
+            ..month = 2
+            ..isActive = false
+            ..isEnable = true,
+          new Month()
+            ..month = 3
+            ..isActive = false
+            ..isEnable = true,
+
+        ],
+      new Year()
+        ..year = 2015
+        ..isActive = true
+        ..isEnable = true
+        ..months = [
+          new Month()
+            ..month = 1
+            ..isActive = false
+            ..isEnable = true,
+          new Month()
+            ..month = 2
+            ..isActive = true
+            ..isEnable = true,
+          new Month()
+            ..month = 3
+            ..isActive = false
+            ..isEnable = false,
+        ],
+      new Year()
+        ..year = 2014
+        ..isActive = false
+        ..isEnable = false
+        ..months = [
+          new Month()
+            ..month = 1
+            ..isActive = false
+            ..isEnable = true,
+          new Month()
+            ..month = 2
+            ..isActive = true
+            ..isEnable = true,
+          new Month()
+            ..month = 3
+            ..isActive = false
+            ..isEnable = true,
+        ],
+    ];
+
+    await listPage(
+        connect, books: bookList, escapedUserID: escapedUserID, years: years);
     res.close();
   }
 
