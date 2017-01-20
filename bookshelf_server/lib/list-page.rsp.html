@@ -43,11 +43,11 @@
         <ul class="years nav nav-pills">
             [:for year in years]
               [:if year.isActive]
-                <li role="presentation" class="enable active"><a href="#calendar-[=year.year]">[=year.year]</a></li>
+                <li role="presentation" class="enable active"><a href="#calendar-[=year.year]">[=year.year]年</a></li>
               [:else if year.isEnable]
-                <li role="presentation" class="enable"><a href="#calendar-[=year.year]">[=year.year]</a></li>
+                <li role="presentation" class="enable"><a href="#calendar-[=year.year]">[=year.year]年</a></li>
               [:else]
-                <li role="presentation" class="disabled"><a href="javascript:void(0)">[=year.year]</a></li>
+                <li role="presentation" class="disabled"><a href="javascript:void(0)">[=year.year]年</a></li>
               [/if]
             [/for]
         </ul>
@@ -59,11 +59,11 @@
                     <ul class="pagination">
                         [:for month in year.months]
                             [:if month.isActive]
-                                <li class="active"><a href="javascript:void(0)">[=month.month]</a></li>
+                                <li class="active"><a href="javascript:void(0)">[=month.month]月</a></li>
                             [:else if month.isEnable]
-                                <li><a href="/user/[=escapedUserID]/[=year.year]/[=month.month]">[=month.month]</a></li>
+                                <li><a href="/user/[=escapedUserID]/[=year.year]/[=month.month]">[=month.month]月</a></li>
                             [:else]
-                                <li class="disabled"><a href="javascript:void(0)">[=month.month]</a></li>
+                                <li class="disabled"><a href="javascript:void(0)">[=month.month]月</a></li>
                             [/if]
                         [/for]
                     </ul>
