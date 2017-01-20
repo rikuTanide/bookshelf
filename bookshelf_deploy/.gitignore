@@ -1,5 +1,6 @@
 s3/
 ecs/deploy_ignore.sh
 ecs/bin/
+ecs/lib/
 ecs/secret/
 ecs/pubspec.yaml
