@@ -85,7 +85,7 @@ class Handler {
     var res = connect.response;
     var maxYear = anchor.getMaxYear(bookList);
     var maxMonth = anchor.getMaxMonth(bookList, maxYear);
-    res.write("$maxYear / $maxMonth");
+    res.redirect(Uri.parse("/user/$userID/$maxYear/$maxMonth"));
     res.close();
   }
 
