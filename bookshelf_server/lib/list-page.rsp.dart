@@ -147,7 +147,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
 
       } else if (month.isEnable) { //else#63
 
-        response.write("""                                <li><a href="/"""); //#64
+        response.write("""                                <li><a href="/user/"""); //#64
 
         response.write(Rsp.nnx(escapedUserID)); //#64
 
@@ -246,7 +246,6 @@ var title = book.getEscapedTitle();
         crossorigin="anonymous"></script>
 <script>
     \$('.calendar .years li.enable a').click(function (e) {
-        console.log("aa")
         e.preventDefault();
         \$(this).tab('show');
     })

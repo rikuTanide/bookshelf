@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'itemsearch.dart';
-import 'package:bookshelf_server/Month.dart';
 import 'package:bookshelf_server/book.dart';
+import 'package:bookshelf_server/book_anchor.dart';
 import 'package:bookshelf_server/index.rsp.dart';
 import 'package:bookshelf_server/list-page.rsp.dart';
 import 'package:bookshelf_server/user.dart';
-import 'package:bookshelf_server/year.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
 import 'dart:convert';
@@ -46,8 +45,10 @@ class MockDataBase implements DataBase {
 }
 
 class Handler {
+
   final DataBase dataBase;
   final AmazonAPI amazon = new AmazonAPI();
+  final BookAnchor anchor = new BookAnchor();
 
   Handler(this.dataBase);
 
@@ -59,73 +60,32 @@ class Handler {
 
 
   Future user(HttpConnect connect) async {
-    var userID = connect.request.uri.pathSegments[1];
+    var userID = connect.dataset["user"];
+    var year = int.parse(connect.dataset["year"]);
+    var month = int.parse(connect.dataset["month"]);
+
     var user = dataBase.getUser(userID);
     var uid = user.uid;
     var bookList = dataBase.getBooks(uid);
     bookList.sort((a, b) => b.datetime.compareTo(a.datetime));
     var escapedUserID = user.getEscapedID();
     var res = connect.response;
-    var years = <Year>[
-      new Year()
-        ..year = 2016
-        ..isActive = false
-        ..isEnable = true
-        ..months = [
-          new Month()
-            ..month = 1
-            ..isActive = false
-            ..isEnable = false,
-          new Month()
-            ..month = 2
-            ..isActive = false
-            ..isEnable = true,
-          new Month()
-            ..month = 3
-            ..isActive = false
-            ..isEnable = true,
-
-        ],
-      new Year()
-        ..year = 2015
-        ..isActive = true
-        ..isEnable = true
-        ..months = [
-          new Month()
-            ..month = 1
-            ..isActive = false
-            ..isEnable = true,
-          new Month()
-            ..month = 2
-            ..isActive = true
-            ..isEnable = true,
-          new Month()
-            ..month = 3
-            ..isActive = false
-            ..isEnable = false,
-        ],
-      new Year()
-        ..year = 2014
-        ..isActive = false
-        ..isEnable = false
-        ..months = [
-          new Month()
-            ..month = 1
-            ..isActive = false
-            ..isEnable = true,
-          new Month()
-            ..month = 2
-            ..isActive = true
-            ..isEnable = true,
-          new Month()
-            ..month = 3
-            ..isActive = false
-            ..isEnable = true,
-        ],
-    ];
-
+    var years = anchor.createBookAnchor(bookList,year, month);
     await listPage(
         connect, books: bookList, escapedUserID: escapedUserID, years: years);
+    res.close();
+  }
+
+  Future userRedirect(HttpConnect connect) async {
+    var userID = connect.request.uri.pathSegments[1];
+    var user = dataBase.getUser(userID);
+    var uid = user.uid;
+    var bookList = dataBase.getBooks(uid);
+    var escapedUserID = user.getEscapedID();
+    var res = connect.response;
+    var maxYear = anchor.getMaxYear(bookList);
+    var maxMonth = anchor.getMaxMonth(bookList, maxYear);
+    res.write("$maxYear / $maxMonth");
     res.close();
   }
 
@@ -291,7 +251,8 @@ void main() {
   var handler = new Handler(database);
   new StreamServer(uriMapping: {
     "/": handler.top,
-    "/user/.*": handler.user,
+    "/user/(user:[^/]*)/(year:[^/]*)/(month:[^/]*)": handler.user,
+    "/user/(user:[^/]*)": handler.userRedirect,
     "/mypage":handler.mypage,
     "/mypage/":handler.mypage,
     "/search/.*":handler.search,
