@@ -1,6 +1,6 @@
 [:page
   import="package:bookshelf_server/user.dart,package:bookshelf_server/book.dart,package:bookshelf_server/year.dart"
-  args="List<Book>books,escapedUserID,List<Year>years" ]
+  args="List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth" ]
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,16 +73,26 @@
         </div>
     </div>
 
-    <ul class="list-group">
-        [:for book in books]
-        [:dart]
-        var title = book.getEscapedTitle();
-        var author = book.getEscapedAuthor();
-        var date = book.getFormattedDateTime();
-        [/dart]
-        <li class="list-group-item">[=title] [=author] [=date]</li>
-        [/for]
-    </ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a
+                    id="edit-button"
+                    type="button"
+                    class="btn btn-success pull-right hide"
+                    href="/mypage/[=activeYear]/[=activeMonth]">編集する</a>
+            <h2 class="panel-title">読了リスト</h2>
+        </div>
+            <ul class="list-group">
+                [:for book in books]
+                [:dart]
+                var title = book.getEscapedTitle();
+                var author = book.getEscapedAuthor();
+                var date = book.getFormattedDateTime();
+                [/dart]
+                <li class="list-group-item">[=title] [=author] [=date]</li>
+                [/for]
+            </ul>
+    </div>
 </div>
 <!-- Latest compiled and minified CSS -->
 <link
@@ -111,6 +121,15 @@
         e.preventDefault();
         $(this).tab('show');
     })
+</script>
+<script>
+    var userName = window.location.pathname.split("/")[2];
+    var myName = window.localStorage["myName"];
+
+    if(userName == myName){
+        $("#edit-button").removeClass("hide");
+    }
+
 </script>
 </body>
 </html>
