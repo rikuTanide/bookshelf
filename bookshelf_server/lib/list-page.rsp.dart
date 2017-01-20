@@ -81,7 +81,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
       response.write(Rsp.nnx(year.year)); //#46
 
 
-      response.write("""</a></li>
+      response.write("""年</a></li>
 """); //#46
 
     } else if (year.isEnable) { //else#47
@@ -96,7 +96,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
       response.write(Rsp.nnx(year.year)); //#48
 
 
-      response.write("""</a></li>
+      response.write("""年</a></li>
 """); //#48
 
     } else { //else#49
@@ -106,7 +106,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
       response.write(Rsp.nnx(year.year)); //#50
 
 
-      response.write("""</a></li>
+      response.write("""年</a></li>
 """); //#50
     } //if
   } //for
@@ -142,7 +142,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
         response.write(Rsp.nnx(month.month)); //#62
 
 
-        response.write("""</a></li>
+        response.write("""月</a></li>
 """); //#62
 
       } else if (month.isEnable) { //else#63
@@ -167,7 +167,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
         response.write(Rsp.nnx(month.month)); //#64
 
 
-        response.write("""</a></li>
+        response.write("""月</a></li>
 """); //#64
 
       } else { //else#65
@@ -177,7 +177,7 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
         response.write(Rsp.nnx(month.month)); //#66
 
 
-        response.write("""</a></li>
+        response.write("""月</a></li>
 """); //#66
       } //if
     } //for
