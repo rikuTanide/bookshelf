@@ -76,7 +76,11 @@ class Handler {
         .toList()
       ..sort((b1, b2) => b1.title.compareTo(b2.title));
     await listPage(
-        connect, books: activeBooks, escapedUserID: escapedUserID, years: years);
+        connect, books: activeBooks,
+        escapedUserID: escapedUserID,
+        years: years,
+        activeYear: year,
+        activeMonth: month);
     res.close();
   }
 

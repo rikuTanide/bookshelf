@@ -10,7 +10,7 @@ import 'package:bookshelf_server/book.dart';
 import 'package:bookshelf_server/year.dart';
 
 /** Template, listPage, for rendering the view. */
-Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>years}) async { //#4
+Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth}) async { //#4
   HttpResponse response = connect.response;
   if (!Rsp.init(connect, "text/html; charset=utf-8"))
     return null;
@@ -191,36 +191,56 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
   response.write("""        </div>
     </div>
 
-    <ul class="list-group">
-"""); //#73
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a
+                    id="edit-button"
+                    type="button"
+                    class="btn btn-success pull-right hide"
+                    href="/mypage/"""); //#73
 
-  for (var book in books) { //for#77
+  response.write(Rsp.nnx(activeYear)); //#82
+
+
+  response.write("""/"""); //#82
+
+  response.write(Rsp.nnx(activeMonth)); //#82
+
+
+  response.write("""">編集する</a>
+            <h2 class="panel-title">読了リスト</h2>
+        </div>
+            <ul class="list-group">
+"""); //#82
+
+  for (var book in books) { //for#86
 var title = book.getEscapedTitle();
-        var author = book.getEscapedAuthor();
-        var date = book.getFormattedDateTime();
+                var author = book.getEscapedAuthor();
+                var date = book.getFormattedDateTime();
 
     response.write("""
 
-        <li class="list-group-item">"""); //#82
+                <li class="list-group-item">"""); //#91
 
-    response.write(Rsp.nnx(title)); //#83
-
-
-    response.write(""" """); //#83
-
-    response.write(Rsp.nnx(author)); //#83
+    response.write(Rsp.nnx(title)); //#92
 
 
-    response.write(""" """); //#83
+    response.write(""" """); //#92
 
-    response.write(Rsp.nnx(date)); //#83
+    response.write(Rsp.nnx(author)); //#92
+
+
+    response.write(""" """); //#92
+
+    response.write(Rsp.nnx(date)); //#92
 
 
     response.write("""</li>
-"""); //#83
+"""); //#92
   } //for
 
-  response.write("""    </ul>
+  response.write("""            </ul>
+    </div>
 </div>
 <!-- Latest compiled and minified CSS -->
 <link
@@ -250,8 +270,17 @@ var title = book.getEscapedTitle();
         \$(this).tab('show');
     })
 </script>
+<script>
+    var userName = window.location.pathname.split("/")[2];
+    var myName = window.localStorage["myName"];
+
+    if(userName == myName){
+        \$("#edit-button").removeClass("hide");
+    }
+
+</script>
 </body>
-</html>"""); //#85
+</html>"""); //#94
 
   return null;
 }
