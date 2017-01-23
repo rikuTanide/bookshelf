@@ -214,7 +214,6 @@ class FirebasePersistenceService implements PersistenceService {
       "sessionid" : random,
     });
     cookie.set("sessionid", random);
-
     this.uid = uid;
     listenBookList(uid).listen(print);
   }
