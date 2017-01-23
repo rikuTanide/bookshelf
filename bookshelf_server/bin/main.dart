@@ -4,6 +4,8 @@ import 'package:bookshelf_server/book.dart';
 import 'package:bookshelf_server/book_anchor.dart';
 import 'package:bookshelf_server/index.rsp.dart';
 import 'package:bookshelf_server/list-page.rsp.dart';
+import 'package:bookshelf_server/login-user-list-page.rsp.dart';
+import 'package:bookshelf_server/read.dart';
 import 'package:bookshelf_server/user.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
@@ -17,6 +19,21 @@ abstract class DataBase {
   User getUser(String userID);
 
   List<Book> getBooks(String uid);
+
+  bool isLogin(String value);
+
+  List<BookRead> getIsRead(String advocate, String publish,
+      List<Book> activeBooks);
+
+  getUID(String value);
+
+  getPublish(id);
+
+  void putRead(visitorUid, String publish, id);
+
+  List<String> getReads(String advocate, String publish, String id);
+
+  Future delRead(String id) ;
 }
 
 class MockDataBase implements DataBase {
@@ -44,11 +61,34 @@ class MockDataBase implements DataBase {
   ];
 }
 
+class CookieReader {
+
+  bool isLogin(List<Cookie> cookies, DataBase dataBase) {
+    var cookie = cookies
+        .firstWhere((c) => c.name == "sessionid", orElse: () => null);
+    if (cookie == null) {
+      return false;
+    }
+    return dataBase.isLogin(cookie.value);
+  }
+
+
+  getUID(List<Cookie> cookies, DataBase dataBase) {
+    var cookie = cookies
+        .firstWhere((c) => c.name == "sessionid", orElse: () => null);
+    if (cookie == null) {
+      return false;
+    }
+    return dataBase.getUID(cookie.value);
+  }
+}
+
 class Handler {
 
   final DataBase dataBase;
   final AmazonAPI amazon = new AmazonAPI();
   final BookAnchor anchor = new BookAnchor();
+  final CookieReader cookieReader = new CookieReader();
 
   Handler(this.dataBase);
 
@@ -63,7 +103,6 @@ class Handler {
     var userID = connect.dataset["user"];
     var year = int.parse(connect.dataset["year"]);
     var month = int.parse(connect.dataset["month"]);
-
     var user = dataBase.getUser(userID);
     var uid = user.uid;
     var bookList = dataBase.getBooks(uid);
@@ -75,6 +114,21 @@ class Handler {
         .where((b) => b.datetime.month == month)
         .toList()
       ..sort((b1, b2) => b1.title.compareTo(b2.title));
+
+    if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
+      var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
+      var readList = dataBase.getIsRead(visitorUid, uid, activeBooks);
+      await loginUserListPage(
+          connect,
+          books: readList,
+          escapedUserID: escapedUserID,
+          years: years,
+          activeYear: year,
+          activeMonth: month);
+      res.close();
+      return;
+    }
+
     await listPage(
         connect, books: activeBooks,
         escapedUserID: escapedUserID,
@@ -171,12 +225,38 @@ class Handler {
       ..close();
   }
 
+  read(HttpConnect connect) async {
+    var id = connect.dataset["id"];
+    if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
+      var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
+      var publish = dataBase.getPublish(id);
+      await dataBase.putRead(visitorUid, publish, id);
+    }
+    connect.response.close();
+  }
+
+  unread(HttpConnect connect) async {
+    var id = connect.dataset["id"];
+    if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
+      var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
+      var publish = dataBase.getPublish(id);
+      var reads = dataBase.getReads(visitorUid, publish, id);
+      for (var r in reads) {
+        await dataBase.delRead(r);
+      }
+    }
+    connect.response.close();
+  }
+
 }
 
 class FirebaseDatabase implements DataBase {
 
   Map<String, List<Book>> _bookMap = {};
   List<User> _users = [];
+  Map<String, String> _sessionIDs = {};
+  List<Read> read = [];
+  Firebase ref;
 
   FirebaseDatabase() {
     _listen();
@@ -193,10 +273,32 @@ class FirebaseDatabase implements DataBase {
         new File("secret/secretkey").readAsStringSync());
     var token = codec.encode(new FirebaseToken(authData, admin: true));
 
-    var ref = new Firebase("https://bookshell-isyumi.firebaseio.com/");
+    ref = new Firebase("https://bookshell-isyumi.firebaseio.com/");
     var auth = await ref.authWithCustomToken(token);
     _listenBooks(ref);
     _listenUsers(ref);
+    _listenSessionID(ref);
+    _listenRead(ref);
+  }
+
+  _listenRead(Firebase ref) async {
+    await for (Map<String, Map<String, String>> e in ref
+        .child("/Read")
+        .onValue
+        .map((r) => r.snapshot.val)) {
+      if(e == null){
+        read = [];
+        return;
+      }
+      read = [];
+      for (var id in e.keys) {
+        read.add(new Read()
+          ..id = id
+          ..book = e[id]["Book"]
+          ..advocate = e[id]["Advocate"]
+          ..publish = e[id]["Publish"]);
+      }
+    }
   }
 
   _listenUsers(Firebase ref) async {
@@ -231,12 +333,25 @@ class FirebaseDatabase implements DataBase {
           var title = book_map["title"];
           var author = book_map["author"];
           var date = DateTime.parse(book_map["datetime"]);
-          var book = new Book(title, author, date);
+          var book = new Book(historyID, title, author, date);
           list.add(book);
         }
         map[userID] = list;
       }
       this._bookMap = map;
+    }
+  }
+
+  _listenSessionID(Firebase ref) async {
+    await for (var map in(ref
+        .child("/SessionIDs")
+        .onValue
+        .map((e) => e.snapshot.val)
+        .map((Map<String, Map<String, String>> map) => map.values))) {
+      _sessionIDs = {};
+      for (var m in map) {
+        _sessionIDs[m["sessionid"]] = m["uid"];
+      }
     }
   }
 
@@ -251,6 +366,63 @@ class FirebaseDatabase implements DataBase {
   List<User> getUsers() => _users;
 
 
+  @override
+  bool isLogin(String value) {
+    return _sessionIDs.containsKey(value);
+  }
+
+  @override
+  Iterable<BookRead> getIsRead(String advocate, String publish,
+      List<Book> activeBooks) {
+    var read = this
+        .read
+        .where((r) => r.publish == publish)
+        .where((r) => r.advocate == advocate);
+    return activeBooks
+        .map((b) => [b, read.any((r) => r.book == b.id)])
+        .map((l) => new BookRead()
+      ..isRead = l[1]
+      ..book = l[0])
+        .toList();
+  }
+
+  @override
+  getUID(String value) {
+    return _sessionIDs[value];
+  }
+
+  @override
+  getPublish(id) {
+    for (var userID in _bookMap.keys) {
+      for (var book in _bookMap[userID]) {
+        if (book.id == id) {
+          return userID;
+        }
+      }
+    }
+  }
+
+  @override
+  Future putRead(String visitorUid, String publish, String id) {
+    return ref.child("/Read/").push({
+      "Advocate" : visitorUid,
+      "Book" : id,
+      "Publish": publish,
+    });
+  }
+
+  @override
+  List<String> getReads(String advocate, String publish, String id) {
+    return read.where((r) => r.advocate == advocate)
+        .where((r) => r.publish == publish)
+        .where((r) => r.book == id)
+        .map((r) => r.id)
+        .toList();
+  }
+  @override
+  Future delRead(String id) async {
+    await ref.child("/Read/$id").remove();
+  }
 }
 
 void main() {
@@ -264,6 +436,8 @@ void main() {
     "/mypage":handler.mypage,
     "/mypage/":handler.mypage,
     "/search/.*":handler.search,
+    "/api/read/(id:[^/]*)": handler.read,
+    "/api/unread/(id:[^/]*)": handler.unread,
     "/.well-known/acme-challenge/.*":handler.letsencrypt,
     "/.*": handler.health,
   }).start();

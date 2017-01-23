@@ -12,6 +12,7 @@ dependencies:
     dart_to_js_script_rewriter: ^1.0.1
     firebase:
     http:
+    cookie:
     
 
     # sass_transformer: ^0.1.0 ## if you use sass

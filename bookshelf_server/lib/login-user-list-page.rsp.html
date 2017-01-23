@@ -1,6 +1,6 @@
 [:page
   import="package:bookshelf_server/user.dart,package:bookshelf_server/book.dart,package:bookshelf_server/year.dart"
-  args="List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth" ]
+  args="List<BookRead>books,escapedUserID,List<Year>years,int activeYear,int activeMonth" ]
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +28,7 @@
     <div class="container">
         <ul class="nav navbar-nav">
             <li><a href="/">Top</a></li>
-            <li><a href="/mypage">新規登録</a></li>
+            <li><a href="/mypage">MyPage</a></li>
             <li class="active"><a href="#">読了リスト</a></li>
         </ul>
     </div>
@@ -85,11 +85,16 @@
             <ul class="list-group">
                 [:for book in books]
                 [:dart]
-                var title = book.getEscapedTitle();
-                var author = book.getEscapedAuthor();
-                var date = book.getFormattedDateTime();
+                var id = book.book.id;
+                var title = book.book.getEscapedTitle();
+                var author = book.book.getEscapedAuthor();
+                var date = book.book.getFormattedDateTime();
                 [/dart]
-                <li class="list-group-item">[=title] [=author] [=date]</li>
+                [:if book.isRead]
+                    <li class="list-group-item">[=title] [=author] <a id="a-[=id]" class="pull-right btn btn-info" onclick="unread('[=id]')" href="javascript:void(0)">読んだよ済</a></li>
+                [:else]
+                    <li class="list-group-item">[=title] [=author] <a id="a-[=id]" class="pull-right btn btn-default" onclick="read('[=id]')" href="javascript:void(0)">読んだよ</a></li>
+                [/if]
                 [/for]
             </ul>
     </div>
@@ -128,6 +133,29 @@
 
     if(userName == myName){
         $("#edit-button").removeClass("hide");
+    }
+
+    function read(id) {
+        $.ajax("/api/read/" + id);
+        var a = document.getElementById("a-" + id);
+        a.onclick = function(){
+            unread(id);
+        };
+
+        a.textContent ="読んだよ済";
+        a.classList.add("btn-info");
+        a.classList.remove("btn-default");
+    }
+
+    function unread(id){
+        $.ajax("/api/unread/" + id);
+        var a = document.getElementById("a-" + id);
+        a.onclick = function() {
+            read(id);
+        };
+        a.textContent = "読んだよ";
+        a.classList.remove("btn-info");
+        a.classList.add("btn-default");
     }
 
 </script>

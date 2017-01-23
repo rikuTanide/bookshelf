@@ -4,6 +4,9 @@ import 'dart:convert';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
 import 'package:http/browser_client.dart' as http;
+import 'dart:math';
+import 'dart:html';
+import 'package:cookie/cookie.dart' as cookie;
 
 abstract class PersistenceService {
 
@@ -172,15 +175,45 @@ class FirebasePersistenceService implements PersistenceService {
 
   Book _trim(Book book) {
     return new Book()
-        ..id = book.id
-        ..title = book.title.trim()
-        ..author = book.author.trim()
-        ..datetime = book.datetime;
+      ..id = book.id
+      ..title = book.title.trim()
+      ..author = book.author.trim()
+      ..datetime = book.datetime;
   }
 
+  String _randomString(int length) {
+    var rand = new Random();
+    var codeUnits = new List.generate(
+        length,
+        (index) {
+      return rand.nextInt(26) + 97;
+    }
+    );
+
+    return new String.fromCharCodes(codeUnits);
+  }
+
+  void setDeviceID(){
+    if(!window.localStorage.containsKey("device_id")){
+      var random = _randomString(16);
+      window.localStorage["device_id"] = random;
+    }
+  }
+
+  String getDeviceID() {
+    return window.localStorage["device_id"];
+  }
 
   @override
   void onLogin(String uid) {
+    setDeviceID();
+    var device_id = getDeviceID();
+    var random = _randomString(16);
+    db.ref("/SessionIDs/$device_id").set({
+      "uid" : uid,
+      "sessionid" : random,
+    });
+    cookie.set("sessionid", random);
     this.uid = uid;
     listenBookList(uid).listen(print);
   }
@@ -206,7 +239,7 @@ class FirebasePersistenceService implements PersistenceService {
           ..datetime = date;
         list.add(book);
       }
-      list.sort((a,b)=> b.datetime.compareTo(a.datetime));
+      list.sort((a, b) => b.datetime.compareTo(a.datetime));
       this.books = list;
     }
   }
@@ -315,7 +348,8 @@ abstract class AutoComplete {
 class ServerAutoComplete implements AutoComplete {
   @override
   Future<List<Candidate>> autoComplete(String keyword) async {
-    var res = await new http.BrowserClient().get("/search/" + Uri.encodeComponent(keyword));
+    var res = await new http.BrowserClient().get(
+        "/search/" + Uri.encodeComponent(keyword));
     return parseList(res.body).toList();
   }
 
