@@ -90,11 +90,27 @@
                 var author = book.book.getEscapedAuthor();
                 var date = book.book.getFormattedDateTime();
                 [/dart]
-                [:if book.isRead]
-                    <li class="list-group-item">[=title] [=author] <a id="a-[=id]" class="pull-right btn btn-info" onclick="unread('[=id]')" href="javascript:void(0)">読んだよ済</a></li>
-                [:else]
-                    <li class="list-group-item">[=title] [=author] <a id="a-[=id]" class="pull-right btn btn-default" onclick="read('[=id]')" href="javascript:void(0)">読んだよ</a></li>
-                [/if]
+                <li class="list-group-item">
+                    [=title] [=author]
+                    [:if book.isRead]
+                    <a id="a-[=id]" class="pull-right btn btn-info" onclick="unread('[=id]')" href="javascript:void(0)">
+                        読んだよ済
+                    </a>
+                    [:else]
+                    <a id="a-[=id]" class="pull-right btn btn-default" onclick="read('[=id]')" href="javascript:void(0)">
+                        読んだよ
+                    </a>
+                    [/if]
+                    [:if book.isReviewRequest]
+                    <a id="r-[=id]" class="pull-right btn btn-info" onclick="unReviewRequest('[=id]')" href="javascript:void(0)">
+                        書評希望済
+                    </a>
+                    [:else]
+                    <a id="r-[=id]" class="pull-right btn btn-default" onclick="reviewRequest('[=id]')" href="javascript:void(0)">
+                        書評希望
+                    </a>
+                    [/if]
+                </li>
                 [/for]
             </ul>
     </div>
@@ -150,6 +166,29 @@
     function unread(id){
         $.ajax("/api/unread/" + id);
         var a = document.getElementById("a-" + id);
+        a.onclick = function() {
+            read(id);
+        };
+        a.textContent = "読んだよ";
+        a.classList.remove("btn-info");
+        a.classList.add("btn-default");
+    }
+
+    function unReviewRequest(id) {
+        $.ajax("/api/reviewRequest/" + id);
+        var a = document.getElementById("r-" + id);
+        a.onclick = function(){
+            unread(id);
+        };
+
+        a.textContent ="書評希望";
+        a.classList.add("btn-info");
+        a.classList.remove("btn-default");
+    }
+
+    function reviewRequest(id){
+        $.ajax("/api/unReviewRequest/" + id);
+        var a = document.getElementById("r-" + id);
         a.onclick = function() {
             read(id);
         };

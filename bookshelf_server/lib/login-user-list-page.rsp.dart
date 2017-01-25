@@ -221,58 +221,93 @@ var id = book.book.id;
 
     response.write("""
 
-"""); //#92
+                <li class="list-group-item">
+                    """); //#92
 
-    if (book.isRead) { //if#93
-
-      response.write("""                    <li class="list-group-item">"""); //#94
-
-      response.write(Rsp.nnx(title)); //#94
+    response.write(Rsp.nnx(title)); //#94
 
 
-      response.write(""" """); //#94
+    response.write(""" """); //#94
 
-      response.write(Rsp.nnx(author)); //#94
-
-
-      response.write(""" <a id="a-"""); //#94
-
-      response.write(Rsp.nnx(id)); //#94
+    response.write(Rsp.nnx(author)); //#94
 
 
-      response.write("""" class="pull-right btn btn-info" onclick="unread('"""); //#94
+    response.write("""
 
-      response.write(Rsp.nnx(id)); //#94
-
-
-      response.write("""')" href="javascript:void(0)">読んだよ済</a></li>
 """); //#94
 
-    } else { //else#95
+    if (book.isRead) { //if#95
 
-      response.write("""                    <li class="list-group-item">"""); //#96
-
-      response.write(Rsp.nnx(title)); //#96
-
-
-      response.write(""" """); //#96
-
-      response.write(Rsp.nnx(author)); //#96
-
-
-      response.write(""" <a id="a-"""); //#96
+      response.write("""                    <a id="a-"""); //#96
 
       response.write(Rsp.nnx(id)); //#96
 
 
-      response.write("""" class="pull-right btn btn-default" onclick="read('"""); //#96
+      response.write("""" class="pull-right btn btn-info" onclick="unread('"""); //#96
 
       response.write(Rsp.nnx(id)); //#96
 
 
-      response.write("""')" href="javascript:void(0)">読んだよ</a></li>
+      response.write("""')" href="javascript:void(0)">
+                        読んだよ済
+                    </a>
 """); //#96
+
+    } else { //else#99
+
+      response.write("""                    <a id="a-"""); //#100
+
+      response.write(Rsp.nnx(id)); //#100
+
+
+      response.write("""" class="pull-right btn btn-default" onclick="read('"""); //#100
+
+      response.write(Rsp.nnx(id)); //#100
+
+
+      response.write("""')" href="javascript:void(0)">
+                        読んだよ
+                    </a>
+"""); //#100
     } //if
+
+    if (book.isReviewRequest) { //if#104
+
+      response.write("""                    <a id="r-"""); //#105
+
+      response.write(Rsp.nnx(id)); //#105
+
+
+      response.write("""" class="pull-right btn btn-info" onclick="unReviewRequest('"""); //#105
+
+      response.write(Rsp.nnx(id)); //#105
+
+
+      response.write("""')" href="javascript:void(0)">
+                        書評希望済
+                    </a>
+"""); //#105
+
+    } else { //else#108
+
+      response.write("""                    <a id="r-"""); //#109
+
+      response.write(Rsp.nnx(id)); //#109
+
+
+      response.write("""" class="pull-right btn btn-default" onclick="reviewRequest('"""); //#109
+
+      response.write(Rsp.nnx(id)); //#109
+
+
+      response.write("""')" href="javascript:void(0)">
+                        書評希望
+                    </a>
+"""); //#109
+    } //if
+
+    response.write("""                </li>
+"""); //#113
   } //for
 
   response.write("""            </ul>
@@ -337,9 +372,32 @@ var id = book.book.id;
         a.classList.add("btn-default");
     }
 
+    function unReviewRequest(id) {
+        \$.ajax("/api/reviewRequest/" + id);
+        var a = document.getElementById("r-" + id);
+        a.onclick = function(){
+            unread(id);
+        };
+
+        a.textContent ="書評希望";
+        a.classList.add("btn-info");
+        a.classList.remove("btn-default");
+    }
+
+    function reviewRequest(id){
+        \$.ajax("/api/unReviewRequest/" + id);
+        var a = document.getElementById("r-" + id);
+        a.onclick = function() {
+            read(id);
+        };
+        a.textContent = "読んだよ";
+        a.classList.remove("btn-info");
+        a.classList.add("btn-default");
+    }
+
 </script>
 </body>
-</html>"""); //#99
+</html>"""); //#115
 
   return null;
 }

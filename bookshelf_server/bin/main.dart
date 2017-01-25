@@ -6,6 +6,7 @@ import 'package:bookshelf_server/index.rsp.dart';
 import 'package:bookshelf_server/list-page.rsp.dart';
 import 'package:bookshelf_server/login-user-list-page.rsp.dart';
 import 'package:bookshelf_server/read.dart';
+import 'package:bookshelf_server/review_request.dart';
 import 'package:bookshelf_server/user.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
@@ -33,7 +34,7 @@ abstract class DataBase {
 
   List<String> getReads(String advocate, String publish, String id);
 
-  Future delRead(String id) ;
+  Future delRead(String id);
 }
 
 class MockDataBase implements DataBase {
@@ -256,6 +257,7 @@ class FirebaseDatabase implements DataBase {
   List<User> _users = [];
   Map<String, String> _sessionIDs = {};
   List<Read> read = [];
+  List<ReviewRequest> reviewRequests = [];
   Firebase ref;
 
   FirebaseDatabase() {
@@ -279,6 +281,27 @@ class FirebaseDatabase implements DataBase {
     _listenUsers(ref);
     _listenSessionID(ref);
     _listenRead(ref);
+    _listenReviewRequest(ref);
+  }
+
+  _listenReviewRequest(Firebase ref) async {
+
+    await for (Map<String, Map<String, String>> e in ref
+        .child("/ReviewRequest")
+        .onValue
+        .map((r) => r.snapshot.val)) {
+      if (e == null) {
+        reviewRequests = [];
+        continue;
+      }
+      reviewRequests = [];
+      for (var id in e.keys) {
+        var publish = e[id]["Publish"];
+        var wanted = e[id]["Wanted"];
+        var book = e[id]["Book"];
+        reviewRequests.add(new ReviewRequest(id, publish, wanted, book));
+      }
+    }
   }
 
   _listenRead(Firebase ref) async {
@@ -286,9 +309,9 @@ class FirebaseDatabase implements DataBase {
         .child("/Read")
         .onValue
         .map((r) => r.snapshot.val)) {
-      if(e == null){
+      if (e == null) {
         read = [];
-        return;
+        continue;
       }
       read = [];
       for (var id in e.keys) {
@@ -378,11 +401,13 @@ class FirebaseDatabase implements DataBase {
         .read
         .where((r) => r.publish == publish)
         .where((r) => r.advocate == advocate);
+    var reviewRequests = this
+        .reviewRequests
+        .where((r) => r.publish == publish)
+        .where((r) => r.wanted == advocate);
+
     return activeBooks
-        .map((b) => [b, read.any((r) => r.book == b.id)])
-        .map((l) => new BookRead()
-      ..isRead = l[1]
-      ..book = l[0])
+        .map((b) => new BookRead(b, read.any((r) => r.book == b.id) , reviewRequests.any((r) => r.bookID == b.id)))
         .toList();
   }
 
@@ -419,10 +444,12 @@ class FirebaseDatabase implements DataBase {
         .map((r) => r.id)
         .toList();
   }
+
   @override
   Future delRead(String id) async {
     await ref.child("/Read/$id").remove();
   }
+
 }
 
 void main() {
