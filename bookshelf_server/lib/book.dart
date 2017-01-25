@@ -20,4 +20,6 @@ class Book {
 class BookRead {
   Book book;
   bool isRead;
+  bool isReviewRequest;
+  BookRead(this.book, this.isRead, this.isReviewRequest);
 }
