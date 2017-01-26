@@ -35,6 +35,12 @@ abstract class DataBase {
   List<String> getReads(String advocate, String publish, String id);
 
   Future delRead(String id);
+
+  Future putReviewRequest(String visitorUid, String publish, String id);
+
+  List<String> getReviewRequests(String wanted, String publish, String id);
+
+  Future delReviewRequest(String id) ;
 }
 
 class MockDataBase implements DataBase {
@@ -249,6 +255,29 @@ class Handler {
     connect.response.close();
   }
 
+  reviewRequest(HttpConnect connect) async {
+    var id = connect.dataset["id"];
+    if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
+      var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
+      var publish = dataBase.getPublish(id);
+      await dataBase.putReviewRequest(visitorUid, publish, id);
+    }
+    connect.response.close();
+  }
+
+  unReviewRequest(HttpConnect connect) async {
+    var id = connect.dataset["id"];
+    if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
+      var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
+      var publish = dataBase.getPublish(id);
+      var reviewRequest = dataBase.getReviewRequests(visitorUid, publish, id);
+      for (var r in reviewRequest) {
+        await dataBase.delReviewRequest(r);
+      }
+    }
+  }
+
+
 }
 
 class FirebaseDatabase implements DataBase {
@@ -285,7 +314,6 @@ class FirebaseDatabase implements DataBase {
   }
 
   _listenReviewRequest(Firebase ref) async {
-
     await for (Map<String, Map<String, String>> e in ref
         .child("/ReviewRequest")
         .onValue
@@ -407,7 +435,8 @@ class FirebaseDatabase implements DataBase {
         .where((r) => r.wanted == advocate);
 
     return activeBooks
-        .map((b) => new BookRead(b, read.any((r) => r.book == b.id) , reviewRequests.any((r) => r.bookID == b.id)))
+        .map((b) => new BookRead(b, read.any((r) => r.book == b.id),
+        reviewRequests.any((r) => r.bookID == b.id)))
         .toList();
   }
 
@@ -450,6 +479,28 @@ class FirebaseDatabase implements DataBase {
     await ref.child("/Read/$id").remove();
   }
 
+  @override
+  Future putReviewRequest(String visitorUid, String publish, String id) {
+    return ref.child("/ReviewRequest").push({
+      "Book" : id,
+      "Publish" : publish,
+      "Wanted" : visitorUid
+    });
+  }
+
+  @override
+  List<String> getReviewRequests(String wanted, String publish, String id) {
+    return reviewRequests
+        .where((r) => r.wanted == wanted)
+        .where((r) => r.publish == publish)
+        .where((r) => r.bookID == id)
+        .map((r) => r.id)
+        .toList();
+  }
+  @override
+  Future delReviewRequest(String id) async {
+    await ref.child("/ReviewRequest/$id").remove();
+  }
 }
 
 void main() {
@@ -465,6 +516,8 @@ void main() {
     "/search/.*":handler.search,
     "/api/read/(id:[^/]*)": handler.read,
     "/api/unread/(id:[^/]*)": handler.unread,
+    "/api/reviewRequest/(id:[^/]*)" : handler.reviewRequest,
+    "/api/unReviewRequest/(id:[^/]*)" : handler.unReviewRequest,
     "/.well-known/acme-challenge/.*":handler.letsencrypt,
     "/.*": handler.health,
   }).start();

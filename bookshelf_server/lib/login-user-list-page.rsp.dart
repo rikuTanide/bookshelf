@@ -373,26 +373,27 @@ var id = book.book.id;
     }
 
     function unReviewRequest(id) {
-        \$.ajax("/api/reviewRequest/" + id);
+        \$.ajax("/api/unReviewRequest/" + id);
         var a = document.getElementById("r-" + id);
         a.onclick = function(){
-            unread(id);
+            reviewRequest(id);
         };
-
+        a.classList.remove("btn-info");
+        a.classList.add("btn-default");
         a.textContent ="書評希望";
-        a.classList.add("btn-info");
-        a.classList.remove("btn-default");
+
     }
 
     function reviewRequest(id){
-        \$.ajax("/api/unReviewRequest/" + id);
+        \$.ajax("/api/reviewRequest/" + id);
         var a = document.getElementById("r-" + id);
         a.onclick = function() {
-            read(id);
+            unReviewRequest(id);
         };
-        a.textContent = "読んだよ";
-        a.classList.remove("btn-info");
-        a.classList.add("btn-default");
+        a.textContent = "書評希望済";
+
+        a.classList.add("btn-info");
+        a.classList.remove("btn-default");
     }
 
 </script>
