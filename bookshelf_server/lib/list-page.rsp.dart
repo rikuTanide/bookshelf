@@ -193,50 +193,35 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a
-                    id="edit-button"
-                    type="button"
-                    class="btn btn-success pull-right hide"
-                    href="/mypage/"""); //#73
-
-  response.write(Rsp.nnx(activeYear)); //#82
-
-
-  response.write("""/"""); //#82
-
-  response.write(Rsp.nnx(activeMonth)); //#82
-
-
-  response.write("""">編集する</a>
             <h2 class="panel-title">読了リスト</h2>
         </div>
             <ul class="list-group">
-"""); //#82
+"""); //#73
 
-  for (var book in books) { //for#86
+  for (var book in books) { //for#81
 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
                 var date = book.getFormattedDateTime();
 
     response.write("""
 
-                <li class="list-group-item">"""); //#91
+                <li class="list-group-item">"""); //#86
 
-    response.write(Rsp.nnx(title)); //#92
-
-
-    response.write(""" """); //#92
-
-    response.write(Rsp.nnx(author)); //#92
+    response.write(Rsp.nnx(title)); //#87
 
 
-    response.write(""" """); //#92
+    response.write(""" """); //#87
 
-    response.write(Rsp.nnx(date)); //#92
+    response.write(Rsp.nnx(author)); //#87
+
+
+    response.write(""" """); //#87
+
+    response.write(Rsp.nnx(date)); //#87
 
 
     response.write("""</li>
-"""); //#92
+"""); //#87
   } //for
 
   response.write("""            </ul>
@@ -270,17 +255,8 @@ var title = book.getEscapedTitle();
         \$(this).tab('show');
     })
 </script>
-<script>
-    var userName = window.location.pathname.split("/")[2];
-    var myName = window.localStorage["myName"];
-
-    if(userName == myName){
-        \$("#edit-button").removeClass("hide");
-    }
-
-</script>
 </body>
-</html>"""); //#94
+</html>"""); //#89
 
   return null;
 }

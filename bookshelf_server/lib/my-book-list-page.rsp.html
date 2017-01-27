@@ -28,7 +28,7 @@
     <div class="container">
         <ul class="nav navbar-nav">
             <li><a href="/">Top</a></li>
-            <li><a href="/mypage">新規登録</a></li>
+            <li><a href="/mypage">MyPage</a></li>
             <li class="active"><a href="#">読了リスト</a></li>
         </ul>
     </div>
@@ -75,16 +75,24 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
+            <a
+                    id="edit-button"
+                    type="button"
+                    class="btn btn-success pull-right"
+                    href="/mypage/[=activeYear]/[=activeMonth]">編集する</a>
             <h2 class="panel-title">読了リスト</h2>
         </div>
             <ul class="list-group">
                 [:for book in books]
                 [:dart]
+                var id = book.id;
                 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
                 var date = book.getFormattedDateTime();
                 [/dart]
-                <li class="list-group-item">[=title] [=author] [=date]</li>
+                <li class="list-group-item">
+                    [=title] [=author]
+                </li>
                 [/for]
             </ul>
     </div>
@@ -116,6 +124,56 @@
         e.preventDefault();
         $(this).tab('show');
     })
+</script>
+<script>
+
+    function read(id) {
+        $.ajax("/api/read/" + id);
+        var a = document.getElementById("a-" + id);
+        a.onclick = function(){
+            unread(id);
+        };
+
+        a.textContent ="読んだよ済";
+        a.classList.add("btn-info");
+        a.classList.remove("btn-default");
+    }
+
+    function unread(id){
+        $.ajax("/api/unread/" + id);
+        var a = document.getElementById("a-" + id);
+        a.onclick = function() {
+            read(id);
+        };
+        a.textContent = "読んだよ";
+        a.classList.remove("btn-info");
+        a.classList.add("btn-default");
+    }
+
+    function unReviewRequest(id) {
+        $.ajax("/api/unReviewRequest/" + id);
+        var a = document.getElementById("r-" + id);
+        a.onclick = function(){
+            reviewRequest(id);
+        };
+        a.classList.remove("btn-info");
+        a.classList.add("btn-default");
+        a.textContent ="書評希望";
+
+    }
+
+    function reviewRequest(id){
+        $.ajax("/api/reviewRequest/" + id);
+        var a = document.getElementById("r-" + id);
+        a.onclick = function() {
+            unReviewRequest(id);
+        };
+        a.textContent = "書評希望済";
+
+        a.classList.add("btn-info");
+        a.classList.remove("btn-default");
+    }
+
 </script>
 </body>
 </html>

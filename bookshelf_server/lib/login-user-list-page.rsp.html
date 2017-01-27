@@ -75,11 +75,6 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a
-                    id="edit-button"
-                    type="button"
-                    class="btn btn-success pull-right hide"
-                    href="/mypage/[=activeYear]/[=activeMonth]">編集する</a>
             <h2 class="panel-title">読了リスト</h2>
         </div>
             <ul class="list-group">
@@ -144,13 +139,6 @@
     })
 </script>
 <script>
-    var userName = window.location.pathname.split("/")[2];
-    var myName = window.localStorage["myName"];
-
-    if(userName == myName){
-        $("#edit-button").removeClass("hide");
-    }
-
     function read(id) {
         $.ajax("/api/read/" + id);
         var a = document.getElementById("a-" + id);
