@@ -5,6 +5,7 @@ import 'package:bookshelf_server/book_anchor.dart';
 import 'package:bookshelf_server/index.rsp.dart';
 import 'package:bookshelf_server/list-page.rsp.dart';
 import 'package:bookshelf_server/login-user-list-page.rsp.dart';
+import 'package:bookshelf_server/my-book-list-page.rsp.dart';
 import 'package:bookshelf_server/read.dart';
 import 'package:bookshelf_server/review_request.dart';
 import 'package:bookshelf_server/user.dart';
@@ -124,6 +125,13 @@ class Handler {
 
     if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
       var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
+
+      if(uid == visitorUid){
+        await myBookListPage(connect,books:activeBooks,escapedUserID: escapedUserID,years: years,activeYear: year,activeMonth: month);
+        res.close();
+        return;
+      }
+
       var readList = dataBase.getIsRead(visitorUid, uid, activeBooks);
       await loginUserListPage(
           connect,
