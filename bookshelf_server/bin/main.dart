@@ -41,7 +41,7 @@ abstract class DataBase {
 
   List<String> getReviewRequests(String wanted, String publish, String id);
 
-  Future delReviewRequest(String id) ;
+  Future delReviewRequest(String id);
 }
 
 class MockDataBase implements DataBase {
@@ -126,8 +126,12 @@ class Handler {
     if (cookieReader.isLogin(connect.request.cookies, dataBase)) {
       var visitorUid = cookieReader.getUID(connect.request.cookies, dataBase);
 
-      if(uid == visitorUid){
-        await myBookListPage(connect,books:activeBooks,escapedUserID: escapedUserID,years: years,activeYear: year,activeMonth: month);
+      if (uid == visitorUid) {
+        await myBookListPage(connect, books: activeBooks,
+            escapedUserID: escapedUserID,
+            years: years,
+            activeYear: year,
+            activeMonth: month);
         res.close();
         return;
       }
@@ -392,7 +396,8 @@ class FirebaseDatabase implements DataBase {
           var title = book_map["title"];
           var author = book_map["author"];
           var date = DateTime.parse(book_map["datetime"]);
-          var book = new Book(historyID, title, author, date);
+          var review = book_map["review"];
+          var book = new Book(historyID, title, author, date, review);
           list.add(book);
         }
         map[userID] = list;
@@ -505,6 +510,7 @@ class FirebaseDatabase implements DataBase {
         .map((r) => r.id)
         .toList();
   }
+
   @override
   Future delReviewRequest(String id) async {
     await ref.child("/ReviewRequest/$id").remove();

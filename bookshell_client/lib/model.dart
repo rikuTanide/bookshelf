@@ -156,7 +156,8 @@ class FirebasePersistenceService implements PersistenceService {
     db.ref("/Books/$uid/").push({
       "author" : book.author,
       "title" : book.title,
-      "datetime" : book.datetime.toString()
+      "datetime" : book.datetime.toString(),
+      "review" : book.review,
     });
   }
 
@@ -169,7 +170,8 @@ class FirebasePersistenceService implements PersistenceService {
     db.ref("/Books/$uid/${book.id}").set({
       "author" : book.author,
       "title" : book.title,
-      "datetime" : book.datetime.toString()
+      "datetime" : book.datetime.toString(),
+      "review" : book.review,
     });
   }
 
@@ -178,7 +180,8 @@ class FirebasePersistenceService implements PersistenceService {
       ..id = book.id
       ..title = book.title.trim()
       ..author = book.author.trim()
-      ..datetime = book.datetime;
+      ..datetime = book.datetime
+      ..review = book.review?.trim() == "" ? null : book.review?.trim();
   }
 
   String _randomString(int length) {
@@ -193,8 +196,8 @@ class FirebasePersistenceService implements PersistenceService {
     return new String.fromCharCodes(codeUnits);
   }
 
-  void setDeviceID(){
-    if(!window.localStorage.containsKey("device_id")){
+  void setDeviceID() {
+    if (!window.localStorage.containsKey("device_id")) {
       var random = _randomString(16);
       window.localStorage["device_id"] = random;
     }
@@ -232,11 +235,13 @@ class FirebasePersistenceService implements PersistenceService {
         var title = book_map["title"];
         var author = book_map["author"];
         var date = DateTime.parse(book_map["datetime"]);
+        var review = book_map["review"];
         var book = new Book()
           ..id = historyID
           ..title = title
           ..author = author
-          ..datetime = date;
+          ..datetime = date
+          ..review = review;
         list.add(book);
       }
       list.sort((a, b) => b.datetime.compareTo(a.datetime));
@@ -333,6 +338,7 @@ class Book {
   String title;
   String author;
   DateTime datetime;
+  String review;
 }
 
 class Candidate {
