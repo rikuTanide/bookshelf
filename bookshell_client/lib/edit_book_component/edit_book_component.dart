@@ -21,7 +21,9 @@ class EditBookComponent implements OnInit {
   bool isOpenAutoComplete = false;
 
   @Input()
-  set book(Book book) => _book = book;
+  set book(Book book) {
+    _book = book;
+  }
 
   Book get book => _book;
 
@@ -91,6 +93,9 @@ class EditBookComponent implements OnInit {
       ..author = candidate.author;
     Element e = elementRef.nativeElement;
     e.querySelectorAll('input')[0].focus();
+  }
+
+  void onReviewInput(int code) {
 
   }
 

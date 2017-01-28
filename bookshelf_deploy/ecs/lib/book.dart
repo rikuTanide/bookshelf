@@ -5,10 +5,11 @@ class Book {
   final String author;
   final DateTime datetime;
   final String id;
+  final String review;
 
   final HtmlEscape sanitizer = new HtmlEscape();
 
-  Book(this.id, this.title, this.author, this.datetime);
+  Book(this.id, this.title, this.author, this.datetime, this.review);
 
   String getEscapedTitle() => sanitizer.convert(title);
 
@@ -21,5 +22,6 @@ class BookRead {
   Book book;
   bool isRead;
   bool isReviewRequest;
+
   BookRead(this.book, this.isRead, this.isReviewRequest);
 }

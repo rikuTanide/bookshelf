@@ -21,6 +21,12 @@
         [(ngModel)]="datetime"
         (blur)="onBlur.add(book)"
 ></material-input>
+<material-input
+        floatingLabel
+        label="書評"
+        [(ngModel)]="book.review"
+        (blur)="onBlur.add(book)"
+></material-input>
 <book-auto-complete
         [keyword]="autoCompleteKeyword"
         [open]="isOpenAutoComplete"

@@ -203,96 +203,123 @@ var id = book.book.id;
                 var title = book.book.getEscapedTitle();
                 var author = book.book.getEscapedAuthor();
                 var date = book.book.getFormattedDateTime();
+                var review = book.book.review;
+                var hasReview = review != null;
 
     response.write("""
 
                 <li class="list-group-item">
-                    """); //#87
-
-    response.write(Rsp.nnx(title)); //#89
-
-
-    response.write(""" """); //#89
-
-    response.write(Rsp.nnx(author)); //#89
-
-
-    response.write("""
-
 """); //#89
 
-    if (book.isRead) { //if#90
+    if (hasReview) { //if#91
 
-      response.write("""                    <a id="a-"""); //#91
+      response.write("""                    <a href=\""""); //#92
 
-      response.write(Rsp.nnx(id)); //#91
+      response.write(Rsp.nnx(review)); //#92
 
 
-      response.write("""" class="pull-right btn btn-info" onclick="unread('"""); //#91
+      response.write("""">"""); //#92
 
-      response.write(Rsp.nnx(id)); //#91
+      response.write(Rsp.nnx(title)); //#92
+
+
+      response.write(""" """); //#92
+
+      response.write(Rsp.nnx(author)); //#92
+
+
+      response.write("""</a>
+"""); //#92
+
+    } else { //else#93
+
+      response.write("""                    """); //#94
+
+      response.write(Rsp.nnx(title)); //#94
+
+
+      response.write(""" """); //#94
+
+      response.write(Rsp.nnx(author)); //#94
+
+
+      response.write("""
+
+"""); //#94
+    } //if
+
+    if (book.isRead) { //if#96
+
+      response.write("""                    <a id="a-"""); //#97
+
+      response.write(Rsp.nnx(id)); //#97
+
+
+      response.write("""" class="pull-right btn btn-info" onclick="unread('"""); //#97
+
+      response.write(Rsp.nnx(id)); //#97
 
 
       response.write("""')" href="javascript:void(0)">
                         読んだよ済
                     </a>
-"""); //#91
+"""); //#97
 
-    } else { //else#94
+    } else { //else#100
 
-      response.write("""                    <a id="a-"""); //#95
+      response.write("""                    <a id="a-"""); //#101
 
-      response.write(Rsp.nnx(id)); //#95
+      response.write(Rsp.nnx(id)); //#101
 
 
-      response.write("""" class="pull-right btn btn-default" onclick="read('"""); //#95
+      response.write("""" class="pull-right btn btn-default" onclick="read('"""); //#101
 
-      response.write(Rsp.nnx(id)); //#95
+      response.write(Rsp.nnx(id)); //#101
 
 
       response.write("""')" href="javascript:void(0)">
                         読んだよ
                     </a>
-"""); //#95
+"""); //#101
     } //if
 
-    if (book.isReviewRequest) { //if#99
+    if (book.isReviewRequest) { //if#105
 
-      response.write("""                    <a id="r-"""); //#100
+      response.write("""                    <a id="r-"""); //#106
 
-      response.write(Rsp.nnx(id)); //#100
+      response.write(Rsp.nnx(id)); //#106
 
 
-      response.write("""" class="pull-right btn btn-info" onclick="unReviewRequest('"""); //#100
+      response.write("""" class="pull-right btn btn-info" onclick="unReviewRequest('"""); //#106
 
-      response.write(Rsp.nnx(id)); //#100
+      response.write(Rsp.nnx(id)); //#106
 
 
       response.write("""')" href="javascript:void(0)">
                         書評希望済
                     </a>
-"""); //#100
+"""); //#106
 
-    } else { //else#103
+    } else { //else#109
 
-      response.write("""                    <a id="r-"""); //#104
+      response.write("""                    <a id="r-"""); //#110
 
-      response.write(Rsp.nnx(id)); //#104
+      response.write(Rsp.nnx(id)); //#110
 
 
-      response.write("""" class="pull-right btn btn-default" onclick="reviewRequest('"""); //#104
+      response.write("""" class="pull-right btn btn-default" onclick="reviewRequest('"""); //#110
 
-      response.write(Rsp.nnx(id)); //#104
+      response.write(Rsp.nnx(id)); //#110
 
 
       response.write("""')" href="javascript:void(0)">
                         書評希望
                     </a>
-"""); //#104
+"""); //#110
     } //if
 
     response.write("""                </li>
-"""); //#108
+"""); //#114
   } //for
 
   response.write("""            </ul>
@@ -376,7 +403,7 @@ var id = book.book.id;
 
 </script>
 </body>
-</html>"""); //#110
+</html>"""); //#116
 
   return null;
 }

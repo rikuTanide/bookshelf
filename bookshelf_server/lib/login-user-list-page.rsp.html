@@ -84,9 +84,15 @@
                 var title = book.book.getEscapedTitle();
                 var author = book.book.getEscapedAuthor();
                 var date = book.book.getFormattedDateTime();
+                var review = book.book.review;
+                var hasReview = review != null;
                 [/dart]
                 <li class="list-group-item">
+                    [:if hasReview]
+                    <a href="[=review]">[=title] [=author]</a>
+                    [:else]
                     [=title] [=author]
+                    [/if]
                     [:if book.isRead]
                     <a id="a-[=id]" class="pull-right btn btn-info" onclick="unread('[=id]')" href="javascript:void(0)">
                         読んだよ済

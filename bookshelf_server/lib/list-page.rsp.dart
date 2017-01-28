@@ -202,26 +202,53 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
                 var date = book.getFormattedDateTime();
+                var review = book.review;
+                var hasReview = review != null;
 
     response.write("""
 
-                <li class="list-group-item">"""); //#86
+                <li class="list-group-item">
+"""); //#88
 
-    response.write(Rsp.nnx(title)); //#87
+    if (hasReview) { //if#90
 
+      response.write("""                    <a href=\""""); //#91
 
-    response.write(""" """); //#87
-
-    response.write(Rsp.nnx(author)); //#87
-
-
-    response.write(""" """); //#87
-
-    response.write(Rsp.nnx(date)); //#87
+      response.write(Rsp.nnx(review)); //#91
 
 
-    response.write("""</li>
-"""); //#87
+      response.write("""">"""); //#91
+
+      response.write(Rsp.nnx(title)); //#91
+
+
+      response.write(""" """); //#91
+
+      response.write(Rsp.nnx(author)); //#91
+
+
+      response.write("""</a>
+"""); //#91
+
+    } else { //else#92
+
+      response.write("""                    """); //#93
+
+      response.write(Rsp.nnx(title)); //#93
+
+
+      response.write(""" """); //#93
+
+      response.write(Rsp.nnx(author)); //#93
+
+
+      response.write("""
+
+"""); //#93
+    } //if
+
+    response.write("""                </li>
+"""); //#95
   } //for
 
   response.write("""            </ul>
@@ -256,7 +283,7 @@ var title = book.getEscapedTitle();
     })
 </script>
 </body>
-</html>"""); //#89
+</html>"""); //#97
 
   return null;
 }
