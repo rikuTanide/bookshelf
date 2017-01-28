@@ -1,0 +1,34 @@
+{
+  "rules": {
+    "Books": {
+      "$uid": {
+        ".write": "auth.uid == $uid"
+      },
+      ".read": "auth != null"
+    },
+    "ReviewRequest": {
+      ".read": "auth != null"
+    },
+    "SessionIDs": {
+      ".read": "false",
+      ".write": "auth != null",
+      "uid": {
+        ".validate": "newData.val() == auth.uid"
+      }
+    },
+    "Users": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth.uid == $uid"
+      }
+    },
+    "UserNames": {
+      ".read": "auth != null",
+      "$userName": {
+        ".write": "auth != null",
+        ".validate": "newData.val() == auth.uid && $userName== root.child('/Users/' + auth.uid + '/id').val() && (!data.exists() || root.child('Users/' + data.val() + '/id').val() != $userName)"
+      }
+    }
+  }
+}
+
