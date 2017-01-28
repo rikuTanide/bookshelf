@@ -89,9 +89,15 @@
                 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
                 var date = book.getFormattedDateTime();
+                var review = book.review;
+                var hasReview = review != null;
                 [/dart]
                 <li class="list-group-item">
+                    [:if hasReview]
+                    <a href="[=review]">[=title] [=author]</a>
+                    [:else]
                     [=title] [=author]
+                    [/if]
                 </li>
                 [/for]
             </ul>

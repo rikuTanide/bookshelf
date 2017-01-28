@@ -218,24 +218,53 @@ var id = book.id;
                 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
                 var date = book.getFormattedDateTime();
+                var review = book.review;
+                var hasReview = review != null;
 
     response.write("""
 
                 <li class="list-group-item">
-                    """); //#92
-
-    response.write(Rsp.nnx(title)); //#94
-
-
-    response.write(""" """); //#94
-
-    response.write(Rsp.nnx(author)); //#94
-
-
-    response.write("""
-
-                </li>
 """); //#94
+
+    if (hasReview) { //if#96
+
+      response.write("""                    <a href=\""""); //#97
+
+      response.write(Rsp.nnx(review)); //#97
+
+
+      response.write("""">"""); //#97
+
+      response.write(Rsp.nnx(title)); //#97
+
+
+      response.write(""" """); //#97
+
+      response.write(Rsp.nnx(author)); //#97
+
+
+      response.write("""</a>
+"""); //#97
+
+    } else { //else#98
+
+      response.write("""                    """); //#99
+
+      response.write(Rsp.nnx(title)); //#99
+
+
+      response.write(""" """); //#99
+
+      response.write(Rsp.nnx(author)); //#99
+
+
+      response.write("""
+
+"""); //#99
+    } //if
+
+    response.write("""                </li>
+"""); //#101
   } //for
 
   response.write("""            </ul>
@@ -320,7 +349,7 @@ var id = book.id;
 
 </script>
 </body>
-</html>"""); //#97
+</html>"""); //#103
 
   return null;
 }
