@@ -17,6 +17,8 @@ abstract class PersistenceService {
   void setBook(Book book);
 
   void onLogin(String uid);
+
+  bool isEnableUserName(String userName);
 }
 
 abstract class AuthService {
@@ -139,6 +141,7 @@ class FirebaseAuthService implements AuthService {
   @override
   void setUserID() {
     var ref = firebase.database().ref("/Users/$uid/id").set(userID);
+    firebase.database().ref("/UserNames/$userID").set(uid);
   }
 }
 
@@ -147,6 +150,8 @@ class FirebasePersistenceService implements PersistenceService {
 
   final firebase.Database db;
   String uid;
+  Map<String, String> usersNames = {};
+  Map<String, String> namesUsers = {};
 
   FirebasePersistenceService() :db = firebase.database();
 
@@ -219,7 +224,34 @@ class FirebasePersistenceService implements PersistenceService {
     cookie.set("sessionid", random);
     this.uid = uid;
     listenBookList(uid).listen(print);
+    listenUserNameList(uid).listen(print);
+    listenUserList(uid).listen(print);
   }
+
+  Stream listenUserNameList(uid) async* {
+    await for (Map<String, Map<String, String>> e in db
+        .ref("/Users")
+        .onValue
+        .map((e) => e.snapshot.val())) {
+      this.usersNames = {};
+      for (var key in e.keys) {
+        this.usersNames[key] = e[key]["id"];
+      }
+    }
+  }
+
+  Stream listenUserList(uid) async* {
+    await for (Map<String, String> e in db
+        .ref("/UserNames/")
+        .onValue
+        .map((e) => e.snapshot.val())) {
+      this.namesUsers = {};
+      for (var key in e.keys) {
+        this.namesUsers[key] = e[key];
+      }
+    }
+  }
+
 
   Stream listenBookList(String uid) async* {
     await for (var e in db
@@ -250,6 +282,19 @@ class FirebasePersistenceService implements PersistenceService {
   }
 
 
+  @override
+  bool isEnableUserName(String userName) {
+    if (!namesUsers.containsKey(userName)) {
+      return true;
+    }
+    if (namesUsers[userName] == uid) {
+      return true;
+    }
+    if(usersNames[namesUsers[userName]] != userName){
+      return true;
+    }
+    return false;
+  }
 }
 
 @Injectable()

@@ -37,7 +37,11 @@ class EditBookListComponent {
 
   void setUserID(int code) {
     if (code == 13) {
-      auth.setUserID();
+      if (store.isEnableUserName(auth.userID)) {
+        print(true);
+        auth.setUserID();
+      }
+      print(false);
     }
   }
 
