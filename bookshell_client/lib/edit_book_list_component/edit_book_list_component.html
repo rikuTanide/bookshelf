@@ -1,6 +1,7 @@
 <material-tab-panel class="white">
     <material-tab label="編集">
         <div class="edit">
+        <calendar-year [year]="year"></calendar-year>
             <edit-book [book]="addBook" (onBook)="onBookAdd($event)"></edit-book>
             <hr>
             <div *ngFor="let book of store.books">

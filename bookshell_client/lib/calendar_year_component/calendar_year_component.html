@@ -1,0 +1,15 @@
+<div>
+    <a
+            *ngFor="let y of years"
+            (click)="year = y"
+            class="{{year == y ? 'select' : ''}}">
+        <div>{{y}}</div>
+    </a>
+
+    <a
+        *ngFor="let m of months"
+        [routerLink]="['Routing', {year:year,month:m}]">
+        {{m}}月
+    </a>
+
+</div>
