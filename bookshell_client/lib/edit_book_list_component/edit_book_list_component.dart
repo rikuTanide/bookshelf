@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:angular2_components/angular2_components.dart';
+import 'package:bookshell_client/calendar_year_component/calendar_year_component.dart';
 import 'package:bookshell_client/edit_book_component/edit_book_component.dart';
 import 'package:bookshell_client/model.dart';
 import 'package:angular2/core.dart';
@@ -9,11 +10,16 @@ import 'package:angular2/router.dart';
     selector: 'edit-book-list',
     templateUrl: 'edit_book_list_component.html',
     styleUrls: const <String>['edit_book_list_component.css'],
-    directives: const[materialDirectives, EditBookComponent])
+    directives: const[
+      materialDirectives,
+      EditBookComponent,
+      CalendarYearComponent
+    ])
 class EditBookListComponent {
 
   PersistenceService store;
   AuthService auth;
+  RouteParams routeParams;
   Book addBook = new Book()
     ..title = ''
     ..author = ''
@@ -21,7 +27,10 @@ class EditBookListComponent {
 
   String userID = "";
 
-  EditBookListComponent(this.store, this.auth);
+  int year;
+
+  EditBookListComponent(this.store, this.auth, RouteParams routeParams) :
+        year = int.parse(routeParams.get('year'));
 
   void onBookAdd(Book book) {
     store.addBook(book);
