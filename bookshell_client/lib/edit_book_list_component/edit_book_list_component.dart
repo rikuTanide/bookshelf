@@ -13,24 +13,38 @@ import 'package:angular2/router.dart';
     directives: const[
       materialDirectives,
       EditBookComponent,
-      CalendarYearComponent
-    ])
+      CalendarYearComponent,
+      ROUTER_DIRECTIVES,
+    ],
+    providers:const[ROUTER_PROVIDERS])
 class EditBookListComponent {
 
   PersistenceService store;
   AuthService auth;
-  RouteParams routeParams;
   Book addBook = new Book()
     ..title = ''
     ..author = ''
     ..datetime = new DateTime.now();
 
+  RouteParams routeParams;
+
+  @Input()
+  int year;
+  @Input()
+  int month;
+
   String userID = "";
 
-  int year;
+  EditBookListComponent(this.store, this.auth,this.routeParams);
 
-  EditBookListComponent(this.store, this.auth, RouteParams routeParams) :
-        year = int.parse(routeParams.get('year'));
+  List<Book> get books {
+    print([year,month]);
+    return store
+        .books
+        .where((b) => b.datetime.year == year)
+        .where((b) => b.datetime.month == month).toList();
+  }
+
 
   void onBookAdd(Book book) {
     store.addBook(book);

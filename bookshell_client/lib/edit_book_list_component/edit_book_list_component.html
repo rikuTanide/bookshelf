@@ -4,7 +4,7 @@
         <calendar-year [year]="year"></calendar-year>
             <edit-book [book]="addBook" (onBook)="onBookAdd($event)"></edit-book>
             <hr>
-            <div *ngFor="let book of store.books">
+            <div *ngFor="let book of books">
                 <edit-book [book]="book" (onBook)="onBookEdit(book)" (onBlur)="onBookEdit(book)"></edit-book>
             </div>
         </div>

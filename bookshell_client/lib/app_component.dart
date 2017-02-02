@@ -11,7 +11,8 @@ import 'package:bookshell_client/routing_component/routing_component.dart';
 const BASE = "/bookshelf/bookshell_client/web/";
 
 @RouteConfig(const [
-  const Route(path: '/:year/:month', name: 'Routing', component: RoutingComponent)
+  const Route(
+      path: '/:year/:month', name: 'Routing', component: RoutingComponent)
 ])
 @Component(
     selector: 'my-app',
@@ -32,12 +33,10 @@ const BASE = "/bookshelf/bookshell_client/web/";
 class AppComponent
     implements OnInit {
 
-  PersistenceService store;
 
   AuthService auth;
 
-  AppComponent(this.store, this.auth);
-
+  AppComponent(this.auth);
 
   @override
   void ngOnInit() {}

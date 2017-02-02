@@ -15,7 +15,6 @@ import 'package:bookshell_client/register_component/register_component.dart';
     EditBookListComponent,
     LoginComponent,
     RegisterComponent,
-    ROUTER_DIRECTIVES
     ],
     providers: const [
       AuthService,
@@ -26,9 +25,19 @@ class RoutingComponent {
   PersistenceService store;
 
   AuthService auth;
+  RouteParams routeParams;
 
-  RoutingComponent(this.store, this.auth){
-    print("root");
+  RoutingComponent(this.store, this.auth,this.routeParams);
+
+  int get year {
+    print(routeParams.params);
+    return int.parse(routeParams.get('year'));
   }
+
+  int get month {
+    return int.parse(routeParams.get('month'));
+  }
+
+
 
 }

@@ -8,7 +8,7 @@
 
     <a
         *ngFor="let m of months"
-        [routerLink]="['Routing', {year:year,month:m}]">
+        (click)="setLocation(m)">
         {{m}}月
     </a>
 

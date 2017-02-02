@@ -4,6 +4,7 @@ import "dart:core";
 import 'package:angular2/platform/browser.dart';
 import "package:angular2/core.dart";
 import 'package:angular2/platform/common.dart';
+import 'package:angular2/router.dart';
 import 'package:angular2/src/compiler/view_compiler/property_binder.dart';
 import 'package:angular2/src/core/reflection/reflection.dart';
 import 'package:bookshell_client/app_component.dart';
@@ -34,11 +35,13 @@ main() async {
   ComponentRef ref = await bootstrap(
       AppComponent,
       [
+        ROUTER_PROVIDERS,
         persistenceService,
         materialProviders,
         authService,
         autoCompleteService,
-        new Provider(APP_BASE_HREF, useValue: '/bookshelf/bookshell_client/web/mypage/index.html'),
+        new Provider(APP_BASE_HREF,
+            useValue: '/bookshelf/bookshell_client/web/mypage/index.html'),
       ]);
 
 //  mockAuthService.loading = false;
