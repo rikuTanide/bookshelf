@@ -30,7 +30,6 @@ class RoutingComponent {
   RoutingComponent(this.store, this.auth,this.routeParams);
 
   int get year {
-    print(routeParams.params);
     return int.parse(routeParams.get('year'));
   }
 
