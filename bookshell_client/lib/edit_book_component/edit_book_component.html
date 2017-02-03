@@ -15,14 +15,6 @@
 ></material-input>
 <material-input
         floatingLabel
-        leadingGlyph="date_range"
-        label="読んだ日付"
-        (keypress)="onDateTimeEnter($event.keyCode)"
-        [(ngModel)]="datetime"
-        (blur)="onBlur.add(book)"
-></material-input>
-<material-input
-        floatingLabel
         label="書評"
         [(ngModel)]="book.review"
         (blur)="onBlur.add(book)"

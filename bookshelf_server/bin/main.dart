@@ -209,8 +209,8 @@ class Handler {
     <!--<base href="http://localhost:63342/bookshelf/bookshell_client/web/mypage/index.html">-->
     <meta charset="utf-8"/>
     <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
-    <script async src="main.dart" type="application/dart"></script>
-    <script async src="packages/browser/dart.js"></script>
+    <script async src="/mypage/angular/main.dart" type="application/dart"></script>
+    <script async src="/mypage/angular/packages/browser/dart.js"></script>
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

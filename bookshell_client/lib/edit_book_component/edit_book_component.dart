@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
     templateUrl: 'edit_book_component.html',
     styleUrls: const <String>['edit_book_component.css'],
     directives: const[materialDirectives, BookAutoCompleteComponent])
-class EditBookComponent implements OnInit {
+class EditBookComponent  {
 
   Book _book;
   String autoCompleteKeyword = "";
@@ -33,27 +33,12 @@ class EditBookComponent implements OnInit {
   @Output()
   EventEmitter<Book> onBlur = new EventEmitter();
 
-  set datetime(String str) {
-    try {
-      _book.datetime = DateTime.parse(str);
-    } catch (e) {
-
-    }
-  }
-
-  String get datetime => new DateFormat('yyyy-MM-dd').format(_book.datetime);
-
   EditBookComponent(this.elementRef) {
 
   }
 
-  @override
-  void ngOnInit() {}
 
   bool onTitleEnter(int code, bool shift, bool ctrl) {
-    print(code);
-    print(shift);
-    print(ctrl);
     if (code == 13) {
       Element e = elementRef.nativeElement;
       e.querySelectorAll('input')[1].focus();
@@ -69,15 +54,8 @@ class EditBookComponent implements OnInit {
   void onAuthorEnter(int code) {
     if (code == 13) {
       Element e = elementRef.nativeElement;
-      e.querySelectorAll('input')[2].focus();
-    }
-  }
-
-  void onDateTimeEnter(int code) {
-    if (code == 13) {
-      onBook.add(_book);
-      Element e = elementRef.nativeElement;
       e.querySelectorAll('input')[0].focus();
+      onBook.add(_book);
     }
   }
 

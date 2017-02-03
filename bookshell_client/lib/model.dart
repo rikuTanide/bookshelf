@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'dart:convert';
 import 'package:angular2/core.dart';
+import 'package:angular2/router.dart';
 import 'package:firebase/firebase.dart' as firebase;
 import 'package:http/browser_client.dart' as http;
 import 'dart:math';
@@ -19,6 +20,7 @@ abstract class PersistenceService {
   void onLogin(String uid);
 
   bool isEnableUserName(String userName);
+
 }
 
 abstract class AuthService {
@@ -166,8 +168,9 @@ class FirebasePersistenceService implements PersistenceService {
     });
   }
 
-  @override
-  List<Book> books = [];
+  List<Book> _books = [];
+
+  List<Book> get books => _books;
 
   @override
   void setBook(Book book) {
@@ -277,7 +280,7 @@ class FirebasePersistenceService implements PersistenceService {
         list.add(book);
       }
       list.sort((a, b) => b.datetime.compareTo(a.datetime));
-      this.books = list;
+      this._books = list;
     }
   }
 
@@ -295,6 +298,7 @@ class FirebasePersistenceService implements PersistenceService {
     }
     return false;
   }
+
 }
 
 @Injectable()
