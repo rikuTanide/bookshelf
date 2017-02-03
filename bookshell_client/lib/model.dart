@@ -13,6 +13,8 @@ abstract class PersistenceService {
 
   List<Book> get books;
 
+  List<Book> get stacks;
+
   void addBook(Book book);
 
   void setBook(Book book);
@@ -21,6 +23,9 @@ abstract class PersistenceService {
 
   bool isEnableUserName(String userName);
 
+  void addStack(Book book);
+
+  void setStack(Book book);
 }
 
 abstract class AuthService {
@@ -170,6 +175,8 @@ class FirebasePersistenceService implements PersistenceService {
 
   List<Book> _books = [];
 
+  List<Book> _stacks = [];
+
   List<Book> get books => _books;
 
   @override
@@ -229,6 +236,28 @@ class FirebasePersistenceService implements PersistenceService {
     listenBookList(uid).listen(print);
     listenUserNameList(uid).listen(print);
     listenUserList(uid).listen(print);
+    listenStackList(uid).listen(print);
+  }
+
+  listenStackList(String uid) async* {
+    await for (var m in db
+        .ref('/Stack/$uid')
+        .onValue
+        .map((e) => e.snapshot.val())) {
+      if (m == null) {
+        _stacks = [];
+        return;
+      }
+      _stacks = [];
+      for (var key in m.keys) {
+        _stacks.add(new Book()
+          ..id = key
+          ..author = m[key]['author']
+          ..datetime = DateTime.parse(m[key]['datetime'])
+          ..review = ''
+          ..title = m[key]['title']);
+      }
+    }
   }
 
   Stream listenUserNameList(uid) async* {
@@ -293,12 +322,34 @@ class FirebasePersistenceService implements PersistenceService {
     if (namesUsers[userName] == uid) {
       return true;
     }
-    if(usersNames[namesUsers[userName]] != userName){
+    if (usersNames[namesUsers[userName]] != userName) {
       return true;
     }
     return false;
   }
 
+  @override
+  void addStack(Book book) {
+    book = _trim(book);
+    db.ref('/Stack/$uid/').push({
+      "author" : book.author,
+      "title" : book.title,
+      "datetime" : book.datetime.toString(),
+    });
+  }
+
+  @override
+  void setStack(Book book) {
+    book = _trim(book);
+    db.ref('/Stack/$uid/${book.id}').set({
+      "author" : book.author,
+      "title" : book.title,
+      "datetime" : book.datetime.toString(),
+    });
+  }
+
+  @override
+  List<Book> get stacks => _stacks;
 }
 
 @Injectable()

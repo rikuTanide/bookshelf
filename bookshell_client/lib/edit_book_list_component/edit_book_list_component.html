@@ -9,6 +9,17 @@
             </div>
         </div>
     </material-tab>
+    <material-tab label="積ん読">
+        <div>
+            <edit-book
+                    [book]="addStack"
+                    (onBook)="onStackAdd($event)"></edit-book>
+            <hr>
+            <div *ngFor="let book of stacks">
+                <edit-book [book]="book" (onBook)="onStackEdit(book)" (onBlur)="onStackEdit(book)"></edit-book>
+            </div>
+        </div>
+    </material-tab>
     <material-tab label="プロフィール">
         <div>
             <material-input floatingLabel label="ユーザーID" [(ngModel)]="auth.userID" (blur)="setUserID(13)"

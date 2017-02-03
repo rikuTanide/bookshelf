@@ -26,6 +26,11 @@ class EditBookListComponent {
     ..author = ''
     ..datetime = new DateTime.now();
 
+  Book addStack = new Book()
+    ..title = ''
+    ..author = ''
+    ..datetime = new DateTime.now();
+
   RouteParams routeParams;
 
   @Input()
@@ -42,6 +47,10 @@ class EditBookListComponent {
         .books
         .where((b) => b.datetime.year == year)
         .where((b) => b.datetime.month == month).toList();
+  }
+
+  List<Book> get stacks {
+    return store.stacks;
   }
 
   DateTime getDateTime() {
@@ -70,6 +79,18 @@ class EditBookListComponent {
       }
       print(false);
     }
+  }
+
+  void onStackAdd(Book book) {
+    store.addStack(book);
+    addStack = new Book()
+      ..title = ''
+      ..author = ''
+      ..datetime = new DateTime.now();
+  }
+
+  void onStackEdit(Book book) {
+    store.setStack(book);
   }
 
 }
