@@ -8,6 +8,7 @@ import 'package:bookshelf_server/login-user-list-page.rsp.dart';
 import 'package:bookshelf_server/my-book-list-page.rsp.dart';
 import 'package:bookshelf_server/read.dart';
 import 'package:bookshelf_server/review_request.dart';
+import 'package:bookshelf_server/stack-list-page.rsp.dart';
 import 'package:bookshelf_server/user.dart';
 import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
@@ -42,6 +43,8 @@ abstract class DataBase {
   List<String> getReviewRequests(String wanted, String publish, String id);
 
   Future delReviewRequest(String id);
+
+  List<Book> getStacks(String uid);
 }
 
 class MockDataBase implements DataBase {
@@ -285,8 +288,20 @@ class Handler {
       var reviewRequest = dataBase.getReviewRequests(visitorUid, publish, id);
       for (var r in reviewRequest) {
         await dataBase.delReviewRequest(r);
+        connect.response.close();
       }
     }
+  }
+
+  stack(HttpConnect connect) async {
+    var userID = connect.dataset["user"];
+    var user = dataBase.getUser(userID);
+    var uid = user.uid;
+    var bookList = dataBase.getStacks(uid);
+    var escapedUserID = user.getEscapedID();
+
+    await stackListPage(connect, books: bookList, escapedUserID: escapedUserID);
+    connect.response.close();
   }
 
 
@@ -296,6 +311,7 @@ class FirebaseDatabase implements DataBase {
 
   Map<String, List<Book>> _bookMap = {};
   List<User> _users = [];
+  Map<String, List<Book>> _stacks = {};
   Map<String, String> _sessionIDs = {};
   List<Read> read = [];
   List<ReviewRequest> reviewRequests = [];
@@ -323,6 +339,31 @@ class FirebaseDatabase implements DataBase {
     _listenSessionID(ref);
     _listenRead(ref);
     _listenReviewRequest(ref);
+    _listenStack(ref);
+  }
+
+  _listenStack(Firebase ref) async {
+    await for (Map<String, Map<String, Map<String, String>>> e in ref
+        .child("/Stack")
+        .onValue
+        .map((r) => r.snapshot.val)) {
+      if (e == null) {
+        continue;
+      }
+
+      _stacks = {};
+
+      for (var userID in e.keys) {
+        var l = [];
+        for (var stackID in e[userID].keys) {
+          var author = e[userID][stackID]["author"];
+          var title = e[userID][stackID]["title"];
+          var book = new Book(stackID, title, author, new DateTime.now(), null);
+          l.add(book);
+        }
+        _stacks[userID] = l;
+      }
+    }
   }
 
   _listenReviewRequest(Firebase ref) async {
@@ -515,6 +556,11 @@ class FirebaseDatabase implements DataBase {
   Future delReviewRequest(String id) async {
     await ref.child("/ReviewRequest/$id").remove();
   }
+
+  @override
+  List<Book> getStacks(String uid) {
+    return _stacks[uid];
+  }
 }
 
 void main() {
@@ -526,13 +572,12 @@ void main() {
     "/user/(user:[^/]*)/(year:[^/]*)/(month:[^/]*)": handler.user,
     "/user/(user:[^/]*)": handler.userRedirect,
     "/mypage":handler.mypage,
-    "/mypage/":handler.mypage,
+    "/mypage/(year:[^/]*)/(month:[^/]*)":handler.mypage,
     "/search/.*":handler.search,
     "/api/read/(id:[^/]*)": handler.read,
     "/api/unread/(id:[^/]*)": handler.unread,
     "/api/reviewRequest/(id:[^/]*)" : handler.reviewRequest,
     "/api/unReviewRequest/(id:[^/]*)" : handler.unReviewRequest,
-    "/.well-known/acme-challenge/.*":handler.letsencrypt,
-    "/.*": handler.health,
+    "/stack/(user:[^/]*)" : handler.stack,
   }).start();
 }

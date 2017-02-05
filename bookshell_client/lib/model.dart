@@ -246,7 +246,7 @@ class FirebasePersistenceService implements PersistenceService {
         .map((e) => e.snapshot.val())) {
       if (m == null) {
         _stacks = [];
-        return;
+        continue;
       }
       _stacks = [];
       for (var key in m.keys) {

@@ -49,14 +49,20 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
             <li><a href="/">Top</a></li>
             <li><a href="/mypage">新規登録</a></li>
             <li class="active"><a href="#">読了リスト</a></li>
+            <li><a href="/stack/"""); //#7
+
+  response.write(Rsp.nnx(escapedUserID)); //#33
+
+
+  response.write("""">積読リスト</a></li>
         </ul>
     </div>
 </nav>
 <div class="container">
     <div class="jumbotron">
-        <h1>"""); //#7
+        <h1>"""); //#33
 
-  response.write(Rsp.nnx(escapedUserID)); //#38
+  response.write(Rsp.nnx(escapedUserID)); //#39
 
 
   response.write(""" さんのbookshelf</h1>
@@ -65,127 +71,127 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
 
     <div class="calendar">
         <ul class="years nav nav-pills">
-"""); //#38
+"""); //#39
 
-  for (var year in years) { //for#44
+  for (var year in years) { //for#45
 
-    if (year.isActive) { //if#45
+    if (year.isActive) { //if#46
 
-      response.write("""                <li role="presentation" class="enable active"><a href="#calendar-"""); //#46
+      response.write("""                <li role="presentation" class="enable active"><a href="#calendar-"""); //#47
 
-      response.write(Rsp.nnx(year.year)); //#46
-
-
-      response.write("""">"""); //#46
-
-      response.write(Rsp.nnx(year.year)); //#46
+      response.write(Rsp.nnx(year.year)); //#47
 
 
-      response.write("""年</a></li>
-"""); //#46
+      response.write("""">"""); //#47
 
-    } else if (year.isEnable) { //else#47
-
-      response.write("""                <li role="presentation" class="enable"><a href="#calendar-"""); //#48
-
-      response.write(Rsp.nnx(year.year)); //#48
-
-
-      response.write("""">"""); //#48
-
-      response.write(Rsp.nnx(year.year)); //#48
+      response.write(Rsp.nnx(year.year)); //#47
 
 
       response.write("""年</a></li>
-"""); //#48
+"""); //#47
 
-    } else { //else#49
+    } else if (year.isEnable) { //else#48
 
-      response.write("""                <li role="presentation" class="disabled"><a href="javascript:void(0)">"""); //#50
+      response.write("""                <li role="presentation" class="enable"><a href="#calendar-"""); //#49
 
-      response.write(Rsp.nnx(year.year)); //#50
+      response.write(Rsp.nnx(year.year)); //#49
+
+
+      response.write("""">"""); //#49
+
+      response.write(Rsp.nnx(year.year)); //#49
 
 
       response.write("""年</a></li>
-"""); //#50
+"""); //#49
+
+    } else { //else#50
+
+      response.write("""                <li role="presentation" class="disabled"><a href="javascript:void(0)">"""); //#51
+
+      response.write(Rsp.nnx(year.year)); //#51
+
+
+      response.write("""年</a></li>
+"""); //#51
     } //if
   } //for
 
   response.write("""        </ul>
 
         <div class="tab-content">
-"""); //#53
+"""); //#54
 
-  for (var year in years) { //for#56
+  for (var year in years) { //for#57
 
-    response.write("""            <div role="tabpanel" class="tab-pane """); //#57
+    response.write("""            <div role="tabpanel" class="tab-pane """); //#58
 
-    response.write(Rsp.nnx(year.isActive ? 'active' : '')); //#57
+    response.write(Rsp.nnx(year.isActive ? 'active' : '')); //#58
 
 
-    response.write("""" id="calendar-"""); //#57
+    response.write("""" id="calendar-"""); //#58
 
-    response.write(Rsp.nnx(year.year)); //#57
+    response.write(Rsp.nnx(year.year)); //#58
 
 
     response.write("""">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
-"""); //#57
+"""); //#58
 
-    for (var month in year.months) { //for#60
+    for (var month in year.months) { //for#61
 
-      if (month.isActive) { //if#61
+      if (month.isActive) { //if#62
 
-        response.write("""                                <li class="active"><a href="javascript:void(0)">"""); //#62
+        response.write("""                                <li class="active"><a href="javascript:void(0)">"""); //#63
 
-        response.write(Rsp.nnx(month.month)); //#62
-
-
-        response.write("""月</a></li>
-"""); //#62
-
-      } else if (month.isEnable) { //else#63
-
-        response.write("""                                <li><a href="/user/"""); //#64
-
-        response.write(Rsp.nnx(escapedUserID)); //#64
-
-
-        response.write("""/"""); //#64
-
-        response.write(Rsp.nnx(year.year)); //#64
-
-
-        response.write("""/"""); //#64
-
-        response.write(Rsp.nnx(month.month)); //#64
-
-
-        response.write("""">"""); //#64
-
-        response.write(Rsp.nnx(month.month)); //#64
+        response.write(Rsp.nnx(month.month)); //#63
 
 
         response.write("""月</a></li>
-"""); //#64
+"""); //#63
 
-      } else { //else#65
+      } else if (month.isEnable) { //else#64
 
-        response.write("""                                <li class="disabled"><a href="javascript:void(0)">"""); //#66
+        response.write("""                                <li><a href="/user/"""); //#65
 
-        response.write(Rsp.nnx(month.month)); //#66
+        response.write(Rsp.nnx(escapedUserID)); //#65
+
+
+        response.write("""/"""); //#65
+
+        response.write(Rsp.nnx(year.year)); //#65
+
+
+        response.write("""/"""); //#65
+
+        response.write(Rsp.nnx(month.month)); //#65
+
+
+        response.write("""">"""); //#65
+
+        response.write(Rsp.nnx(month.month)); //#65
 
 
         response.write("""月</a></li>
-"""); //#66
+"""); //#65
+
+      } else { //else#66
+
+        response.write("""                                <li class="disabled"><a href="javascript:void(0)">"""); //#67
+
+        response.write(Rsp.nnx(month.month)); //#67
+
+
+        response.write("""月</a></li>
+"""); //#67
       } //if
     } //for
 
     response.write("""                    </ul>
                 </nav>
             </div>
-"""); //#69
+"""); //#70
   } //for
 
   response.write("""        </div>
@@ -196,9 +202,9 @@ Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>ye
             <h2 class="panel-title">読了リスト</h2>
         </div>
             <ul class="list-group">
-"""); //#73
+"""); //#74
 
-  for (var book in books) { //for#81
+  for (var book in books) { //for#82
 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
                 var date = book.getFormattedDateTime();
@@ -208,47 +214,47 @@ var title = book.getEscapedTitle();
     response.write("""
 
                 <li class="list-group-item">
-"""); //#88
+"""); //#89
 
-    if (hasReview) { //if#90
+    if (hasReview) { //if#91
 
-      response.write("""                    <a href=\""""); //#91
+      response.write("""                    <a href=\""""); //#92
 
-      response.write(Rsp.nnx(review)); //#91
-
-
-      response.write("""">"""); //#91
-
-      response.write(Rsp.nnx(title)); //#91
+      response.write(Rsp.nnx(review)); //#92
 
 
-      response.write(""" """); //#91
+      response.write("""">"""); //#92
 
-      response.write(Rsp.nnx(author)); //#91
+      response.write(Rsp.nnx(title)); //#92
+
+
+      response.write(""" """); //#92
+
+      response.write(Rsp.nnx(author)); //#92
 
 
       response.write("""</a>
-"""); //#91
+"""); //#92
 
-    } else { //else#92
+    } else { //else#93
 
-      response.write("""                    """); //#93
+      response.write("""                    """); //#94
 
-      response.write(Rsp.nnx(title)); //#93
+      response.write(Rsp.nnx(title)); //#94
 
 
-      response.write(""" """); //#93
+      response.write(""" """); //#94
 
-      response.write(Rsp.nnx(author)); //#93
+      response.write(Rsp.nnx(author)); //#94
 
 
       response.write("""
 
-"""); //#93
+"""); //#94
     } //if
 
     response.write("""                </li>
-"""); //#95
+"""); //#96
   } //for
 
   response.write("""            </ul>
@@ -283,7 +289,7 @@ var title = book.getEscapedTitle();
     })
 </script>
 </body>
-</html>"""); //#97
+</html>"""); //#98
 
   return null;
 }

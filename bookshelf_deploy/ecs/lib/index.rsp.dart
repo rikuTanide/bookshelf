@@ -40,7 +40,7 @@ Future index(HttpConnect connect, {List<User>users}) async { //#2
     <div class="container">
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">Top</a></li>
-            <li><a href="/mypage">MyPage</a></li>
+            <li><a href="/mypage/">新規登録</a></li>
         </ul>
     </div>
 </nav>

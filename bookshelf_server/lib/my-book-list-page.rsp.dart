@@ -47,16 +47,22 @@ Future myBookListPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Y
     <div class="container">
         <ul class="nav navbar-nav">
             <li><a href="/">Top</a></li>
-            <li><a href="/mypage">MyPage</a></li>
+            <li><a href="/mypage/">MyPage</a></li>
             <li class="active"><a href="#">読了リスト</a></li>
+            <li><a href="/stack/"""); //#7
+
+  response.write(Rsp.nnx(escapedUserID)); //#33
+
+
+  response.write("""">積読リスト</a></li>
         </ul>
     </div>
 </nav>
 <div class="container">
     <div class="jumbotron">
-        <h1>"""); //#7
+        <h1>"""); //#33
 
-  response.write(Rsp.nnx(escapedUserID)); //#38
+  response.write(Rsp.nnx(escapedUserID)); //#39
 
 
   response.write(""" さんのbookshelf</h1>
@@ -65,127 +71,127 @@ Future myBookListPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Y
 
     <div class="calendar">
         <ul class="years nav nav-pills">
-"""); //#38
+"""); //#39
 
-  for (var year in years) { //for#44
+  for (var year in years) { //for#45
 
-    if (year.isActive) { //if#45
+    if (year.isActive) { //if#46
 
-      response.write("""                <li role="presentation" class="enable active"><a href="#calendar-"""); //#46
+      response.write("""                <li role="presentation" class="enable active"><a href="#calendar-"""); //#47
 
-      response.write(Rsp.nnx(year.year)); //#46
-
-
-      response.write("""">"""); //#46
-
-      response.write(Rsp.nnx(year.year)); //#46
+      response.write(Rsp.nnx(year.year)); //#47
 
 
-      response.write("""年</a></li>
-"""); //#46
+      response.write("""">"""); //#47
 
-    } else if (year.isEnable) { //else#47
-
-      response.write("""                <li role="presentation" class="enable"><a href="#calendar-"""); //#48
-
-      response.write(Rsp.nnx(year.year)); //#48
-
-
-      response.write("""">"""); //#48
-
-      response.write(Rsp.nnx(year.year)); //#48
+      response.write(Rsp.nnx(year.year)); //#47
 
 
       response.write("""年</a></li>
-"""); //#48
+"""); //#47
 
-    } else { //else#49
+    } else if (year.isEnable) { //else#48
 
-      response.write("""                <li role="presentation" class="disabled"><a href="javascript:void(0)">"""); //#50
+      response.write("""                <li role="presentation" class="enable"><a href="#calendar-"""); //#49
 
-      response.write(Rsp.nnx(year.year)); //#50
+      response.write(Rsp.nnx(year.year)); //#49
+
+
+      response.write("""">"""); //#49
+
+      response.write(Rsp.nnx(year.year)); //#49
 
 
       response.write("""年</a></li>
-"""); //#50
+"""); //#49
+
+    } else { //else#50
+
+      response.write("""                <li role="presentation" class="disabled"><a href="javascript:void(0)">"""); //#51
+
+      response.write(Rsp.nnx(year.year)); //#51
+
+
+      response.write("""年</a></li>
+"""); //#51
     } //if
   } //for
 
   response.write("""        </ul>
 
         <div class="tab-content">
-"""); //#53
+"""); //#54
 
-  for (var year in years) { //for#56
+  for (var year in years) { //for#57
 
-    response.write("""            <div role="tabpanel" class="tab-pane """); //#57
+    response.write("""            <div role="tabpanel" class="tab-pane """); //#58
 
-    response.write(Rsp.nnx(year.isActive ? 'active' : '')); //#57
+    response.write(Rsp.nnx(year.isActive ? 'active' : '')); //#58
 
 
-    response.write("""" id="calendar-"""); //#57
+    response.write("""" id="calendar-"""); //#58
 
-    response.write(Rsp.nnx(year.year)); //#57
+    response.write(Rsp.nnx(year.year)); //#58
 
 
     response.write("""">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
-"""); //#57
+"""); //#58
 
-    for (var month in year.months) { //for#60
+    for (var month in year.months) { //for#61
 
-      if (month.isActive) { //if#61
+      if (month.isActive) { //if#62
 
-        response.write("""                                <li class="active"><a href="javascript:void(0)">"""); //#62
+        response.write("""                                <li class="active"><a href="javascript:void(0)">"""); //#63
 
-        response.write(Rsp.nnx(month.month)); //#62
-
-
-        response.write("""月</a></li>
-"""); //#62
-
-      } else if (month.isEnable) { //else#63
-
-        response.write("""                                <li><a href="/user/"""); //#64
-
-        response.write(Rsp.nnx(escapedUserID)); //#64
-
-
-        response.write("""/"""); //#64
-
-        response.write(Rsp.nnx(year.year)); //#64
-
-
-        response.write("""/"""); //#64
-
-        response.write(Rsp.nnx(month.month)); //#64
-
-
-        response.write("""">"""); //#64
-
-        response.write(Rsp.nnx(month.month)); //#64
+        response.write(Rsp.nnx(month.month)); //#63
 
 
         response.write("""月</a></li>
-"""); //#64
+"""); //#63
 
-      } else { //else#65
+      } else if (month.isEnable) { //else#64
 
-        response.write("""                                <li class="disabled"><a href="javascript:void(0)">"""); //#66
+        response.write("""                                <li><a href="/user/"""); //#65
 
-        response.write(Rsp.nnx(month.month)); //#66
+        response.write(Rsp.nnx(escapedUserID)); //#65
+
+
+        response.write("""/"""); //#65
+
+        response.write(Rsp.nnx(year.year)); //#65
+
+
+        response.write("""/"""); //#65
+
+        response.write(Rsp.nnx(month.month)); //#65
+
+
+        response.write("""">"""); //#65
+
+        response.write(Rsp.nnx(month.month)); //#65
 
 
         response.write("""月</a></li>
-"""); //#66
+"""); //#65
+
+      } else { //else#66
+
+        response.write("""                                <li class="disabled"><a href="javascript:void(0)">"""); //#67
+
+        response.write(Rsp.nnx(month.month)); //#67
+
+
+        response.write("""月</a></li>
+"""); //#67
       } //if
     } //for
 
     response.write("""                    </ul>
                 </nav>
             </div>
-"""); //#69
+"""); //#70
   } //for
 
   response.write("""        </div>
@@ -197,23 +203,23 @@ Future myBookListPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Y
                     id="edit-button"
                     type="button"
                     class="btn btn-success pull-right"
-                    href="/mypage/"""); //#73
+                    href="/mypage/"""); //#74
 
-  response.write(Rsp.nnx(activeYear)); //#82
+  response.write(Rsp.nnx(activeYear)); //#83
 
 
-  response.write("""/"""); //#82
+  response.write("""/"""); //#83
 
-  response.write(Rsp.nnx(activeMonth)); //#82
+  response.write(Rsp.nnx(activeMonth)); //#83
 
 
   response.write("""">編集する</a>
             <h2 class="panel-title">読了リスト</h2>
         </div>
             <ul class="list-group">
-"""); //#82
+"""); //#83
 
-  for (var book in books) { //for#86
+  for (var book in books) { //for#87
 var id = book.id;
                 var title = book.getEscapedTitle();
                 var author = book.getEscapedAuthor();
@@ -224,47 +230,47 @@ var id = book.id;
     response.write("""
 
                 <li class="list-group-item">
-"""); //#94
+"""); //#95
 
-    if (hasReview) { //if#96
+    if (hasReview) { //if#97
 
-      response.write("""                    <a href=\""""); //#97
+      response.write("""                    <a href=\""""); //#98
 
-      response.write(Rsp.nnx(review)); //#97
-
-
-      response.write("""">"""); //#97
-
-      response.write(Rsp.nnx(title)); //#97
+      response.write(Rsp.nnx(review)); //#98
 
 
-      response.write(""" """); //#97
+      response.write("""">"""); //#98
 
-      response.write(Rsp.nnx(author)); //#97
+      response.write(Rsp.nnx(title)); //#98
+
+
+      response.write(""" """); //#98
+
+      response.write(Rsp.nnx(author)); //#98
 
 
       response.write("""</a>
-"""); //#97
+"""); //#98
 
-    } else { //else#98
+    } else { //else#99
 
-      response.write("""                    """); //#99
+      response.write("""                    """); //#100
 
-      response.write(Rsp.nnx(title)); //#99
+      response.write(Rsp.nnx(title)); //#100
 
 
-      response.write(""" """); //#99
+      response.write(""" """); //#100
 
-      response.write(Rsp.nnx(author)); //#99
+      response.write(Rsp.nnx(author)); //#100
 
 
       response.write("""
 
-"""); //#99
+"""); //#100
     } //if
 
     response.write("""                </li>
-"""); //#101
+"""); //#102
   } //for
 
   response.write("""            </ul>
@@ -349,7 +355,7 @@ var id = book.id;
 
 </script>
 </body>
-</html>"""); //#103
+</html>"""); //#104
 
   return null;
 }
