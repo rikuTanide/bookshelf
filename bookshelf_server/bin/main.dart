@@ -572,6 +572,7 @@ void main() {
     "/user/(user:[^/]*)/(year:[^/]*)/(month:[^/]*)": handler.user,
     "/user/(user:[^/]*)": handler.userRedirect,
     "/mypage":handler.mypage,
+    "/mypage/":handler.mypage,
     "/mypage/(year:[^/]*)/(month:[^/]*)":handler.mypage,
     "/search/.*":handler.search,
     "/api/read/(id:[^/]*)": handler.read,

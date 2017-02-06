@@ -40,8 +40,8 @@ main() async {
         materialProviders,
         authService,
         autoCompleteService,
-        new Provider(APP_BASE_HREF,
-            useValue: '/bookshelf/bookshell_client/web/mypage/index.html'),
+//        new Provider(APP_BASE_HREF,
+//            useValue: '/bookshelf/bookshell_client/web/mypage/index.html'),
 //        new Provider(APP_BASE_HREF,
 //            useValue: '/mypage/'),
       ]);
