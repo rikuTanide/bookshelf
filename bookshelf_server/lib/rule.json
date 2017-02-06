@@ -6,6 +6,12 @@
       },
       ".read": "auth != null"
     },
+    "Stack": {
+      "$uid" : {
+        ".write" : "auth.uid == $uid"
+      },
+      ".read" : "auth != null"
+    },
     "ReviewRequest": {
       ".read": "auth != null"
     },
