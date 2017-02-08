@@ -8,3 +8,4 @@ dependencies:
   awsdart:
     git: git://github.com/gjersvik/awsdart.git
   xml:
+  archive:

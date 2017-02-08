@@ -2,16 +2,18 @@
         class="title"
         floatingLabel
         label="タイトル"
-        (keypress)="onTitleEnter($event.keyCode, $event.shiftKey, $event.ctrlKey)"
+        (keypress)="onTitleEnter($event.keyCode)"
         [(ngModel)]="book.title"
         (blur)="onTitleBlur()"
+        (focus)="onTitleFocus()"
 ></material-input>
 <material-input
         floatingLabel
         label="著者"
         (keypress)="onAuthorEnter($event.keyCode)"
         [(ngModel)]="book.author"
-        (blur)="onBlur.add(book)"
+        (blur)="onAuthorBlur()"
+        (focus)="onAuthorFocus()"
 ></material-input>
 <material-input
         floatingLabel
@@ -20,6 +22,10 @@
         (blur)="onBlur.add(book)"
 ></material-input>
 <book-auto-complete
-        [keyword]="autoCompleteKeyword"
+        [keyword]="book.title"
         [open]="isOpenAutoComplete"
         (onSelect)="onAutoCompleteSelect($event)"></book-auto-complete>
+<author-auto-complete
+        [keyword]="book.title"
+        [open]="isOpenAuthorComplete"
+        (onSelect)="onAuthorAutoCompleteSelect($event)"></author-auto-complete>

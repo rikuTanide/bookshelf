@@ -31,26 +31,16 @@ class AmazonAPI {
 
   DateFormat get _format => new DateFormat("yyyy-MM-ddTHH:mm:ss.000'Z'");
 
-  Iterable<Map> _parseItems(String res) sync* {
+  Iterable<String> _parseItems(String res) sync* {
     var resXml = xml.parse(res);
     var items = resXml.findAllElements("ItemAttributes");
     for (var e in items) {
       try {
-        var author = e
+        yield e
             .findElements("Author")
             .first
             .text
-            .trim();
-        var title = e
-            .findElements("Title")
-            .first
-            .text
-            .split(" ")[0]
-            .trim();
-        yield {
-          "author" : author,
-          "title" : title,
-        };
+            .trim();;
       } catch (e) {
 
       }

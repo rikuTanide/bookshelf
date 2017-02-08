@@ -14,7 +14,8 @@ import "package:stream/stream.dart";
 import 'package:firebase_dart/firebase_dart.dart';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart' as xml;
 
 abstract class DataBase {
   List<User> getUsers();
@@ -98,6 +99,7 @@ class Handler {
 
   final DataBase dataBase;
   final AmazonAPI amazon = new AmazonAPI();
+  final GoogleAPI google = new GoogleAPI();
   final BookAnchor anchor = new BookAnchor();
   final CookieReader cookieReader = new CookieReader();
 
@@ -237,6 +239,18 @@ class Handler {
 
   search(HttpConnect connect) async {
     var keyword = connect.request.uri.pathSegments[1];
+    var result = await google.search(keyword);
+    var json = JSON.encode(result);
+    var res = connect.response;
+    res
+      ..statusCode = HttpStatus.OK
+      ..headers.contentType = ContentType.JSON
+      ..write(json)
+      ..close();
+  }
+
+  author(HttpConnect connect)async{
+    var keyword = connect.request.uri.pathSegments[1];
     var result = await amazon.search(keyword);
     var json = JSON.encode(result);
     var res = connect.response;
@@ -304,6 +318,32 @@ class Handler {
     connect.response.close();
   }
 
+
+}
+
+class GoogleAPI {
+  Future<List<String>> search(String str) async {
+    var uri = new Uri.https('www.google.com', '/complete/search', {
+      "hl":"en",
+      "q" : str,
+      "output" : "toolbar"
+    });
+    var res = await http.get(
+        uri, headers: {"Content-Type": "text/xml; charset=UTF-8"});
+    return _response(res.body).toList();
+  }
+
+  Iterable<String> _response(String res) sync* {
+    var resXml = xml.parse(res);
+    var items = resXml.findAllElements("suggestion");
+    for (var e in items) {
+      try {
+        yield e.getAttribute('data');
+      } catch (e) {
+
+      }
+    }
+  }
 
 }
 
@@ -575,10 +615,12 @@ void main() {
     "/mypage/":handler.mypage,
     "/mypage/(year:[^/]*)/(month:[^/]*)":handler.mypage,
     "/search/.*":handler.search,
+    "/author/.*" :handler.author,
     "/api/read/(id:[^/]*)": handler.read,
     "/api/unread/(id:[^/]*)": handler.unread,
     "/api/reviewRequest/(id:[^/]*)" : handler.reviewRequest,
     "/api/unReviewRequest/(id:[^/]*)" : handler.unReviewRequest,
     "/stack/(user:[^/]*)" : handler.stack,
+
   }).start();
 }

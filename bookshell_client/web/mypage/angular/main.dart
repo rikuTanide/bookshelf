@@ -32,14 +32,15 @@ main() async {
   var authService = new Provider(AuthService, useClass: FirebaseAuthService);
   var autoCompleteService = new Provider(
       AutoComplete, useClass: ServerAutoComplete);
+
   ComponentRef ref = await bootstrap(
       AppComponent,
-      [
-        ROUTER_PROVIDERS,
-        persistenceService,
-        materialProviders,
-        authService,
-        autoCompleteService,
+      [AuthorAutoComplete,
+      ROUTER_PROVIDERS,
+      persistenceService,
+      materialProviders,
+      authService,
+      autoCompleteService,
 //        new Provider(APP_BASE_HREF,
 //            useValue: '/bookshelf/bookshell_client/web/mypage/index.html'),
 //        new Provider(APP_BASE_HREF,

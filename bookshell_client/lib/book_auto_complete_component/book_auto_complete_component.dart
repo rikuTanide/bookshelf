@@ -26,7 +26,7 @@ class BookAutoCompleteComponent {
     candidates = await autoComplete.autoComplete(k);
   }
 
-  List<Candidate> candidates = [];
+  List<String> candidates = [];
 
   @Input()
   bool open = false;
@@ -34,5 +34,4 @@ class BookAutoCompleteComponent {
   void onClick(Candidate candidate) {
     onSelect.add(candidate);
   }
-
 }
