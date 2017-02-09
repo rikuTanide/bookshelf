@@ -8,20 +8,12 @@ gulp.task('webserver', function () {
             livereload: true,
             proxies: [
                 {
-                    source: '/mypage/packages',
-                    target: 'http://localhost:63342/bookshelf/bookshell_client/web/mypage/packages'
-                },
-                {
-                    source: '/mypage/main.dart.js',
-                    target: 'http://localhost:63342/bookshelf/bookshell_client/web/mypage/main.dart.js'
-                },
-                {
-                    source: '/mypage',
-                    target: 'http://localhost:8080/mypage'
-                },
-                {
                     source: '/static/',
                     target: 'http://localhost:63342/'
+                },
+                {
+                    source: '/mypage/angular/',
+                    target: 'http://localhost:63342/bookshelf/bookshell_client/web/mypage/angular/'
                 },
                 {
                     source: '/',

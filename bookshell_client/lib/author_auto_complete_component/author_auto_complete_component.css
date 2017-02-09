@@ -1,0 +1,19 @@
+.auto-complete {
+    position: absolute;
+    background: white;
+    z-index: 10;
+    box-shadow: 0 0 3px 3px gray;
+    border-radius: 3px;
+}
+
+.auto-complete-row {
+    font-size: 20px;
+    border-bottom: solid 1px black;
+}
+
+.auto-complete-row:hover {
+    font-size: 20px;
+    border-bottom: solid 1px black;
+    background: lightcyan;
+    cursor: pointer;
+}

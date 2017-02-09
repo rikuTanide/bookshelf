@@ -447,25 +447,24 @@ class Candidate {
 }
 
 abstract class AutoComplete {
-  Future<List<Candidate>> autoComplete(String keywords);
+  Future<List<String>> autoComplete(String keywords);
 }
 
 @Injectable()
 class ServerAutoComplete implements AutoComplete {
   @override
-  Future<List<Candidate>> autoComplete(String keyword) async {
+  Future<List<String>> autoComplete(String keyword) async {
     var res = await new http.BrowserClient().get(
         "/search/" + Uri.encodeComponent(keyword));
-    return parseList(res.body).toList();
+    return JSON.decode(res.body);
   }
 
-  Iterable<Candidate> parseList(String body) sync* {
-    var json = JSON.decode(body);
-    for (var item in json) {
-      yield new Candidate()
-        ..author = item["author"]
-        ..title = item["title"];
-    }
+}
+@Injectable()
+class AuthorAutoComplete {
+  Future<List<String>> autoComplete(String keyword) async {
+    var res = await new http.BrowserClient().get(
+        "/author/" + Uri.encodeComponent(keyword));
+    return JSON.decode(res.body);
   }
-
 }
