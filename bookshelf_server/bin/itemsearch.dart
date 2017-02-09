@@ -26,7 +26,9 @@ class AmazonAPI {
     var dt = new DateTime.now().toUtc();
     String signature = _getSignature(keyword, dt);
     var res = await _request(keyword, dt, signature);
-    print(res);
+//    var res = new File("bin/res.json").readAsStringSync();
+//    return JSON.decode(res);
+//
     return _parseItems(res).toList();
   }
 

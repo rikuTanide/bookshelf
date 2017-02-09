@@ -1,6 +1,6 @@
 [:page
   import="package:bookshelf_server/user.dart,package:bookshelf_server/book.dart,package:bookshelf_server/year.dart"
-  args="List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth" ]
+  args="List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth,String trackingID" ]
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,12 +86,19 @@
                 var date = book.getFormattedDateTime();
                 var review = book.review;
                 var hasReview = review != null;
+                var hasImage = book.image != null && book.asin != null && trackingID != null;
                 [/dart]
                 <li class="list-group-item">
                     [:if hasReview]
                     <a href="[=review]">[=title] [=author]</a>
+                        [:if hasImage]
+                            <a href="http://www.amazon.co.jp/gp/product/[=book.asin]?tag=[=trackingID]"><img src="[=book.image]" /></a>
+                        [/if]
                     [:else]
                     [=title] [=author]
+                        [:if hasImage]
+                            <a href="http://www.amazon.co.jp/gp/product/[=book.asin]?tag=[=trackingID]"><img height="100" src="[=book.image]" /></a>
+                        [/if]
                     [/if]
                 </li>
                 [/for]
