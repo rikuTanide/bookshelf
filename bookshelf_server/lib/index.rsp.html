@@ -1,4 +1,4 @@
-[:page import="package:bookshelf_server/user.dart" args="List<User>users"]
+[:page import="package:bookshelf_server/user.dart" args="List<TopPageLink>users"]
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,8 +39,8 @@
     <ul class="list-group">
         [:for user in users]
         [:dart]
-        var pagePath = "/user/" + user.userID;
-        var userName = user.getEscapedID();
+        var pagePath = user.url;
+        var userName = user.name;
         [/dart]
         <li class="list-group-item"><a style="display: block;" href="[=pagePath]">[=userName]</a></li>
         [/for]

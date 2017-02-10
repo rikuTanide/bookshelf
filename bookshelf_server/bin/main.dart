@@ -70,6 +70,14 @@ class CookieReader {
   }
 }
 
+class TopPageLink {
+  String name;
+
+  TopPageLink(this.name, this.url);
+
+  String url;
+}
+
 class Handler {
 
   final DataBase dataBase;
@@ -82,8 +90,20 @@ class Handler {
 
   Future top(HttpConnect connect) async {
     var users = dataBase.getUsers();
-    await index(connect, users: users);
+    var tpl = users.map((u) => latestRecord(u)).where((i)=> i != null).toList();
+    await index(connect, users: tpl);
     connect.response.close();
+  }
+
+  TopPageLink latestRecord(User u) {
+    List<Book> books = dataBase.getBooks(u.uid);
+    if (books == null) {
+      return null;
+    }
+    Book b = books.reduce((b1, b2) => b1.datetime.millisecondsSinceEpoch >
+        b2.datetime.millisecondsSinceEpoch ? b1 : b2);
+    var dt = b.datetime;
+    return new TopPageLink(u.userID, "/user/${u.userID}/${dt.year}/${dt.month}");
   }
 
 
@@ -435,7 +455,7 @@ class FirebaseDatabase implements DataBase {
       var list = <User>[];
       for (var uid in users_map.keys) {
         var user_map = users_map[uid];
-        var user = new User(uid, user_map["id"] , user_map["trackingID"]);
+        var user = new User(uid, user_map["id"], user_map["trackingID"]);
         list.add(user);
       }
       _users = list;

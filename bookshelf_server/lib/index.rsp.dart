@@ -8,7 +8,7 @@ import 'package:stream/stream.dart';
 import 'package:bookshelf_server/user.dart';
 
 /** Template, index, for rendering the view. */
-Future index(HttpConnect connect, {List<User>users}) async { //#2
+Future index(HttpConnect connect, {List<TopPageLink>users}) async { //#2
   HttpResponse response = connect.response;
   if (!Rsp.init(connect, "text/html; charset=utf-8"))
     return null;
@@ -54,8 +54,8 @@ Future index(HttpConnect connect, {List<User>users}) async { //#2
 """); //#2
 
   for (var user in users) { //for#40
-var pagePath = "/user/" + user.userID;
-        var userName = user.getEscapedID();
+var pagePath = user.url;
+        var userName = user.name;
 
     response.write("""
 
