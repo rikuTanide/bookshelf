@@ -10,7 +10,7 @@ import 'package:bookshelf_server/book.dart';
 import 'package:bookshelf_server/year.dart';
 
 /** Template, listPage, for rendering the view. */
-Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth}) async { //#4
+Future listPage(HttpConnect connect, {List<Book>books,escapedUserID,List<Year>years,int activeYear,int activeMonth,String trackingID}) async { //#4
   HttpResponse response = connect.response;
   if (!Rsp.init(connect, "text/html; charset=utf-8"))
     return null;
@@ -210,51 +210,94 @@ var title = book.getEscapedTitle();
                 var date = book.getFormattedDateTime();
                 var review = book.review;
                 var hasReview = review != null;
+                var hasImage = book.image != null && book.asin != null && trackingID != null;
 
     response.write("""
 
                 <li class="list-group-item">
-"""); //#89
+"""); //#90
 
-    if (hasReview) { //if#91
+    if (hasReview) { //if#92
 
-      response.write("""                    <a href=\""""); //#92
+      response.write("""                    <a href=\""""); //#93
 
-      response.write(Rsp.nnx(review)); //#92
-
-
-      response.write("""">"""); //#92
-
-      response.write(Rsp.nnx(title)); //#92
+      response.write(Rsp.nnx(review)); //#93
 
 
-      response.write(""" """); //#92
+      response.write("""">"""); //#93
 
-      response.write(Rsp.nnx(author)); //#92
+      response.write(Rsp.nnx(title)); //#93
+
+
+      response.write(""" """); //#93
+
+      response.write(Rsp.nnx(author)); //#93
 
 
       response.write("""</a>
-"""); //#92
+"""); //#93
 
-    } else { //else#93
+      if (hasImage) { //if#94
 
-      response.write("""                    """); //#94
+        response.write("""                            <a href="http://www.amazon.co.jp/gp/product/"""); //#95
 
-      response.write(Rsp.nnx(title)); //#94
+        response.write(Rsp.nnx(book.asin)); //#95
 
 
-      response.write(""" """); //#94
+        response.write("""?tag="""); //#95
 
-      response.write(Rsp.nnx(author)); //#94
+        response.write(Rsp.nnx(trackingID)); //#95
+
+
+        response.write(""""><img src=\""""); //#95
+
+        response.write(Rsp.nnx(book.image)); //#95
+
+
+        response.write("""" /></a>
+"""); //#95
+      } //if
+
+    } else { //else#97
+
+      response.write("""                    """); //#98
+
+      response.write(Rsp.nnx(title)); //#98
+
+
+      response.write(""" """); //#98
+
+      response.write(Rsp.nnx(author)); //#98
 
 
       response.write("""
 
-"""); //#94
+"""); //#98
+
+      if (hasImage) { //if#99
+
+        response.write("""                            <a href="http://www.amazon.co.jp/gp/product/"""); //#100
+
+        response.write(Rsp.nnx(book.asin)); //#100
+
+
+        response.write("""?tag="""); //#100
+
+        response.write(Rsp.nnx(trackingID)); //#100
+
+
+        response.write(""""><img height="100" src=\""""); //#100
+
+        response.write(Rsp.nnx(book.image)); //#100
+
+
+        response.write("""" /></a>
+"""); //#100
+      } //if
     } //if
 
     response.write("""                </li>
-"""); //#96
+"""); //#103
   } //for
 
   response.write("""            </ul>
@@ -289,7 +332,7 @@ var title = book.getEscapedTitle();
     })
 </script>
 </body>
-</html>"""); //#98
+</html>"""); //#105
 
   return null;
 }

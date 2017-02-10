@@ -48,31 +48,6 @@ abstract class DataBase {
   List<Book> getStacks(String uid);
 }
 
-class MockDataBase implements DataBase {
-  @override
-  List<Book> getBooks(String UserID) =>
-      [
-        new Book("本１", "著者１", new DateTime.now()),
-        new Book("本２", "著者２", new DateTime.now()),
-        new Book("本３", "著者３", new DateTime.now()),
-        new Book("本４", "著者４", new DateTime.now()),
-      ];
-
-
-  @override
-  User getUser(String userID) =>
-      getUsers().firstWhere((u) => u.userID == userID, orElse: () => null);
-
-
-  @override
-  List<User> getUsers() => [
-    new User("user1", "ユーザー１"),
-    new User("user2", "ユーザー２"),
-    new User("user3", "ユーザー３"),
-    new User("user4", "ユーザー４"),
-  ];
-}
-
 class CookieReader {
 
   bool isLogin(List<Cookie> cookies, DataBase dataBase) {
@@ -120,6 +95,7 @@ class Handler {
     var uid = user.uid;
     var bookList = dataBase.getBooks(uid);
     var escapedUserID = user.getEscapedID();
+    var trackingID = user.trackingID;
     var res = connect.response;
     var years = anchor.createBookAnchor(bookList, year, month);
     var activeBooks = bookList
@@ -158,7 +134,8 @@ class Handler {
         escapedUserID: escapedUserID,
         years: years,
         activeYear: year,
-        activeMonth: month);
+        activeMonth: month,
+        trackingID: trackingID);
     res.close();
   }
 
@@ -204,7 +181,6 @@ class Handler {
         body {
             background: lightgray;
         }
-
         #my-app {
             background: white;
         }
@@ -221,17 +197,14 @@ class Handler {
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
   ga('create', 'UA-89660523-1', 'auto');
   ga('send', 'pageview');
-
 </script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 </head>
 <body>
 <my-app id="my-app">Loading...</my-app>
-
 </body>
 </html>""")
       ..close();
@@ -249,7 +222,7 @@ class Handler {
       ..close();
   }
 
-  author(HttpConnect connect)async{
+  author(HttpConnect connect) async {
     var keyword = connect.request.uri.pathSegments[1];
     var result = await amazon.search(keyword);
     var json = JSON.encode(result);
@@ -398,7 +371,16 @@ class FirebaseDatabase implements DataBase {
         for (var stackID in e[userID].keys) {
           var author = e[userID][stackID]["author"];
           var title = e[userID][stackID]["title"];
-          var book = new Book(stackID, title, author, new DateTime.now(), null);
+          var asin = e[userID][stackID]['asin'];
+          var image = e[userID][stackID]['image'];
+          var book = new Book(
+              stackID,
+              title,
+              author,
+              new DateTime.now(),
+              null,
+              image,
+              asin);
           l.add(book);
         }
         _stacks[userID] = l;
@@ -453,7 +435,7 @@ class FirebaseDatabase implements DataBase {
       var list = <User>[];
       for (var uid in users_map.keys) {
         var user_map = users_map[uid];
-        var user = new User(uid, user_map["id"]);
+        var user = new User(uid, user_map["id"] , user_map["trackingID"]);
         list.add(user);
       }
       _users = list;
@@ -478,7 +460,16 @@ class FirebaseDatabase implements DataBase {
           var author = book_map["author"];
           var date = DateTime.parse(book_map["datetime"]);
           var review = book_map["review"];
-          var book = new Book(historyID, title, author, date, review);
+          var image = book_map["image"];
+          var asin = book_map['asin'];
+          var book = new Book(
+              historyID,
+              title,
+              author,
+              date,
+              review,
+              image,
+              asin);
           list.add(book);
         }
         map[userID] = list;

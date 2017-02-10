@@ -11,7 +11,9 @@ import 'package:intl/intl.dart';
     selector: 'edit-book',
     templateUrl: 'edit_book_component.html',
     styleUrls: const <String>['edit_book_component.css'],
-    directives: const[materialDirectives, BookAutoCompleteComponent,AuthorAutoCompleteComponent])
+    directives: const[
+      materialDirectives, BookAutoCompleteComponent, AuthorAutoCompleteComponent
+    ])
 class EditBookComponent {
 
   Book _book;
@@ -75,8 +77,11 @@ class EditBookComponent {
     e.querySelectorAll('input')[0].focus();
   }
 
-  void onAuthorAutoCompleteSelect(String candidate ){
-    _book.author = candidate;
+  void onAuthorAutoCompleteSelect(AuthorCompleteItem candidate) {
+    _book
+      ..author = candidate.author
+      ..image = candidate.image
+      ..asin = candidate.asin;
     Element e = elementRef.nativeElement;
     e.querySelectorAll('input')[1].focus();
   }

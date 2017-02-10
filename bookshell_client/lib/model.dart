@@ -43,6 +43,8 @@ abstract class AuthService {
 
   String get userID;
 
+  Stream<String> get getTrackingID;
+
   void doTwitterLogin();
 
   void doFacebookLogin();
@@ -57,6 +59,8 @@ abstract class AuthService {
 
 
   void setUserID();
+
+  void setTrackingID(String trackingID);
 }
 
 @Injectable()
@@ -150,6 +154,25 @@ class FirebaseAuthService implements AuthService {
     var ref = firebase.database().ref("/Users/$uid/id").set(userID);
     firebase.database().ref("/UserNames/$userID").set(uid);
   }
+
+  @override
+  void setTrackingID(String trackingID) {
+    print(trackingID);
+    if (trackingID == null || trackingID.trim() == "") {
+      firebase.database().ref("/Users/$uid/trackingID").remove();
+    } else {
+      firebase.database().ref("/Users/$uid/trackingID").set(trackingID.trim());
+    }
+  }
+
+  @override
+  Stream<String> get getTrackingID {
+    return firebase
+        .database()
+        .ref("/Users/$uid/trackingID")
+        .onValue
+        .map((q) => q.snapshot.val());
+  }
 }
 
 @Injectable()
@@ -170,6 +193,8 @@ class FirebasePersistenceService implements PersistenceService {
       "title" : book.title,
       "datetime" : book.datetime.toString(),
       "review" : book.review,
+      "asin" : book.asin,
+      "image" : book.image,
     });
   }
 
@@ -187,6 +212,8 @@ class FirebasePersistenceService implements PersistenceService {
       "title" : book.title,
       "datetime" : book.datetime.toString(),
       "review" : book.review,
+      "asin" : book.asin,
+      "image" : book.image,
     });
   }
 
@@ -196,7 +223,9 @@ class FirebasePersistenceService implements PersistenceService {
       ..title = book.title.trim()
       ..author = book.author.trim()
       ..datetime = book.datetime
-      ..review = book.review?.trim() == "" ? null : book.review?.trim();
+      ..review = book.review?.trim() == "" ? null : book.review?.trim()
+      ..image = book.image
+      ..asin = book.asin;
   }
 
   String _randomString(int length) {
@@ -335,6 +364,8 @@ class FirebasePersistenceService implements PersistenceService {
       "author" : book.author,
       "title" : book.title,
       "datetime" : book.datetime.toString(),
+      "asin" : book.asin,
+      "image" : book.image,
     });
   }
 
@@ -345,6 +376,8 @@ class FirebasePersistenceService implements PersistenceService {
       "author" : book.author,
       "title" : book.title,
       "datetime" : book.datetime.toString(),
+      "asin" : book.asin,
+      "image" : book.image,
     });
   }
 
@@ -439,6 +472,8 @@ class Book {
   String author;
   DateTime datetime;
   String review;
+  String image;
+  String asin;
 }
 
 class Candidate {
@@ -460,9 +495,10 @@ class ServerAutoComplete implements AutoComplete {
   }
 
 }
+
 @Injectable()
 class AuthorAutoComplete {
-  Future<List<String>> autoComplete(String keyword) async {
+  Future<List<Map>> autoComplete(String keyword) async {
     var res = await new http.BrowserClient().get(
         "/author/" + Uri.encodeComponent(keyword));
     return JSON.decode(res.body);

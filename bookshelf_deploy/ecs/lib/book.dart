@@ -6,10 +6,13 @@ class Book {
   final DateTime datetime;
   final String id;
   final String review;
+  final String image;
+  final String asin;
 
   final HtmlEscape sanitizer = new HtmlEscape();
 
-  Book(this.id, this.title, this.author, this.datetime, this.review);
+  Book(this.id, this.title, this.author, this.datetime, this.review, this.image,
+      this.asin);
 
   String getEscapedTitle() => sanitizer.convert(title);
 

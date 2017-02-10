@@ -21,6 +21,7 @@ class EditBookListComponent {
 
   PersistenceService store;
   AuthService auth;
+  String trackingID;
   Book addBook = new Book()
     ..title = ''
     ..author = ''
@@ -40,7 +41,9 @@ class EditBookListComponent {
 
   String userID = "";
 
-  EditBookListComponent(this.store, this.auth, this.routeParams);
+  EditBookListComponent(this.store, this.auth, this.routeParams){
+    auth.getTrackingID.listen((id) => trackingID = id);
+  }
 
   List<Book> get books {
     return store
@@ -91,6 +94,11 @@ class EditBookListComponent {
 
   void onStackEdit(Book book) {
     store.setStack(book);
+  }
+
+  void setTrackingID() {
+    print(trackingID);
+    auth.setTrackingID(trackingID);
   }
 
 }

@@ -26,23 +26,55 @@ class AmazonAPI {
     var dt = new DateTime.now().toUtc();
     String signature = _getSignature(keyword, dt);
     var res = await _request(keyword, dt, signature);
+//    var res = new File("bin/res.json").readAsStringSync();
+//    return JSON.decode(res);
+//
     return _parseItems(res).toList();
   }
 
   DateFormat get _format => new DateFormat("yyyy-MM-ddTHH:mm:ss.000'Z'");
 
-  Iterable<String> _parseItems(String res) sync* {
+  Iterable<Map> _parseItems(String res) sync* {
     var resXml = xml.parse(res);
-    var items = resXml.findAllElements("ItemAttributes");
-    for (var e in items) {
+    var items = resXml.findAllElements("Item");
+    print(items);
+    for (xml.XmlElement e in items) {
       try {
-        yield e
+        var asin = e
+            .findElements("ASIN")
+            .first
+            .text
+            .trim();
+        var image = e
+            .findElements("LargeImage")
+            .first
+            .findElements("URL")
+            .first
+            .text
+            .trim();
+        var author = e
+            .findElements("ItemAttributes")
+            .first
             .findElements("Author")
             .first
             .text
-            .trim();;
+            .trim();
+        var title = e
+            .findElements("ItemAttributes")
+            .first
+            .findElements("Title")
+            .first
+            .text
+            .split(" ")[0]
+            .trim();
+        yield {
+          "asin" : asin,
+          "image" :image,
+          "author" : author,
+          "title" : title,
+        };
       } catch (e) {
-
+        print(e);
       }
     }
   }
@@ -53,7 +85,7 @@ class AmazonAPI {
     var canonical = "GET\n"
         "ecs.amazonaws.jp\n"
         "/onca/xml\n"
-        "AWSAccessKeyId=$_accessKey&AssociateTag=$_associateTag&Keywords=$escKeyword&Operation=ItemSearch&SearchIndex=Books&Service=AWSECommerceService&Timestamp=$escDateTime&Version=2011-08-01";
+        "AWSAccessKeyId=$_accessKey&AssociateTag=$_associateTag&Keywords=$escKeyword&MerchantId=Amazon&Operation=ItemSearch&ResponseGroup=Large&SearchIndex=Books&Service=AWSECommerceService&Timestamp=$escDateTime&Version=2011-08-01";
     var signingKey = UTF8.encode(_secretKey);
     var signature = _hmac(signingKey, canonical);
 
@@ -67,7 +99,9 @@ class AmazonAPI {
       "AWSAccessKeyId" : _accessKey,
       "AssociateTag":_associateTag,
       "Keywords":keyword,
+      "MerchantId": "Amazon",
       "Operation":"ItemSearch",
+      "ResponseGroup" : "Large",
       "SearchIndex":"Books",
       "Service":"AWSECommerceService",
       "Timestamp": formatDateTime,

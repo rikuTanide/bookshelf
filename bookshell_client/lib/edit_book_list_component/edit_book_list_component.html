@@ -24,6 +24,7 @@
         <div>
             <material-input floatingLabel label="ユーザーID" [(ngModel)]="auth.userID" (blur)="setUserID(13)"
                             (keypress)="setUserID($event.keyCode)"></material-input>
+            <material-input label="Amazon トラッキングID" [(ngModel)]="trackingID" (blur)="setTrackingID()"></material-input>
         </div>
     </material-tab>
     <material-tab label="ログアウト">
