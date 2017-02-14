@@ -3,8 +3,7 @@ library bookshelf_client.types.booklogs;
 import 'package:bookshelf_client/types/share.dart';
 
 class BookLogs {
-  final String username;
-  final int latest_year, latest_month;
+  final HeaderLinkParams headerLinkParams;
   final int year, month;
 
   final List<YearSelectState> yearSelectStates;
@@ -14,11 +13,17 @@ class BookLogs {
 
   final List<BookLog> booklogs;
 
+  BookLogs(this.headerLinkParams, this.year,
+      this.month, this.yearSelectStates, this.monthEnableds, this.isLoading,
+      this.booklogs);
+
 }
 
 class BookLog {
   final String id;
   final BookAttrs bookAttrs;
   final bool isRead, isSaving;
+
+  BookLog(this.id, this.bookAttrs, this.isRead, this.isSaving);
 
 }

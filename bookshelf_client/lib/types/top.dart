@@ -1,11 +1,12 @@
 library bookshelf_client.types.top;
 
+import 'package:bookshelf_client/types/share.dart';
+
 class TopProps {
-  final String username;
-  final int latestYear, latestMonth;
+  final HeaderLinkParams headerLinkParams;
   final List<BookLogger> bookLoggers;
 
-  TopProps(this.username, this.latestYear, this.latestMonth, this.bookLoggers);
+  TopProps(this.headerLinkParams, this.bookLoggers);
 
 }
 

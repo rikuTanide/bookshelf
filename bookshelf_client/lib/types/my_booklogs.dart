@@ -3,8 +3,7 @@ library bookshelf_client.types.my_booklogs;
 import 'package:bookshelf_client/types/share.dart';
 
 class MyBookLog {
-  final String username;
-  final int latestYear, latestMonth;
+  final HeaderLinkParams headerLinkParams;
 
   final List<YearSelectState> yearSelectStates;
   final List<MonthEnabled> monthEnableds;
@@ -13,33 +12,11 @@ class MyBookLog {
 
   final List<BookLog> bookLogs;
 
-  MyBookLog(this.username, this.latestYear, this.latestMonth, this.yearSelectStates,
+  MyBookLog(this.headerLinkParams, this.yearSelectStates,
       this.monthEnableds, this.isLoading, this.bookLogs);
 
 }
 
-
-class TitleSuggestions {
-  final bool isViewing;
-  final bool isLoading;
-  final List<String> suggestions;
-
-  TitleSuggestions(this.isViewing, this.isLoading, this.suggestions);
-}
-
-class AuthorSuggestions {
-  final bool isViewing;
-  final bool isLoading;
-  final List<AuthorSuggest> authorSuggests;
-
-  AuthorSuggestions(this.isViewing, this.isLoading, this.authorSuggests);
-}
-
-class AuthorSuggest {
-  final String author, image;
-
-  AuthorSuggest(this.author, this.image);
-}
 
 class AddBookLogState {
   bool isLocking, isVarid;
@@ -58,8 +35,6 @@ class AddBookLog {
   final BookAttrs bookAttrs;
   final TitleSuggestions titleSuggestions;
   final AuthorSuggestions authorSuggestions;
-
-
   final EditReviewState editReviewState;
 
   final AddBookLogState addBookLogState;
