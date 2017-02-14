@@ -22,5 +22,8 @@ class Stock {
 class StockState {
   final bool isEditing, isLocking, isVarid, isDeleting;
 
-  StockState(this.isEditing, this.isLocking, this.isVarid, this.isDeleting);
+  StockState(this.isEditing,
+      this.isLocking,
+      this.isVarid,
+      this.isDeleting);
 }
