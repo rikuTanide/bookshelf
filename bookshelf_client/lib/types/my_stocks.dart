@@ -18,3 +18,9 @@ class Stock {
 
   Stock(this.bookAttrs, this.titleSuggestions, this.authorSuggestions);
 }
+
+class StockState {
+  final bool isEditing, isLocking, isVarid, isDeleting;
+
+  StockState(this.isEditing, this.isLocking, this.isVarid, this.isDeleting);
+}

@@ -48,9 +48,9 @@ class AddBookLog {
 }
 
 class BookLogState {
-  final bool isEditing , isLocking , isVarid;
+  final bool isEditing, isLocking, isVarid, isDeleting;
 
-  BookLogState(this.isEditing, this.isLocking, this.isVarid);
+  BookLogState(this.isEditing, this.isLocking, this.isVarid, this.isDeleting);
 }
 
 
