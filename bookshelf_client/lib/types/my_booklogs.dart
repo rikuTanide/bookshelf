@@ -1,40 +1,23 @@
 library bookshelf_client.types.my_booklogs;
 
+import 'package:bookshelf_client/types/share.dart';
+
 class MyBookLog {
   final String username;
   final int latestYear, latestMonth;
 
-  final List<YearEnabled> yearEnableds;
+  final List<YearSelectState> yearSelectStates;
   final List<MonthEnabled> monthEnableds;
 
   final bool isLoading;
 
   final List<BookLog> bookLogs;
 
-  MyBookLog(this.username, this.latestYear, this.latestMonth, this.yearEnableds,
+  MyBookLog(this.username, this.latestYear, this.latestMonth, this.yearSelectStates,
       this.monthEnableds, this.isLoading, this.bookLogs);
 
 }
 
-class YearEnabled {
-  final int year;
-  final bool enabled;
-
-  YearEnabled(this.year, this.enabled);
-}
-
-class MonthEnabled {
-  final int month;
-  final bool enabled;
-
-  MonthEnabled(this.month, this.enabled);
-}
-
-class BookAttrs {
-  final String title, author, image;
-
-  BookAttrs(this.title, this.author, this.image);
-}
 
 class TitleSuggestions {
   final bool isViewing;
