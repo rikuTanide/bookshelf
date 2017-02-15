@@ -1,12 +1,14 @@
-library bookshelf_client.types.stocks;
+library bookshelf_client.types.my_stocks;
 
 import 'package:bookshelf_client/types/share.dart';
 
-class MyStocks {
+class MyStocksProps {
   final HeaderLinkParams headerLinkParams;
   final Stock stocks;
+  final bool isLoading;
 
-  MyStocks(this.headerLinkParams, this.stocks);
+  MyStocksProps(this.headerLinkParams, this.stocks, this.isLoading);
+
 
 }
 

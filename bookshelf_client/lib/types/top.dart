@@ -5,8 +5,9 @@ import 'package:bookshelf_client/types/share.dart';
 class TopProps {
   final HeaderLinkParams headerLinkParams;
   final List<BookLogger> bookLoggers;
+  final bool isLoading;
 
-  TopProps(this.headerLinkParams, this.bookLoggers);
+  TopProps(this.headerLinkParams, this.bookLoggers, this.isLoading);
 
 }
 

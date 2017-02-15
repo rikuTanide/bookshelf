@@ -1,0 +1,32 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li class="active"><a>Top</a></li>
+            <li><a href="/{{username}}/booklogs/{{latest_year}}/{{latest_month}}">マイブックログ</a></li>
+            <li><a href="/{{username}}/stocks">マイストックリスト</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>bookshelf</h1>
+        <p>読んだ本を記録しよう</p>
+    </div>
+    <div *ngIf="isLoading" class="progress">
+        <div
+                class="progress-bar progress-bar-striped active"
+                role="progressbar">
+            <span class="sr-only">45% Complete</span>
+        </div>
+    </div>
+    <ul *ngIf="!isLoading" class="list-group">
+        <li class="list-group-item" *ngFor="let logger of bookLoggers">
+            <a style="display: block;" href="/{{logger.name}}/booklogs/{{logger.latestYear}}/{{logger.latestMonth}}">
+                {{logger.name}}
+            </a>
+        </li>
+    </ul>
+
+</div>

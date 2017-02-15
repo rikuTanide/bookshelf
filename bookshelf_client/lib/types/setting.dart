@@ -2,7 +2,7 @@ library bookshelf_client.types.setting;
 
 import 'package:bookshelf_client/types/share.dart';
 
-class Setting {
+class SettingProps {
   final HeaderLinkParams headerLinkParams;
 
   final String username;
@@ -10,6 +10,6 @@ class Setting {
   final bool enabled;
   final bool isSaving;
 
-  Setting(this.headerLinkParams, this.username, this.isLoading, this.enabled,
+  SettingProps(this.headerLinkParams, this.username, this.isLoading, this.enabled,
       this.isSaving);
 }

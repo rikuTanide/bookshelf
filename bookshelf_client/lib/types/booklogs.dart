@@ -2,7 +2,7 @@ library bookshelf_client.types.booklogs;
 
 import 'package:bookshelf_client/types/share.dart';
 
-class BookLogs {
+class BookLogsProps {
   final HeaderLinkParams headerLinkParams;
   final int year, month;
 
@@ -13,7 +13,7 @@ class BookLogs {
 
   final List<BookLog> booklogs;
 
-  BookLogs(this.headerLinkParams, this.year,
+  BookLogsProps(this.headerLinkParams, this.year,
       this.month, this.yearSelectStates, this.monthEnableds, this.isLoading,
       this.booklogs);
 
