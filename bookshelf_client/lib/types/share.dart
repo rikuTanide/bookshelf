@@ -15,10 +15,15 @@ class YearSelectState {
 }
 
 class MonthEnabled {
+  final int year;
   final int month;
+  final bool active;
   final bool enabled;
 
-  MonthEnabled(this.month, this.enabled);
+  MonthEnabled(this.year,
+      this.month,
+      this.active,
+      this.enabled);
 }
 
 class BookAttrs {
@@ -42,6 +47,7 @@ class AuthorSuggestions {
 
   AuthorSuggestions(this.isViewing, this.isLoading, this.authorSuggests);
 }
+
 class AuthorSuggest {
   final String author, image;
 

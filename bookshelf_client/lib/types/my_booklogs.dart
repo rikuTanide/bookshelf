@@ -5,6 +5,8 @@ import 'package:bookshelf_client/types/share.dart';
 class MyBookLogsProps {
   final HeaderLinkParams headerLinkParams;
 
+  final int year, month;
+
   final List<YearSelectState> yearSelectStates;
   final List<MonthEnabled> monthEnableds;
 
@@ -12,8 +14,13 @@ class MyBookLogsProps {
 
   final List<BookLog> bookLogs;
 
-  MyBookLogsProps(this.headerLinkParams, this.yearSelectStates,
-      this.monthEnableds, this.isLoading, this.bookLogs);
+  MyBookLogsProps(this.headerLinkParams,
+      this.year,
+      this.month,
+      this.yearSelectStates,
+      this.monthEnableds,
+      this.isLoading,
+      this.bookLogs);
 
 }
 

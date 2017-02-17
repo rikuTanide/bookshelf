@@ -15,7 +15,14 @@ class MyBookLogPropsMock {
       var years = getYearSelectStates();
       var months = getMonthEnables();
       return new ViewModel(
-          myBookLogs: new MyBookLogsProps(header, years, months, true, []));
+          myBookLogs: new MyBookLogsProps(
+              header,
+              2017,
+              1,
+              years,
+              months,
+              true,
+              []));
     }
 
     var header = headerLinkParamsMock.getHeaderLinkParams();
@@ -23,7 +30,14 @@ class MyBookLogPropsMock {
     var months = getMonthEnables();
     var bookLogs = getBookLog();
     return new ViewModel(
-        myBookLogs: new MyBookLogsProps(header, years, months, true, []));
+        myBookLogs: new MyBookLogsProps(
+            header,
+            2017,
+            1,
+            years,
+            months,
+            false,
+            bookLogs));
   }
 
   MyBookLogPropsMock(this.headerLinkParamsMock);
@@ -37,7 +51,20 @@ class MyBookLogPropsMock {
   }
 
   List<MonthEnabled> getMonthEnables() {
-    return [];
+    return [
+      new MonthEnabled(2017, 1, false, false),
+      new MonthEnabled(2017, 2, false, false),
+      new MonthEnabled(2017, 3, false, false),
+      new MonthEnabled(2017, 4, false, false),
+      new MonthEnabled(2017, 5, false, false),
+      new MonthEnabled(2017, 6, false, false),
+      new MonthEnabled(2017, 7, false, false),
+      new MonthEnabled(2017, 8, false, false),
+      new MonthEnabled(2017, 9, false, false),
+      new MonthEnabled(2017, 10, false, false),
+      new MonthEnabled(2017, 11, true, true),
+      new MonthEnabled(2017, 12, false, true)
+    ];
   }
 
   List<BookLog> getBookLog() {
