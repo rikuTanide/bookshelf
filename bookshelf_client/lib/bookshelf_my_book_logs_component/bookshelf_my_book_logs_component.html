@@ -52,7 +52,7 @@
                 {{log.bookAttrs.author}}
                 <img [src]="log.bookAttrs.image"/>
                 <!-- レビューがある -->
-                <a *ngIf="log.hasReview" [href]="log.editReviewState.review">
+                <a *ngIf="log.hasReview" [href]="log.editReviewState.review" target="_blank">
                     <i class="glyphicon glyphicon-edit"></i>
                 </a>
             </div>

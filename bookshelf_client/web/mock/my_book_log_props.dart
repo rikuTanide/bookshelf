@@ -70,6 +70,7 @@ class MyBookLogPropsMock {
   List<BookLog> getBookLogs() {
     return [
       getBookLog(1),
+      getBookLog(2, hasReview: true)
     ];
   }
 
@@ -85,21 +86,39 @@ class MyBookLogPropsMock {
       bool isLocking: false,
       bool isVarid: false,
       bool isDeleting: false}) {
+
     if (isTitleSuggestionViewing) {
       return null;
     }
+
     if (isAuthorSuggestionViewing) {
       return null;
     }
+
     if (hasReview) {
-      return null;
+      var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
+      var titleSuggestions = new TitleSuggestions(false, false, []);
+      var authorSuggestions = new AuthorSuggestions(false, false, []);
+      var editReviewState = new EditReviewState("https://www.example.com", false);
+      var bookLogState = new BookLogState(false, false, false, false);
+      return new BookLog(
+          "$id",
+          bookAttrs,
+          titleSuggestions,
+          authorSuggestions,
+          true,
+          editReviewState,
+          bookLogState);
     }
+
     if (isEditReview) {
       return null;
     }
+
     if (isEditing) {
       return null;
     }
+
     var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
     var titleSuggestions = new TitleSuggestions(false, false, []);
     var authorSuggestions = new AuthorSuggestions(false, false, []);
