@@ -74,11 +74,27 @@
                         </li>
                     </ul>
                 </div>
-                <div class="input-group">
+                <div [class]="log.authorSuggestions.isViewing ? 'input-group dropdown open' : 'input-group'">
                     <span class="input-group-addon">　著者　</span>
                     <input class="form-control" type="text" placeholder="著者" [value]="log.bookAttrs.author"/>
+                    <ul *ngIf="log.authorSuggestions.isViewing && !log.authorSuggestions.isLoading" class="dropdown-menu">
+                        <li>
+                            <a *ngFor="let suggestion of log.authorSuggestions.authorSuggests">
+                                {{suggestion.author}}
+                                <img [src]="suggestion.image"/>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul *ngIf="log.authorSuggestions.isViewing && log.authorSuggestions.isLoading" class="dropdown-menu">
+                        <li class="progress">
+                            <div
+                                    class="progress-bar progress-bar-striped active"
+                                    role="progressbar">
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="input-group">
+                <div [class]="log.editReviewState.isVaridURL ? 'input-group' : 'input-group has-error'">
                     <span class="input-group-addon">　書評　</span>
                     <input class="form-control" type="text" placeholder="書評" [value]="log.editReviewState.review"/>
                 </div>
