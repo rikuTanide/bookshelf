@@ -11,10 +11,10 @@ class ViewModel {
   final MyStocksProps myStocks;
   final StocksProps stocks;
 
-  ViewModel(this.top,
+  ViewModel({this.top,
       this.myBookLogs,
       this.bookLogs,
       this.myStocks,
-      this.stocks);
+      this.stocks});
 }
 
