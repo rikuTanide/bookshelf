@@ -37,7 +37,8 @@
         <div class="tab-pane active">
             <nav aria-label="Page navigation">
                 <ul class="pagination">
-                    <li *ngFor="let month of monthEnableds" [class]="month.active ? 'active' : (month.enabled ? 'enable' : 'disabled') ">
+                    <li *ngFor="let month of monthEnableds"
+                        [class]="month.active ? 'active' : (month.enabled ? 'enable' : 'disabled') ">
                         <a href="/{{username}}/booklogs/{{month.year}}/{{month.month}}">{{month.month}}月</a>
                     </li>
                 </ul>
@@ -49,9 +50,11 @@
             <div *ngIf="!log.bookLogState.isEditing">
                 {{log.bookAttrs.title}}
                 {{log.bookAttrs.author}}
-                <img [src]="log.bookAttrs.author"/>
+                <img [src]="log.bookAttrs.image"/>
                 <!-- レビューがある -->
-                <span *ngIf="log.hasReview">{{log.editReviewState.review}}</span>
+                <a *ngIf="log.hasReview" [href]="log.editReviewState.review">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
             </div>
             <!-- 編集中だ -->
             <div *ngIf="log.bookLogState.isEditing">

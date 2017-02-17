@@ -28,7 +28,7 @@ class MyBookLogPropsMock {
     var header = headerLinkParamsMock.getHeaderLinkParams();
     var years = getYearSelectStates();
     var months = getMonthEnables();
-    var bookLogs = getBookLog();
+    var bookLogs = getBookLogs();
     return new ViewModel(
         myBookLogs: new MyBookLogsProps(
             header,
@@ -67,8 +67,53 @@ class MyBookLogPropsMock {
     ];
   }
 
-  List<BookLog> getBookLog() {
-    return [];
+  List<BookLog> getBookLogs() {
+    return [
+      getBookLog(1),
+    ];
   }
+
+  BookLog getBookLog(int id,
+      {bool hasReview: false,
+      bool isEditing: false,
+      bool isTitleSuggestionViewing: false,
+      bool isTitleSuggestionLoading: false,
+      bool isAuthorSuggestionViewing: false,
+      bool isAuthorSuggestionLoading: false,
+      bool isEditReview: false,
+      bool isVaridReviewURL: false,
+      bool isLocking: false,
+      bool isVarid: false,
+      bool isDeleting: false}) {
+    if (isTitleSuggestionViewing) {
+      return null;
+    }
+    if (isAuthorSuggestionViewing) {
+      return null;
+    }
+    if (hasReview) {
+      return null;
+    }
+    if (isEditReview) {
+      return null;
+    }
+    if (isEditing) {
+      return null;
+    }
+    var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
+    var titleSuggestions = new TitleSuggestions(false, false, []);
+    var authorSuggestions = new AuthorSuggestions(false, false, []);
+    var editReviewState = new EditReviewState("", true);
+    var bookLogState = new BookLogState(false, false, false, false);
+    return new BookLog(
+        "$id",
+        bookAttrs,
+        titleSuggestions,
+        authorSuggestions,
+        false,
+        editReviewState,
+        bookLogState);
+  }
+
 
 }
