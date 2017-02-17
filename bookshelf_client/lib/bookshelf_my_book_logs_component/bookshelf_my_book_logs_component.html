@@ -19,7 +19,7 @@
         <div
                 class="progress-bar progress-bar-striped active"
                 role="progressbar">
-            <span class="sr-only">45% Complete</span>
+            <span class="sr-only"></span>
         </div>
     </div>
 
@@ -56,12 +56,33 @@
                     <i class="glyphicon glyphicon-edit"></i>
                 </a>
             </div>
+
             <!-- 編集中だ -->
-            <div *ngIf="log.bookLogState.isEditing">
-                <input type="text" placeholder="タイトル" [value]="log.bookAttrs.title"/>
-                <input type="text" placeholder="著者" [value]="log.bookAttrs.author"/>
-                <input type="text" placeholder="書評" [value]="log.editReviewState.review"/>
-            </div>
+            <form *ngIf="log.bookLogState.isEditing" class="input-group">
+                <div [class]="log.titleSuggestions.isViewing ? 'input-group dropdown open' : 'input-group'">
+                    <span class="input-group-addon">タイトル</span>
+                    <input class="form-control" type="text" placeholder="タイトル" [value]="log.bookAttrs.title"/>
+                    <ul *ngIf="log.titleSuggestions.isViewing && !log.titleSuggestions.isLoading" class="dropdown-menu">
+                        <li><a *ngFor="let suggestion of log.titleSuggestions.suggestions">{{suggestion}}</a></li>
+                    </ul>
+                    <ul *ngIf="log.titleSuggestions.isViewing && log.titleSuggestions.isLoading" class="dropdown-menu">
+                        <li class="progress">
+                            <div
+                                    class="progress-bar progress-bar-striped active"
+                                    role="progressbar">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">　著者　</span>
+                    <input class="form-control" type="text" placeholder="著者" [value]="log.bookAttrs.author"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">　書評　</span>
+                    <input class="form-control" type="text" placeholder="書評" [value]="log.editReviewState.review"/>
+                </div>
+            </form>
             <!-- 削除中だ -->
 
         </li>
