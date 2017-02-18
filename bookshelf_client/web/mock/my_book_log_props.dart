@@ -82,8 +82,8 @@ class MyBookLogPropsMock {
           isAuthorSuggestionLoading: true),
       getBookLog(8, isEditing: true, isValidReviewURL: false),
       getBookLog(9, isEditing: true, isLocking: true),
-      getBookLog(10 , isEditing: true , isValid: false)
-
+      getBookLog(10 , isEditing: true , isValid: false),
+      getBookLog(11, isEditing: true, isDeleting: true)
     ];
   }
 
@@ -203,6 +203,22 @@ class MyBookLogPropsMock {
         var authorSuggestions = new AuthorSuggestions(false, false, []);
         var editReviewState = new EditReviewState("", true);
         var bookLogState = new BookLogState(true, false, false, false);
+        return new BookLog(
+            "$id",
+            bookAttrs,
+            titleSuggestions,
+            authorSuggestions,
+            false,
+            editReviewState,
+            bookLogState);
+      }
+
+      if(isDeleting){
+        var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
+        var titleSuggestions = new TitleSuggestions(false, false, []);
+        var authorSuggestions = new AuthorSuggestions(false, false, []);
+        var editReviewState = new EditReviewState("", true);
+        var bookLogState = new BookLogState(true, true, true, true);
         return new BookLog(
             "$id",
             bookAttrs,

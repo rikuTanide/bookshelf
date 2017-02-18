@@ -103,9 +103,15 @@
                         <span class="input-group-addon">　書評　</span>
                         <input class="form-control" type="text" placeholder="書評" [value]="log.editReviewState.review"/>
                     </div>
-                    <div *ngIf="log.bookLogState.isLocking" class="progress">
+                    <div *ngIf="log.bookLogState.isLocking && !log.bookLogState.isDeleting" class="progress">
                         <div
                                 class="progress-bar progress-bar-striped active"
+                                role="progressbar">
+                        </div>
+                    </div>
+                    <div *ngIf="log.bookLogState.isLocking && log.bookLogState.isDeleting" class="progress">
+                        <div
+                                class="progress-bar progress-bar-danger progress-bar-striped active"
                                 role="progressbar">
                         </div>
                     </div>
