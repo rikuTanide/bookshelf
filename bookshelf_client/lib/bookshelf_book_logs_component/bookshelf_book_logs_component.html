@@ -47,4 +47,23 @@
         </div>
     </ul>
 
+    <li class="list-group-item" *ngFor="let log of bookLogs">
+
+        <div>
+            {{log.bookAttrs.title}}
+            {{log.bookAttrs.author}}
+            <img [src]="log.bookAttrs.image"/>
+            <!-- レビューがある -->
+            <a *ngIf="log.hasReview" [href]="log.review" target="_blank">
+                <i class="glyphicon glyphicon-edit"></i>
+            </a>
+            <button *ngIf="!log.isSaving && !log.isRead" class="btn btn-primary">読んだよ</button>
+            <button *ngIf="!log.isSaving && log.isRead" class="btn btn-warning">読んだよ</button>
+            <button *ngIf="log.isSaving && !log.isRead" class="btn btn-warning" disabled><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>読んだよ</button>
+            <button *ngIf="log.isSaving && log.isRead" class="btn btn-primary" disabled><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>読んだよ</button>
+        </div>
+
+    </li>
+
 </div>
+

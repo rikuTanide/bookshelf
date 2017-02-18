@@ -44,9 +44,11 @@ class BookLogPropsMock {
   List<BookLog> getBookLogList() {
     var attrs = new BookAttrs("タイトル１", "著者１", "img.png");
     return [
-      new BookLog("1", attrs, false, false),
-      new BookLog("2", attrs, true, false),
-      new BookLog("3", attrs, false, true),
+      new BookLog("1", attrs, false, "", false, false),
+      new BookLog("1", attrs, true, "https://www.example.com", false, false),
+      new BookLog("2", attrs, false, "", true, false),
+      new BookLog("3", attrs, false, "", false, true),
+      new BookLog("3", attrs, false, "", true, true),
 
     ];
   }

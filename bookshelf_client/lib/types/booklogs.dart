@@ -25,8 +25,10 @@ class BookLogsProps {
 class BookLog {
   final String id;
   final BookAttrs bookAttrs;
+  final bool hasReview;
+  final String review;
   final bool isRead, isSaving;
 
-  BookLog(this.id, this.bookAttrs, this.isRead, this.isSaving);
+  BookLog(this.id, this.bookAttrs, this.hasReview, this.review, this.isRead, this.isSaving);
 
 }
