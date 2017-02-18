@@ -11,10 +11,13 @@ class BookLogsProps {
 
   final bool isLoading;
 
+  final String username;
+
   final List<BookLog> booklogs;
 
   BookLogsProps(this.headerLinkParams, this.year,
       this.month, this.yearSelectStates, this.monthEnableds, this.isLoading,
+      this.username,
       this.booklogs);
 
 }

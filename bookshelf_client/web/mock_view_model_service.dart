@@ -1,3 +1,4 @@
+import 'mock/book_log_props.dart';
 import 'mock/my_book_log_props.dart';
 import 'mock/top_props.dart';
 import 'package:angular2/core.dart';
@@ -7,14 +8,15 @@ import 'package:bookshelf_client/types/view_model.dart';
 @Injectable()
 class ViewModelServiceMock implements ViewModelService {
 
-  TopPropsMock topPropsMock;
-  MyBookLogPropsMock myBookLogPropsMock;
+  final TopPropsMock topPropsMock;
+  final MyBookLogPropsMock myBookLogPropsMock;
+  final BookLogPropsMock bookLogPropsMock;
 
   @override
-  ViewModel get viewModel => myBookLogPropsMock.getMyBookLogProps(false);
+  ViewModel get viewModel => bookLogPropsMock.getBookLogProp(true);
 
 
-  ViewModelServiceMock(this.topPropsMock, this.myBookLogPropsMock);
+  ViewModelServiceMock(this.topPropsMock, this.myBookLogPropsMock,this.bookLogPropsMock);
 
 
 }

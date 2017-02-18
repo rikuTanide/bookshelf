@@ -1,3 +1,4 @@
+import 'mock/book_log_props.dart';
 import 'mock/header_link_params.dart';
 import 'mock/my_book_log_props.dart';
 import 'mock/top_props.dart';
@@ -15,6 +16,7 @@ void main() {
         viewModelService,
         TopPropsMock,
         MyBookLogPropsMock,
-        HeaderLinkParamsMock
+        HeaderLinkParamsMock,
+        BookLogPropsMock
       ]);
 }

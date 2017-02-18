@@ -1,0 +1,50 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a>Top</a></li>
+            <li><a href="/{{myUsername}}/booklogs/{{latest_year}}/{{latest_month}}">マイブックログ</a></li>
+            <li><a href="/{{myUsername}}/stocks">マイストックリスト</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>bookshelf</h1>
+        <p>読んだ本を記録しよう</p>
+    </div>
+
+    <div *ngIf="isLoading" class="progress">
+        <div
+                class="progress-bar progress-bar-striped active"
+                role="progressbar">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
+    <ul *ngIf="!isLoading" class="list-group">
+
+        <ul class="years nav nav-pills">
+            <li
+                    *ngFor="let year of yearSelectStates"
+                    role="presentation"
+                    [class]="year.selected ? 'enable active' : 'enable'">
+                <a href="#">{{year.year}}年</a>
+            </li>
+        </ul>
+
+        <div class="tab-pane active">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li *ngFor="let month of monthEnableds"
+                        [class]="month.active ? 'active' : (month.enabled ? 'enable' : 'disabled') ">
+                        <a href="/{{username}}/booklogs/{{month.year}}/{{month.month}}">{{month.month}}月</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </ul>
+
+</div>
