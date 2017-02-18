@@ -81,7 +81,8 @@ class MyBookLogPropsMock {
           isAuthorSuggestionViewing: true,
           isAuthorSuggestionLoading: true),
       getBookLog(8, isEditing: true, isValidReviewURL: false),
-      getBookLog(9,isEditing: true,isLocking: true),
+      getBookLog(9, isEditing: true, isLocking: true),
+      getBookLog(10 , isEditing: true , isValid: false)
 
     ];
   }
@@ -95,18 +96,16 @@ class MyBookLogPropsMock {
       bool isAuthorSuggestionLoading: false,
       bool isValidReviewURL: true,
       bool isLocking: false,
-      bool isValid: false,
+      bool isValid: true,
       bool isDeleting: false}) {
-
     if (isEditing) {
-
       if (isTitleSuggestionViewing) {
         if (isTitleSuggestionLoading) {
           var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
           var titleSuggestions = new TitleSuggestions(true, true, []);
           var authorSuggestions = new AuthorSuggestions(false, false, []);
           var editReviewState = new EditReviewState("", true);
-          var bookLogState = new BookLogState(true, false, false, false);
+          var bookLogState = new BookLogState(true, false, true, false);
           return new BookLog(
               "$id",
               bookAttrs,
@@ -117,10 +116,11 @@ class MyBookLogPropsMock {
               bookLogState);
         }
         var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
-        var titleSuggestions = new TitleSuggestions(true, false, ["候補１", "候補２"]);
+        var titleSuggestions = new TitleSuggestions(
+            true, false, ["候補１", "候補２"]);
         var authorSuggestions = new AuthorSuggestions(false, false, []);
         var editReviewState = new EditReviewState("", true);
-        var bookLogState = new BookLogState(true, false, false, false);
+        var bookLogState = new BookLogState(true, false, true, false);
         return new BookLog(
             "$id",
             bookAttrs,
@@ -137,7 +137,7 @@ class MyBookLogPropsMock {
           var titleSuggestions = new TitleSuggestions(false, false, []);
           var authorSuggestions = new AuthorSuggestions(true, true, []);
           var editReviewState = new EditReviewState("", true);
-          var bookLogState = new BookLogState(true, false, false, false);
+          var bookLogState = new BookLogState(true, false, true, false);
           return new BookLog(
               "$id",
               bookAttrs,
@@ -154,7 +154,7 @@ class MyBookLogPropsMock {
         var suggests = [suggest1, suggest2];
         var authorSuggestions = new AuthorSuggestions(true, false, suggests);
         var editReviewState = new EditReviewState("", true);
-        var bookLogState = new BookLogState(true, false, false, false);
+        var bookLogState = new BookLogState(true, false, true, false);
         return new BookLog(
             "$id",
             bookAttrs,
@@ -170,7 +170,7 @@ class MyBookLogPropsMock {
         var titleSuggestions = new TitleSuggestions(false, false, []);
         var authorSuggestions = new AuthorSuggestions(false, false, []);
         var editReviewState = new EditReviewState("https://aaa", false);
-        var bookLogState = new BookLogState(true, false, false, false);
+        var bookLogState = new BookLogState(true, false, true, false);
         return new BookLog(
             "$id",
             bookAttrs,
@@ -181,12 +181,28 @@ class MyBookLogPropsMock {
             bookLogState);
       }
 
-      if(isLocking) {
+      if (isLocking) {
         var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
         var titleSuggestions = new TitleSuggestions(false, false, []);
         var authorSuggestions = new AuthorSuggestions(false, false, []);
         var editReviewState = new EditReviewState("", true);
-        var bookLogState = new BookLogState(true, true, false, false);
+        var bookLogState = new BookLogState(true, true, true, false);
+        return new BookLog(
+            "$id",
+            bookAttrs,
+            titleSuggestions,
+            authorSuggestions,
+            false,
+            editReviewState,
+            bookLogState);
+      }
+
+      if (!isValid) {
+        var bookAttrs = new BookAttrs("タイトル$id", "著者$id", "img.png");
+        var titleSuggestions = new TitleSuggestions(false, false, []);
+        var authorSuggestions = new AuthorSuggestions(false, false, []);
+        var editReviewState = new EditReviewState("", true);
+        var bookLogState = new BookLogState(true, false, false, false);
         return new BookLog(
             "$id",
             bookAttrs,
@@ -201,7 +217,7 @@ class MyBookLogPropsMock {
       var titleSuggestions = new TitleSuggestions(false, false, []);
       var authorSuggestions = new AuthorSuggestions(false, false, []);
       var editReviewState = new EditReviewState("", true);
-      var bookLogState = new BookLogState(true, false, false, false);
+      var bookLogState = new BookLogState(true, false, true, false);
       return new BookLog(
           "$id",
           bookAttrs,
@@ -218,7 +234,7 @@ class MyBookLogPropsMock {
       var authorSuggestions = new AuthorSuggestions(false, false, []);
       var editReviewState = new EditReviewState(
           "https://www.example.com", true);
-      var bookLogState = new BookLogState(false, false, false, false);
+      var bookLogState = new BookLogState(false, false, true, false);
       return new BookLog(
           "$id",
           bookAttrs,
@@ -234,7 +250,7 @@ class MyBookLogPropsMock {
     var titleSuggestions = new TitleSuggestions(false, false, []);
     var authorSuggestions = new AuthorSuggestions(false, false, []);
     var editReviewState = new EditReviewState("", true);
-    var bookLogState = new BookLogState(false, false, false, false);
+    var bookLogState = new BookLogState(false, false, true, false);
     return new BookLog(
         "$id",
         bookAttrs,
