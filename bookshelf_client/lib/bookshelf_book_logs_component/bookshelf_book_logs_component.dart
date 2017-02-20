@@ -7,6 +7,7 @@ import 'package:bookshelf_client/types/share.dart';
     templateUrl: 'bookshelf_book_logs_component.html',
     styleUrls: const <String>['bookshelf_book_logs_component.css'])
 class BookshelfBookLogsComponent {
+
   @Input()
   BookLogsProps bookLogsProps;
 

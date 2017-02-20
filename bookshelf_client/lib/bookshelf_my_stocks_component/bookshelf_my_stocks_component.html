@@ -1,0 +1,101 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a>Top</a></li>
+            <li><a href="/{{username}}/stocks/{{latest_year}}/{{latest_month}}">マイブックログ</a></li>
+            <li class="active"><a href="/{{username}}/stocks">マイストックリスト</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>bookshelf</h1>
+        <p>読んだ本を記録しよう</p>
+    </div>
+
+    <div *ngIf="isLoading" class="progress">
+        <div
+                class="progress-bar progress-bar-striped active"
+                role="progressbar">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
+    <ul *ngIf="!isLoading" class="list-group">
+        <li class="list-group-item" *ngFor="let log of stocks">
+            <div *ngIf="!log.isEditing">
+                {{log.bookAttrs.title}}
+                {{log.bookAttrs.author}}
+                <img [src]="log.bookAttrs.image"/>
+            </div>
+            <form *ngIf="log.isEditing" class="input-group">
+
+                <fieldset [disabled]="log.isLocking">
+
+                    <div [class]="log.titleSuggestions.isViewing ? 'input-group dropdown open' : 'input-group'">
+                        <span class="input-group-addon">タイトル</span>
+                        <input class="form-control" type="text" placeholder="タイトル" [value]="log.bookAttrs.title"/>
+                        <ul *ngIf="log.titleSuggestions.isViewing && !log.titleSuggestions.isLoading"
+                            class="dropdown-menu">
+                            <li><a *ngFor="let suggestion of log.titleSuggestions.suggestions">{{suggestion}}</a></li>
+                        </ul>
+                        <ul *ngIf="log.titleSuggestions.isViewing && log.titleSuggestions.isLoading"
+                            class="dropdown-menu">
+                            <li class="progress">
+                                <div
+                                        class="progress-bar progress-bar-striped active"
+                                        role="progressbar">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div [class]="log.authorSuggestions.isViewing ? 'input-group dropdown open' : 'input-group'">
+                        <span class="input-group-addon">　著者　</span>
+                        <input class="form-control" type="text" placeholder="著者" [value]="log.bookAttrs.author"/>
+                        <ul *ngIf="log.authorSuggestions.isViewing && !log.authorSuggestions.isLoading"
+                            class="dropdown-menu">
+                            <li>
+                                <a *ngFor="let suggestion of log.authorSuggestions.authorSuggests">
+                                    {{suggestion.author}}
+                                    <img [src]="suggestion.image"/>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul *ngIf="log.authorSuggestions.isViewing && log.authorSuggestions.isLoading"
+                            class="dropdown-menu">
+                            <li class="progress">
+                                <div
+                                        class="progress-bar progress-bar-striped active"
+                                        role="progressbar">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div *ngIf="log.isSaving" class="progress">
+                        <div
+                                class="progress-bar progress-bar-striped active"
+                                role="progressbar">
+                        </div>
+                    </div>
+                    <div *ngIf="log.isDeleting" class="progress">
+                        <div
+                                class="progress-bar progress-bar-danger progress-bar-striped active"
+                                role="progressbar">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" [disabled]="!log.isValid">保存</button>
+                    <button class="btn btn-warning">キャンセル</button>
+
+                </fieldset>
+            </form>
+        </li>
+    </ul>
+
+</div>

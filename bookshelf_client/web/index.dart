@@ -1,6 +1,7 @@
 import 'mock/book_log_props.dart';
 import 'mock/header_link_params.dart';
 import 'mock/my_book_log_props.dart';
+import 'mock/my_stocks_props.dart';
 import 'mock/top_props.dart';
 import 'mock_view_model_service.dart';
 import 'package:angular2/core.dart';
@@ -17,6 +18,7 @@ void main() {
         TopPropsMock,
         MyBookLogPropsMock,
         HeaderLinkParamsMock,
-        BookLogPropsMock
+        BookLogPropsMock,
+        MyStocksPropsMock
       ]);
 }
