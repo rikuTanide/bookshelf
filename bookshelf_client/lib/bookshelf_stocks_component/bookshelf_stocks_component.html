@@ -1,0 +1,45 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a>Top</a></li>
+            <li><a href="/{{username}}/stocks/{{latest_year}}/{{latest_month}}">マイブックログ</a></li>
+            <li><a href="/{{username}}/stocks">マイストックリスト</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>bookshelf</h1>
+        <p>読んだ本を記録しよう</p>
+    </div>
+
+    <div *ngIf="isLoading" class="progress">
+        <div
+                class="progress-bar progress-bar-striped active"
+                role="progressbar">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
+    <ul *ngIf="!isLoading" class="list-group">
+
+        <li class="list-group-item" *ngFor="let stock of stocks">
+            <div>
+                {{stock.bookAttrs.title}}
+                {{stock.bookAttrs.author}}
+                <img [src]="stock.bookAttrs.image"/>
+                <button *ngIf="!stock.isSaving && !stock.iRecommend" class="btn btn-primary">それおすすめ</button>
+                <button *ngIf="!stock.isSaving && stock.iRecommend" class="btn btn-warning">それおすすめ</button>
+                <button *ngIf="stock.isSaving && !stock.iRecommend" class="btn btn-warning" disabled><span
+                        class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>それおすすめ
+                </button>
+                <button *ngIf="stock.isSaving && stock.iRecommend" class="btn btn-primary" disabled><span
+                        class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>それおすすめ
+                </button>
+            </div>
+
+        </li>
+    </ul>
+</div>

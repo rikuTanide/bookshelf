@@ -1,6 +1,7 @@
 import 'mock/book_log_props.dart';
 import 'mock/my_book_log_props.dart';
 import 'mock/my_stocks_props.dart';
+import 'mock/stocks_props.dart';
 import 'mock/top_props.dart';
 import 'package:angular2/core.dart';
 import 'package:bookshelf_client/services/view_model_service.dart';
@@ -13,14 +14,16 @@ class ViewModelServiceMock implements ViewModelService {
   final MyBookLogPropsMock myBookLogPropsMock;
   final BookLogPropsMock bookLogPropsMock;
   final MyStocksPropsMock myStocksPropsMock;
+  final StocksPropsMock stocksPropsMock;
 
   @override
-  ViewModel get viewModel => myStocksPropsMock.getMyStocksProps(false);
+  ViewModel get viewModel => stocksPropsMock.getStocksProps(false);
 
   ViewModelServiceMock(this.topPropsMock,
       this.myBookLogPropsMock,
       this.bookLogPropsMock,
-      this.myStocksPropsMock);
+      this.myStocksPropsMock,
+      this.stocksPropsMock);
 
 
 }
