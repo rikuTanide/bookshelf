@@ -12,9 +12,9 @@ class BookshelfTopComponent  {
 
   String get username => topProps.headerLinkParams.username;
 
-  int get latest_year => topProps.headerLinkParams.latest_year;
+  int get latest_year => topProps.headerLinkParams.current_year;
 
-  int get latest_month => topProps.headerLinkParams.latest_month;
+  int get latest_month => topProps.headerLinkParams.current_month;
 
   List<BookLogger> get bookLoggers => topProps.bookLoggers;
 
