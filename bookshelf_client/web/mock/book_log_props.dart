@@ -79,3 +79,15 @@ class BookLogPropsMock {
   }
 
 }
+
+class MonthEnabled {
+  final int year;
+  final int month;
+  final bool active;
+  final bool enabled;
+
+  MonthEnabled(this.year,
+      this.month,
+      this.active,
+      this.enabled);
+}

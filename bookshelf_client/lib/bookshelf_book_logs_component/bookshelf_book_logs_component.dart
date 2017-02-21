@@ -13,9 +13,9 @@ class BookshelfBookLogsComponent {
 
   String get myUsername => bookLogsProps.headerLinkParams.username;
 
-  int get latest_year => bookLogsProps.headerLinkParams.latest_year;
+  int get current_year => bookLogsProps.headerLinkParams.current_year;
 
-  int get latest_month => bookLogsProps.headerLinkParams.latest_month;
+  int get current_month => bookLogsProps.headerLinkParams.current_month;
 
   List<YearSelectState> get yearSelectStates => bookLogsProps.yearSelectStates;
 
