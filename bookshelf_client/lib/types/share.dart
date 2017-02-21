@@ -2,9 +2,9 @@ library bookshelf_client.types.share;
 
 class HeaderLinkParams {
   final String username;
-  final int latest_year, latest_month;
+  final int current_year, current_month;
 
-  HeaderLinkParams(this.username, this.latest_year, this.latest_month);
+  HeaderLinkParams(this.username, this.current_year, this.current_month);
 }
 
 class YearSelectState {
@@ -18,12 +18,10 @@ class MonthEnabled {
   final int year;
   final int month;
   final bool active;
-  final bool enabled;
 
   MonthEnabled(this.year,
       this.month,
-      this.active,
-      this.enabled);
+      this.active);
 }
 
 class BookAttrs {
