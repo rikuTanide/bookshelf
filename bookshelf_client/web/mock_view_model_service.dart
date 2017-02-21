@@ -17,7 +17,7 @@ class ViewModelServiceMock implements ViewModelService {
   final StocksPropsMock stocksPropsMock;
 
   @override
-  ViewModel get viewModel => bookLogPropsMock.getBookLogProp(false);
+  ViewModel get viewModel => myStocksPropsMock.getMyStocksProps(false);
 
   ViewModelServiceMock(this.topPropsMock,
       this.myBookLogPropsMock,

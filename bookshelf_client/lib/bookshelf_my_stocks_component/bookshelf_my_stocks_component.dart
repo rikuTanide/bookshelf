@@ -12,9 +12,9 @@ class BookshelfMyStocksComponent {
 
   String get username => myStocksProps.headerLinkParams.username;
 
-  int get latest_year => myStocksProps.headerLinkParams.latest_year;
+  int get current_year => myStocksProps.headerLinkParams.current_year;
 
-  int get latest_month => myStocksProps.headerLinkParams.latest_month;
+  int get current_month => myStocksProps.headerLinkParams.current_month;
 
   bool get isLoading => myStocksProps.isLoading;
 
