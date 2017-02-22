@@ -1,7 +1,7 @@
 class MyBookLogs {
 
-  int year;
-  int month;
+  DateTime pageMonth;
+  DateTime selectMonth;
 
   Editing editing;
 
@@ -24,11 +24,7 @@ class Editing {
 }
 
 class AuthorSuggestions {
-  AuthorSuggestionsResults authorSuggestionsResults;
-}
-
-class AuthorSuggestionsResults {
-  List<AuthorSuggestion> authorSuggestions;
+  List<AuthorSuggestion> authorSuggestionsResults;
 }
 
 class AuthorSuggestion {
@@ -45,9 +41,5 @@ class BookLog {
 }
 
 class TitleSuggestions {
-  TitleSuggestionsResult titleSuggestionsResult;
-}
-
-class TitleSuggestionsResult {
-  List<String> titleSuggestions;
+  List<String> titleSuggestionsResult;
 }

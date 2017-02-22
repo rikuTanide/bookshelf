@@ -16,7 +16,7 @@ dependencies:
 dev_dependencies:
     test: ^0.12.13+1
     yaml: ^2.1.9
-
+    collection:
 transformers:
     #- sass_transformer ## if you use sass
     #- less_dart ## if you use less

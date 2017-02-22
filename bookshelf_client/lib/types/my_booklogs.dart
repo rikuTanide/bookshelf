@@ -21,7 +21,6 @@ class MyBookLogsProps {
       this.monthEnableds,
       this.isLoading,
       this.bookLogs);
-
 }
 
 
@@ -34,6 +33,26 @@ class EditReviewState {
   final bool isVaridURL;
 
   EditReviewState(this.review, this.isVaridURL);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is EditReviewState &&
+        this.review == other.review &&
+        this.isVaridURL == other.isVaridURL;
+  }
+
+  @override
+  int get hashCode {
+    return review.hashCode ^ isVaridURL.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'EditReviewState{review: $review, isVaridURL: $isVaridURL}';
+  }
 
 }
 
@@ -62,6 +81,30 @@ class BookLogState {
       this.isVarid,
       this.isSaving,
       this.isDeleting);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is BookLogState &&
+        this.isEditing == other.isEditing &&
+        this.isLocking == other.isLocking &&
+        this.isVarid == other.isVarid &&
+        this.isSaving == other.isSaving &&
+        this.isDeleting == other.isDeleting;
+  }
+
+  @override
+  int get hashCode {
+    return isEditing.hashCode ^ isLocking.hashCode ^ isVarid.hashCode ^ isSaving
+        .hashCode ^ isDeleting.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'BookLogState{isEditing: $isEditing, isLocking: $isLocking, isVarid: $isVarid, isSaving: $isSaving, isDeleting: $isDeleting}';
+  }
 }
 
 
@@ -83,4 +126,32 @@ class BookLog {
       this.hasReview,
       this.editReviewState,
       this.bookLogState);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other is BookLog &&
+        this.id == other.id &&
+        this.bookAttrs == other.bookAttrs &&
+        this.titleSuggestions == other.titleSuggestions &&
+        this.authorSuggestions == other.authorSuggestions &&
+        this.hasReview == other.hasReview &&
+        this.editReviewState == other.editReviewState &&
+        this.bookLogState == other.bookLogState;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^ bookAttrs.hashCode ^ titleSuggestions
+        .hashCode ^ authorSuggestions.hashCode ^ hasReview
+        .hashCode ^ editReviewState.hashCode ^ bookLogState.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'BookLog{id: $id, bookAttrs: $bookAttrs, titleSuggestions: $titleSuggestions, authorSuggestions: $authorSuggestions, hasReview: $hasReview, editReviewState: $editReviewState, bookLogState: $bookLogState}';
+  }
 }
