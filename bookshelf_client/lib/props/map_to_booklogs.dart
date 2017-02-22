@@ -39,14 +39,14 @@ List<v.BookLog> _getBookLogs(int year,
     m.TitleSuggestions titleSuggestions,
     m.AuthorSuggestions authorSuggestions,
     m.Editing editing) =>
-    bookLog.map((b) => new v.BookLog(
+    bookLog?.map((b) => new v.BookLog(
         b.id,
         _getBookAttrs(editing, b),
         _getTitleSuggestions(titleSuggestions),
         _getAuthorSuggestions(authorSuggestions),
         b.review != null,
         _editReviewState(b.review, editing),
-        _bookLogState(editing)));
+        _bookLogState(editing))) ?? [];
 
 BookAttrs _getBookAttrs(m.Editing e, m.BookLog b) =>
     new BookAttrs(e?.title ?? b.title,

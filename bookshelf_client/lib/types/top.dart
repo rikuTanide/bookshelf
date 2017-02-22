@@ -17,4 +17,20 @@ class BookLogger {
   final int latestYear, latestMonth;
 
   BookLogger(this.name, this.latestYear, this.latestMonth);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is BookLogger &&
+        this.name == other.name &&
+        this.latestYear == other.latestYear &&
+        this.latestMonth == other.latestMonth;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode ^ latestYear.hashCode ^ latestMonth.hashCode;
+  }
 }
