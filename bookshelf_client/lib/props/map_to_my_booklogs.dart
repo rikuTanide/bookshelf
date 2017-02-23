@@ -38,10 +38,10 @@ List<YearSelectState> _getYearSelectStates(int year) =>
  * ページの年と選択されている年が等しく、かつ選択されている月とボタンの月が等しければactive
  *
  */
-List<MonthEnabled> _getMonthEnabled(int pageYear, int selectYear,
+List<v.MonthEnabled> _getMonthEnabled(int pageYear, int selectYear,
     int selectMonth) =>
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        .map((m) => new MonthEnabled(
+        .map((m) => new v.MonthEnabled(
         selectYear, m, pageYear == selectYear && m == selectMonth))
         .toList();
 

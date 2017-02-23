@@ -29,6 +29,34 @@ class BookLog {
   final String review;
   final bool isRead, isSaving;
 
-  BookLog(this.id, this.bookAttrs, this.hasReview, this.review, this.isRead, this.isSaving);
+  BookLog(this.id, this.bookAttrs, this.hasReview, this.review,
+      this.isRead, this.isSaving);
+
+}
+
+class MonthEnabled {
+  final int year;
+  final int month;
+  final bool active;
+  final bool enabled;
+
+  MonthEnabled(this.year, this.month, this.active, this.enabled);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is MonthEnabled &&
+        this.year == other.year &&
+        this.month == other.month &&
+        this.active == other.active &&
+        this.enabled == other.enabled;
+  }
+
+  @override
+  int get hashCode {
+    return year.hashCode ^ month.hashCode ^ active.hashCode ^ enabled.hashCode;
+  }
 
 }

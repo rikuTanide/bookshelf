@@ -72,18 +72,18 @@ void main() {
 
           test("1月がactive", () {
             expect(viewModel.myBookLogs.monthEnableds, equals([
-              new MonthEnabled(2017, 1, true),
-              new MonthEnabled(2017, 2, false),
-              new MonthEnabled(2017, 3, false),
-              new MonthEnabled(2017, 4, false),
-              new MonthEnabled(2017, 5, false),
-              new MonthEnabled(2017, 6, false),
-              new MonthEnabled(2017, 7, false),
-              new MonthEnabled(2017, 8, false),
-              new MonthEnabled(2017, 9, false),
-              new MonthEnabled(2017, 10, false),
-              new MonthEnabled(2017, 11, false),
-              new MonthEnabled(2017, 12, false),
+              new v.MonthEnabled(2017, 1, true),
+              new v.MonthEnabled(2017, 2, false),
+              new v.MonthEnabled(2017, 3, false),
+              new v.MonthEnabled(2017, 4, false),
+              new v.MonthEnabled(2017, 5, false),
+              new v.MonthEnabled(2017, 6, false),
+              new v.MonthEnabled(2017, 7, false),
+              new v.MonthEnabled(2017, 8, false),
+              new v.MonthEnabled(2017, 9, false),
+              new v.MonthEnabled(2017, 10, false),
+              new v.MonthEnabled(2017, 11, false),
+              new v.MonthEnabled(2017, 12, false),
             ]));
           });
         });
@@ -102,18 +102,18 @@ void main() {
           });
           test("2月がactive", () {
             expect(viewModel.myBookLogs.monthEnableds, equals([
-              new MonthEnabled(2017, 1, false),
-              new MonthEnabled(2017, 2, true),
-              new MonthEnabled(2017, 3, false),
-              new MonthEnabled(2017, 4, false),
-              new MonthEnabled(2017, 5, false),
-              new MonthEnabled(2017, 6, false),
-              new MonthEnabled(2017, 7, false),
-              new MonthEnabled(2017, 8, false),
-              new MonthEnabled(2017, 9, false),
-              new MonthEnabled(2017, 10, false),
-              new MonthEnabled(2017, 11, false),
-              new MonthEnabled(2017, 12, false),
+              new v.MonthEnabled(2017, 1, false),
+              new v.MonthEnabled(2017, 2, true),
+              new v.MonthEnabled(2017, 3, false),
+              new v.MonthEnabled(2017, 4, false),
+              new v.MonthEnabled(2017, 5, false),
+              new v.MonthEnabled(2017, 6, false),
+              new v.MonthEnabled(2017, 7, false),
+              new v.MonthEnabled(2017, 8, false),
+              new v.MonthEnabled(2017, 9, false),
+              new v.MonthEnabled(2017, 10, false),
+              new v.MonthEnabled(2017, 11, false),
+              new v.MonthEnabled(2017, 12, false),
             ]));
           });
         });
@@ -131,18 +131,18 @@ void main() {
           });
           test("全部activeじゃな", () {
             expect(viewModel.myBookLogs.monthEnableds, equals([
-              new MonthEnabled(2016, 1, false),
-              new MonthEnabled(2016, 2, false),
-              new MonthEnabled(2016, 3, false),
-              new MonthEnabled(2016, 4, false),
-              new MonthEnabled(2016, 5, false),
-              new MonthEnabled(2016, 6, false),
-              new MonthEnabled(2016, 7, false),
-              new MonthEnabled(2016, 8, false),
-              new MonthEnabled(2016, 9, false),
-              new MonthEnabled(2016, 10, false),
-              new MonthEnabled(2016, 11, false),
-              new MonthEnabled(2016, 12, false),
+              new v.MonthEnabled(2016, 1, false),
+              new v.MonthEnabled(2016, 2, false),
+              new v.MonthEnabled(2016, 3, false),
+              new v.MonthEnabled(2016, 4, false),
+              new v.MonthEnabled(2016, 5, false),
+              new v.MonthEnabled(2016, 6, false),
+              new v.MonthEnabled(2016, 7, false),
+              new v.MonthEnabled(2016, 8, false),
+              new v.MonthEnabled(2016, 9, false),
+              new v.MonthEnabled(2016, 10, false),
+              new v.MonthEnabled(2016, 11, false),
+              new v.MonthEnabled(2016, 12, false),
             ]));
           });
         });

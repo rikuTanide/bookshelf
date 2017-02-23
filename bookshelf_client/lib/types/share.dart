@@ -33,31 +33,6 @@ class YearSelectState {
   }
 }
 
-class MonthEnabled {
-  final int year;
-  final int month;
-  final bool active;
-
-  MonthEnabled(this.year,
-      this.month,
-      this.active);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    return other is MonthEnabled &&
-        this.year == other.year &&
-        this.month == other.month &&
-        this.active == other.active;
-  }
-
-  @override
-  int get hashCode {
-    return year.hashCode ^ month.hashCode ^ active.hashCode;
-  }
-}
 
 class BookAttrs {
   final String title, author, image;

@@ -1,4 +1,4 @@
-import 'package:bookshelf_client/model/book_logs.dart';
+import 'package:bookshelf_client/model/booklogs.dart';
 import 'package:bookshelf_client/model/my_booklogs.dart';
 import 'package:bookshelf_client/model/my_stocks.dart';
 import 'package:bookshelf_client/model/stocks.dart';
