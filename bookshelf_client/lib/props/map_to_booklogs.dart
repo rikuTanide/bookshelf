@@ -60,4 +60,4 @@ List<v.MonthEnabled> _getMonthEnabled(int pageYear, int selectYear,
         .toList();
 
 bool _isEnable(int selectYear, int month, List<m.BookLog> bookLogs) =>
-    bookLogs.any((b) => b.dateTime.year == selectYear && b.dateTime == month);
+    bookLogs.any((b) => b.dateTime.year == selectYear && b.dateTime.month == month);

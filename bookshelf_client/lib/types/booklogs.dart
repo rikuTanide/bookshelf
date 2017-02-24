@@ -59,4 +59,9 @@ class MonthEnabled {
     return year.hashCode ^ month.hashCode ^ active.hashCode ^ enabled.hashCode;
   }
 
+  @override
+  String toString() {
+    return 'MonthEnabled{year: $year, month: $month, active: $active, enabled: $enabled}';
+  }
+
 }
