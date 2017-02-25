@@ -38,6 +38,7 @@ class BookLog {
   String author;
   String image;
   String review;
+  DateTime dateTime;
 }
 
 class TitleSuggestions {
