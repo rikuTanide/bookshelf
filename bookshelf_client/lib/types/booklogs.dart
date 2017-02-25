@@ -32,6 +32,26 @@ class BookLog {
   BookLog(this.id, this.bookAttrs, this.hasReview, this.review,
       this.isRead, this.isSaving);
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is BookLog &&
+        this.id == other.id &&
+        this.bookAttrs == other.bookAttrs &&
+        this.hasReview == other.hasReview &&
+        this.review == other.review &&
+        this.isRead == other.isRead &&
+        this.isSaving == other.isSaving;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^ bookAttrs.hashCode ^ hasReview.hashCode ^ review
+        .hashCode ^ isRead.hashCode ^ isSaving.hashCode;
+  }
+
 }
 
 class MonthEnabled {
