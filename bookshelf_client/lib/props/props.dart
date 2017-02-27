@@ -4,6 +4,7 @@ import 'package:bookshelf_client/props/map_to_my_booklogs.dart';
 import 'package:bookshelf_client/props/map_to_top_props.dart';
 import 'package:bookshelf_client/types/view_model.dart';
 import 'package:bookshelf_client/props/map_to_my_stocks_props.dart';
+import 'package:bookshelf_client/props/map_to_stocks_props.dart';
 
 ViewModel mapModelToViewModel(Model model) {
   if (model.top != null) {
@@ -14,5 +15,7 @@ ViewModel mapModelToViewModel(Model model) {
     return mapToBooklogsProps(model);
   }else if(model.myStocks != null ){
     return mapToMyStocksProps(model);
+  } else if(model.stocks != null){
+    return mapToStocksProps(model);
   }
 }
