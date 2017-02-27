@@ -17,7 +17,8 @@ ViewModel mapToMyBookLogs(model.Model model) =>
         _getBookLogs(model.myBookLog.bookLogs,
             model.myBookLog.titleSuggestions,
             model.myBookLog.authorSuggestions,
-            model.myBookLog.editing).toList()));
+            model.myBookLog.editing,
+            model.myBookLog.pageMonth).toList()));
 
 
 HeaderLinkParams _getHeaderLinkParams(model.Model model) =>
@@ -48,12 +49,15 @@ List<v.MonthEnabled> _getMonthEnabled(int pageYear, int selectYear,
 Iterable<v.BookLog> _getBookLogs(List<m.BookLog> bookLog,
     m.TitleSuggestions titleSuggestions,
     m.AuthorSuggestions authorSuggestions,
-    m.Editing editing) sync* {
+    m.Editing editing,
+    DateTime pageMonth) sync* {
   if (bookLog == null) {
     return;
   }
   for (var b in bookLog) {
-    yield _getBookLog(b, editing, titleSuggestions, authorSuggestions);
+    if(pageMonth.year == b.dateTime.year && pageMonth.month == b.dateTime.month){
+      yield _getBookLog(b, editing, titleSuggestions, authorSuggestions);
+    }
   }
   if (editing != null && editing.isAdding) {
     yield _getBookLog(new m.BookLog()

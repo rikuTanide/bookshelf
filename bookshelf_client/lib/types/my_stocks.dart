@@ -33,6 +33,34 @@ class Stock {
       this.isSaving,
       this.isDeleting);
 
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is Stock &&
+        this.bookAttrs == other.bookAttrs &&
+        this.titleSuggestions == other.titleSuggestions &&
+        this.authorSuggestions == other.authorSuggestions &&
+        this.isEditing == other.isEditing &&
+        this.isValid == other.isValid &&
+        this.isLocking == other.isLocking &&
+        this.isSaving == other.isSaving &&
+        this.isDeleting == other.isDeleting;
+  }
+
+  @override
+  int get hashCode {
+    return bookAttrs.hashCode ^ titleSuggestions.hashCode ^ authorSuggestions
+        .hashCode ^ isEditing.hashCode ^ isValid.hashCode ^ isLocking
+        .hashCode ^ isSaving.hashCode ^ isDeleting.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'Stock{bookAttrs: $bookAttrs, titleSuggestions: $titleSuggestions, authorSuggestions: $authorSuggestions, isEditing: $isEditing, isValid: $isValid, isLocking: $isLocking, isSaving: $isSaving, isDeleting: $isDeleting}';
+  }
+
 }
 
 class StockState {
