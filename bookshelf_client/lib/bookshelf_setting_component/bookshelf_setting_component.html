@@ -1,0 +1,39 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li class="active"><a>Top</a></li>
+            <li><a href="/{{username}}/booklogs/{{current_year}}/{{current_month}}">マイブックログ</a></li>
+            <li><a href="/{{username}}/stocks">マイストックリスト</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>bookshelf</h1>
+        <p>読んだ本を記録しよう</p>
+    </div>
+    <div *ngIf="isLoading" class="progress">
+        <div
+                class="progress-bar progress-bar-striped active"
+                role="progressbar">
+            <span class="sr-only">45% Complete</span>
+        </div>
+    </div>
+
+    <form *ngIf="!isLoading" class="list-group">
+        <div class="input-group {{hasError ? 'has-error' : ''}}">
+            <input class="form-control" type="text" [value]="edit_username"/>
+        </div>
+        <button *ngIf="isSaving" class="btn btn-warning" disabled>
+                <span
+                        class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+            保存
+        </button>
+        <button type="button" *ngIf="!isSaving" class="btn btn-warning" [disabled]="disabled">
+            保存
+        </button>
+    </form>
+
+</div>
