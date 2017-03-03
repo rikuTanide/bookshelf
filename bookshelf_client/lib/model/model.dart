@@ -7,16 +7,16 @@ import 'package:bookshelf_client/model/top.dart';
 
 class Model {
 
-  String username;
-  String uid;
-  DateTime now;
+  final String username;
+  final String uid;
+  final DateTime now;
 
-  Top top;
-  MyBookLogs myBookLog;
-  MyStocks myStocks;
-  BookLogs bookLogs;
-  Stocks stocks;
-  Setting setting;
+  final Top top;
+  final MyBookLogs myBookLog;
+  final MyStocks myStocks;
+  final BookLogs bookLogs;
+  final Stocks stocks;
+  final Setting setting;
 
   @override
   bool operator ==(Object other) {
