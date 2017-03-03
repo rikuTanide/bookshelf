@@ -50,5 +50,10 @@ class Model {
   Model(this.username, this.uid, this.now, {this.top, this.myBookLog,
   this.myStocks, this.bookLogs, this.stocks, this.setting});
 
+  Model.pageUpdate(Model model, {this.top, this.myBookLog,
+  this.myStocks, this.bookLogs, this.stocks, this.setting})
+      :this.username = model.username,
+        this.uid = model.uid,
+        this.now = model.now;
 
 }

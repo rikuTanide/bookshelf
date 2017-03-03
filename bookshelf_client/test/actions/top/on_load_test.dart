@@ -1,3 +1,4 @@
+import '../model_service_mock.dart';
 import 'dart:async';
 import 'package:bookshelf_client/actions/firebase/firebase.dart';
 import 'package:bookshelf_client/actions/url-load/action-url-load.dart';
@@ -7,39 +8,33 @@ import 'package:bookshelf_client/model/top.dart' as m;
 import 'package:test/test.dart';
 
 void main() {
-  test("urlで表示", () async {
-    var model = new Model();
-    var urlLoadAction = new URLLoadAction()
-      ..firebase = new FirebaseFetchUserListEmptyMock()
-      ..model = model;
-    var params = new URLParams(top: new Top());
-    var str = urlLoadAction.onLoad(params);
-    print(2);
-    await str;
-    print(4);
-    var actual = new Model()
-      ..top = new m.Top();
-    expect(model, equals(actual));
-  });
-
   test("urlで表示してresponseがあったらそれを表示", () async {
-    var model = new Model();
-    var urlLoadAction = new URLLoadAction()
-      ..firebase = new FirebaseFetchUserListResponseMock()
+    var now = new DateTime.now();
+    var model = new Model("", "", now);
+    var modelService = new ModelServiceMock()
       ..model = model;
+    var firebase = new FirebaseFetchUserListResponseMock();
+    var urlLoadAction = new URLLoadAction(modelService, firebase);
     var params = new URLParams(top: new Top());
     await urlLoadAction.onLoad(params);
-    var actual = new Model()
-      ..top = new m.Top();
-    expect(model, equals(actual));
+    expect(modelService.modelHistory, equals([
+      model,
+      new Model("", "", now, top: new m.Top()),
+      new Model("", "", now, top: new m.Top()
+        ..bookLoggers = [
+          new m.BookLogger()
+            ..username = "user1"
+            ..year = 2017
+            ..month = 1,
+          new m.BookLogger()
+            ..username = "user2"
+            ..year = 2017
+            ..month = 2,
+        ]),
+    ]));
   });
 }
 
-
-class FirebaseFetchUserListEmptyMock implements FirebaseFetchUserList {
-  @override
-  Future<List<m.BookLogger>> fetchUserList() => new Completer().future;
-}
 
 class FirebaseFetchUserListResponseMock implements FirebaseFetchUserList {
   @override

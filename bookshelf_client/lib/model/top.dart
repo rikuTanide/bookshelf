@@ -11,12 +11,17 @@ class Top {
       return true;
     }
     return other is Top &&
-        eq(this.bookLoggers == other.bookLoggers);
+        eq(this.bookLoggers , other.bookLoggers);
   }
 
   @override
   int get hashCode {
     return bookLoggers.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'Top{bookLoggers: $bookLoggers}';
   }
 }
 
@@ -39,5 +44,10 @@ class BookLogger {
   @override
   int get hashCode {
     return username.hashCode ^ year.hashCode ^ month.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'BookLogger{username: $username, year: $year, month: $month}';
   }
 }
