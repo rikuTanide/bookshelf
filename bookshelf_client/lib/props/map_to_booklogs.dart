@@ -10,8 +10,8 @@ ViewModel mapToBooklogsProps(Model model) =>
 v.BookLogsProps getBookLogs(Model model) => model.bookLogs.booklogs == null
     ? new v.BookLogsProps(
         getHeaderLinkParams(model),
-        model.bookLogs.pageMonth.year,
-        model.bookLogs.pageMonth.month,
+        model.now.year,
+        model.now.month,
         [],
         [],
         true,

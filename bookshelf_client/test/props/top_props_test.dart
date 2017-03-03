@@ -12,10 +12,7 @@ ViewModel getViewModel(
   }
   var top = new m.Top()
     ..bookLoggers = bookLoggers;
-  return mapModelToViewModel(new Model()
-    ..username = username
-    ..now = now
-    ..top = top);
+  return mapModelToViewModel(new Model(username,"uid1", now , top: top));
 }
 
 void main() {

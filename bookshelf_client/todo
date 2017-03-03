@@ -1,0 +1,71 @@
+Top
+MyBooklogs
+Booklogs
+MyStocks
+stocks
+Setting
+
+Top
+ Loading
+ OnUserList
+ MoveToTop
+ MoveToMyBooklogs
+ MoveToMyStocks
+ ClickUser
+
+MyBookLogs
+ Loading
+ MoveToTop
+ MoveToMyBooklogs
+ MoveToMyStocks
+ OnMyBookLogs
+ OnAddButtonClick
+ OnEditButtonClick
+ OnDeleteButtonClick
+ InputTitle
+ InputAuthor
+ InputReview
+ Saving
+ OnSave
+ OnDelete
+ OnSuggestions
+
+BookLogs
+ Loading
+ MoveToTop
+ MoveToMyBooklogs
+ MoveToMyStocks
+ Loading
+ OnBookLog
+ OnReadButton
+
+MyStocks
+ Loading
+ MoveToTop
+ MoveToMyBooklogs
+ MoveToMyStocks
+ Loading
+ OnMyStocks
+ OnAdd
+ OnEdit
+ OnTitleInput
+ OnAuthorInput
+ OnSave
+ OnSuggestions
+
+Stocks
+ Loading
+ MoveToTop
+ MoveToMyBooklogs
+ MoveToMyStocks
+ Loading
+ OnStocks
+ OniRecommend
+
+Setting
+ Loading
+ MoveToTop
+ MoveToMyBooklogs
+ MoveToMyStocks
+ OnUsername
+ OnUsernameCheck

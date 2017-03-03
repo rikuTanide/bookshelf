@@ -6,9 +6,8 @@ import 'package:bookshelf_client/types/view_model.dart';
 import 'package:test/test.dart';
 
 ViewModel getViewModel(m.Setting setting) {
-  var model = new Model()
-    ..now = new DateTime.now()
-    ..setting = setting;
+  var now = new DateTime.now();
+  var model = new Model("user1", "uid1", now, setting: setting);
   return mapModelToViewModel(model);
 }
 
@@ -53,7 +52,8 @@ void main() {
     var setting = new m.Setting()
       ..isLoading = false
       ..isSaving = false
-      ..request = (new m.Request()..response = true);
+      ..request = (new m.Request()
+        ..response = true);
     var viewModel = getViewModel(setting);
     expect(viewModel.setting.isSaving, isFalse);
     expect(viewModel.setting.disabled, isFalse);
@@ -63,7 +63,8 @@ void main() {
     var setting = new m.Setting()
       ..isLoading = false
       ..isSaving = false
-      ..request = (new m.Request()..response = false);
+      ..request = (new m.Request()
+        ..response = false);
     var viewModel = getViewModel(setting);
     expect(viewModel.setting.isSaving, isFalse);
     expect(viewModel.setting.disabled, isTrue);

@@ -27,10 +27,7 @@ m.AuthorSuggestions authorSuggestions}) {
     ..editing = editing
     ..titleSuggestions = titleSuggestions
     ..authorSuggestions = authorSuggestions;
-  var model = new Model()
-    ..username = username
-    ..now = now
-    ..myBookLog = myBookLogs;
+  var model = new Model(username, "uid1", now, myBookLog: myBookLogs);
   return mapModelToViewModel(model);
 }
 
@@ -732,24 +729,24 @@ void main() {
         ]));
       });
 
-      test("pageMonthが2017/1なら2016/12のBookが表示されない",(){
+      test("pageMonthが2017/1なら2016/12のBookが表示されない", () {
         var bookLog1 = new m.BookLog()
           ..id = "id1"
           ..title = "title1"
           ..author = "author1"
           ..image = "img.png"
           ..review = ""
-          ..dateTime = new DateTime(2017,1,1);
+          ..dateTime = new DateTime(2017, 1, 1);
         var bookLog2 = new m.BookLog()
           ..id = "id2"
           ..title = "title2"
           ..author = "author2"
           ..image = "img.png"
           ..review = ""
-          ..dateTime = new DateTime(2016,12,1);
+          ..dateTime = new DateTime(2016, 12, 1);
         var viewModel = getViewModel(
-            bookLogs: [bookLog1,bookLog2],
-            pageMonth: new DateTime(2017,1,1));
+            bookLogs: [bookLog1, bookLog2],
+            pageMonth: new DateTime(2017, 1, 1));
         expect(viewModel.myBookLogs.bookLogs, equals([
           new v.BookLog(
               "id1",
@@ -763,12 +760,8 @@ void main() {
           )
         ]));
       });
-
     });
   }
   );
-  test("日付"  ,(){
-    expect(true,isFalse);
-  });
 }
 
