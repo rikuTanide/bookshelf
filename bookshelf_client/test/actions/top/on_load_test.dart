@@ -14,7 +14,7 @@ void main() {
     var modelService = new ModelServiceMock()
       ..model = model;
     var firebase = new FirebaseFetchUserListResponseMock();
-    var urlLoadAction = new URLLoadAction(modelService, firebase);
+    var urlLoadAction = new URLLoadAction(modelService, firebase, null);
     var params = new URLParams(top: new Top());
     await urlLoadAction.onLoad(params);
     expect(modelService.modelHistory, equals([
