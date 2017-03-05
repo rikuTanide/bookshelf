@@ -6,22 +6,20 @@ import 'package:bookshelf_client/types/view_model.dart';
 import 'package:bookshelf_client/types/booklogs.dart' as v;
 import 'package:test/test.dart';
 
-ViewModel getViewModel(
-    {DateTime now,
-    DateTime pageMonth,
-    DateTime selectMonth,
-    List<m.BookLog> bookLogs,
-    String saving}) {
+ViewModel getViewModel({DateTime now,
+DateTime pageMonth,
+DateTime selectMonth,
+List<m.BookLog> bookLogs,
+String saving}) {
   now = now ?? new DateTime.now();
   pageMonth = pageMonth ?? new DateTime.now();
   selectMonth = selectMonth ?? new DateTime.now();
-  var model = new Model()
-    ..bookLogs = (new m.BookLogs()
-      ..pageMonth = pageMonth
-      ..selectMonth = selectMonth
-      ..booklogs = bookLogs
-      ..savingBookID = saving)
-    ..now = now;
+  var mBookLogs = new m.BookLogs()
+    ..pageMonth = pageMonth
+    ..selectMonth = selectMonth
+    ..booklogs = bookLogs
+    ..savingBookID = saving;
+  var model = new Model("user1", "uid1", now, bookLogs: mBookLogs);
   return mapModelToViewModel(model);
 }
 
@@ -45,7 +43,7 @@ void main() {
     group("ページが2017年で", () {
       test("selectが2017年なら2017がselectedになる", () {
         var viewModel =
-            getViewModel(selectMonth: new DateTime(2017, 2, 1), bookLogs: []);
+        getViewModel(selectMonth: new DateTime(2017, 2, 1), bookLogs: []);
         expect(
             viewModel.bookLogs.yearSelectStates,
             equals([
@@ -63,7 +61,9 @@ void main() {
         var viewModel = getViewModel(
             selectMonth: new DateTime(2017, 1, 1),
             pageMonth: new DateTime(2017, 1, 1),
-            bookLogs: [new m.BookLog()..dateTime = new DateTime(2017, 1, 1)]);
+            bookLogs: [new m.BookLog()
+              ..dateTime = new DateTime(2017, 1, 1)
+            ]);
         expect(
             viewModel.bookLogs.monthEnableds,
             equals([
@@ -85,7 +85,9 @@ void main() {
         var viewModel = getViewModel(
             selectMonth: new DateTime(2017, 2, 1),
             pageMonth: new DateTime(2017, 1, 1),
-            bookLogs: [new m.BookLog()..dateTime = new DateTime(2017, 2, 1)]);
+            bookLogs: [new m.BookLog()
+              ..dateTime = new DateTime(2017, 2, 1)
+            ]);
         expect(
             viewModel.bookLogs.monthEnableds,
             equals([
@@ -107,7 +109,9 @@ void main() {
         var viewModel = getViewModel(
             selectMonth: new DateTime(2016, 1, 1),
             pageMonth: new DateTime(2017, 1, 1),
-            bookLogs: [new m.BookLog()..dateTime = new DateTime(2016, 2, 1)]);
+            bookLogs: [new m.BookLog()
+              ..dateTime = new DateTime(2016, 2, 1)
+            ]);
         expect(
             viewModel.bookLogs.monthEnableds,
             equals([
@@ -207,7 +211,7 @@ void main() {
               ..review = ""
               ..isRead = false
           ],
-          saving : "id1");
+          saving: "id1");
       var attr = new BookAttrs("title1", "author1", "image1");
       expect(viewModel.bookLogs.booklogs[0],
           new v.BookLog("id1", attr, false, "", false, true));
@@ -244,7 +248,7 @@ void main() {
               ..review = ""
               ..isRead = true
           ],
-          saving : "id1");
+          saving: "id1");
       var attr = new BookAttrs("title1", "author1", "image1");
       expect(viewModel.bookLogs.booklogs[0],
           new v.BookLog("id1", attr, false, "", true, true));

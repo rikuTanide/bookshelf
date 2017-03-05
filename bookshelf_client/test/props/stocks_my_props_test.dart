@@ -6,17 +6,15 @@ import 'package:bookshelf_client/model/my_stocks.dart' as m;
 import 'package:bookshelf_client/types/my_stocks.dart' as v;
 import 'package:bookshelf_client/types/share.dart';
 
-ViewModel getViewModel(
-    {DateTime now, List<m.Stock> stocks, m.Editing editing, m.TitleSuggestions titleSuggests , m.AuthorSuggestions authorSuggestions}) {
+ViewModel getViewModel({DateTime now, List<m.Stock> stocks, m.Editing editing, m
+    .TitleSuggestions titleSuggests, m.AuthorSuggestions authorSuggestions}) {
   now = now ?? new DateTime.now();
   var myStocks = new m.MyStocks()
     ..stocks = stocks
     ..editing = editing
     ..titleSuggestions = titleSuggests
     ..authorSuggestions = authorSuggestions;
-  var model = new Model()
-    ..myStocks = myStocks
-    ..now = now;
+  var model = new Model("user1", "uid1", now, myStocks: myStocks);
   return mapModelToViewModel(model);
 }
 
@@ -270,14 +268,15 @@ void main() {
           ..image = "img.png"
       ];
       var titleSuggests = new m.TitleSuggestions()
-        ..titleSuggestionsResult = ["候補１","候補２"];
-      var viewModel = getViewModel(editing: editing, stocks: stocks , titleSuggests : titleSuggests);
+        ..titleSuggestionsResult = ["候補１", "候補２"];
+      var viewModel = getViewModel(
+          editing: editing, stocks: stocks, titleSuggests: titleSuggests);
       expect(
           viewModel.myStocks.stocks,
           equals([
             new v.Stock(
                 new BookAttrs("title1...", "autor1...", "img.png..."),
-                new TitleSuggestions(true, false, ["候補１","候補２"]),
+                new TitleSuggestions(true, false, ["候補１", "候補２"]),
                 new AuthorSuggestions(false, false, []),
                 true,
                 true,
@@ -305,7 +304,8 @@ void main() {
       ];
       var titleSuggests = new m.TitleSuggestions()
         ..titleSuggestionsResult = null;
-      var viewModel = getViewModel(editing: editing, stocks: stocks , titleSuggests : titleSuggests);
+      var viewModel = getViewModel(
+          editing: editing, stocks: stocks, titleSuggests: titleSuggests);
       expect(
           viewModel.myStocks.stocks,
           equals([
@@ -346,7 +346,9 @@ void main() {
             ..author = "author_s2"
             ..image = "img_s2",
         ];
-      var viewModel = getViewModel(editing: editing, stocks: stocks , authorSuggestions : authorSuggestions);
+      var viewModel = getViewModel(editing: editing,
+          stocks: stocks,
+          authorSuggestions: authorSuggestions);
       expect(
           viewModel.myStocks.stocks,
           equals([
@@ -354,8 +356,8 @@ void main() {
                 new BookAttrs("title1...", "autor1...", "img.png..."),
                 new TitleSuggestions(false, false, []),
                 new AuthorSuggestions(true, false, [
-                  new AuthorSuggest("author_s1" , "img_s1"),
-                  new AuthorSuggest("author_s2" , "img_s2"),
+                  new AuthorSuggest("author_s1", "img_s1"),
+                  new AuthorSuggest("author_s2", "img_s2"),
                 ]),
                 true,
                 true,
@@ -383,7 +385,9 @@ void main() {
       ];
       var authorSuggestions = new m.AuthorSuggestions()
         ..authorSuggestionsResults = null;
-      var viewModel = getViewModel(editing: editing, stocks: stocks , authorSuggestions : authorSuggestions);
+      var viewModel = getViewModel(editing: editing,
+          stocks: stocks,
+          authorSuggestions: authorSuggestions);
       expect(
           viewModel.myStocks.stocks,
           equals([
@@ -417,7 +421,9 @@ void main() {
       ];
       var authorSuggestions = new m.AuthorSuggestions()
         ..authorSuggestionsResults = null;
-      var viewModel = getViewModel(editing: editing, stocks: stocks , authorSuggestions : authorSuggestions);
+      var viewModel = getViewModel(editing: editing,
+          stocks: stocks,
+          authorSuggestions: authorSuggestions);
       expect(
           viewModel.myStocks.stocks,
           equals([
@@ -451,7 +457,9 @@ void main() {
       ];
       var authorSuggestions = new m.AuthorSuggestions()
         ..authorSuggestionsResults = null;
-      var viewModel = getViewModel(editing: editing, stocks: stocks , authorSuggestions : authorSuggestions);
+      var viewModel = getViewModel(editing: editing,
+          stocks: stocks,
+          authorSuggestions: authorSuggestions);
       expect(
           viewModel.myStocks.stocks,
           equals([

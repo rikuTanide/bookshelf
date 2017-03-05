@@ -5,11 +5,13 @@ import 'package:bookshelf_client/types/share.dart';
 class SettingProps {
   final HeaderLinkParams headerLinkParams;
 
-  final String username;
+  final String edit_username;
   final bool isLoading;
-  final bool enabled;
+  final bool disabled;
   final bool isSaving;
+  final bool hasError;
 
-  SettingProps(this.headerLinkParams, this.username, this.isLoading, this.enabled,
-      this.isSaving);
+  SettingProps(this.headerLinkParams, this.edit_username, this.isLoading,
+      this.disabled,
+      this.isSaving, this.hasError);
 }

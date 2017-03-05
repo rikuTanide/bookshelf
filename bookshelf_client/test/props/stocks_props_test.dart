@@ -9,11 +9,10 @@ import 'package:bookshelf_client/types/stocks.dart' as v;
 ViewModel getViewModel(
     {DateTime now, List<m.Stock> stocks, String savingStockID}) {
   now = now ?? new DateTime.now();
-  var model = new Model()
-    ..now = now
-    ..stocks = (new m.Stocks()
-      ..stocks = stocks
-      ..savingStockID = savingStockID);
+  var mStocks = new m.Stocks()
+    ..stocks = stocks
+    ..savingStockID = savingStockID;
+  var model = new Model("user1", "uid1", now, stocks: mStocks);
   return mapModelToViewModel(model);
 }
 
@@ -103,7 +102,7 @@ void main() {
         ..iRecommend = false;
 
       var stocks = [stock1, stock2];
-      var viewModel = getViewModel(stocks: stocks,savingStockID: "stock1");
+      var viewModel = getViewModel(stocks: stocks, savingStockID: "stock1");
       expect(
           viewModel.stocks.stocks,
           equals([
