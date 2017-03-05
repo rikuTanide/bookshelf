@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:bookshelf_client/model/my_booklogs.dart';
+import 'package:bookshelf_client/model/my_booklogs.dart' as myBookLog;
+import 'package:bookshelf_client/model/booklogs.dart' as bookLog;
 import 'package:bookshelf_client/model/top.dart';
 
 abstract class FirebaseFetchUserList {
@@ -8,5 +9,10 @@ abstract class FirebaseFetchUserList {
 }
 
 abstract class FirebaseFetchMyBookLog {
-  Future<List<BookLog>> fetchBookLogList();
+  Future<List<myBookLog.BookLog>> fetchBookLogList();
+}
+
+abstract class FirebaseFetchBookLogs {
+  Future<List<bookLog.BookLog>> fetchBookLogList(String userid, int year,
+      int month);
 }
