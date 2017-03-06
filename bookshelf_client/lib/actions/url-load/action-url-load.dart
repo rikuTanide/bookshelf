@@ -6,6 +6,7 @@ import 'package:bookshelf_client/model/top.dart' as mTop;
 import 'package:bookshelf_client/model/my_booklogs.dart' as mMyBookLogs;
 import 'package:bookshelf_client/model/booklogs.dart' as mBookLogs;
 import 'package:bookshelf_client/model/my_stocks.dart' as mMyStocks;
+import 'package:bookshelf_client/model/stocks.dart' as mStocks;
 import 'package:bookshelf_client/services/model_service.dart';
 
 class URLLoadAction {
@@ -15,9 +16,10 @@ class URLLoadAction {
   final FirebaseFetchMyBookLog ffMyBookLogs;
   final FirebaseFetchBookLogs ffBookLogs;
   final FirebaseFetchMyStocks ffMyStocks;
+  final FirebaseFetchStocks ffStocks;
 
   URLLoadAction(this.modelService, this.ffUserList, this.ffMyBookLogs,
-      this.ffBookLogs, this.ffMyStocks);
+      this.ffBookLogs, this.ffMyStocks, this.ffStocks);
 
   Future onLoad(URLParams params) async {
     if (params.top != null) {
@@ -62,6 +64,15 @@ class URLLoadAction {
         ..stocks = await ffMyStocks.fetchMyStockList();
       modelService.model =
       new Model.pageUpdate(modelService.model, myStocks: myStocks2);
+    } else if (params.stocks != null) {
+      var stocks1 = new mStocks.Stocks();
+      modelService.model =
+      new Model.pageUpdate(modelService.model, stocks: stocks1);
+
+      var stocks2 = new mStocks.Stocks()
+        ..stocks = await ffStocks.fetchStockList();
+      modelService.model =
+      new Model.pageUpdate(modelService.model, stocks: stocks2);
     }
   }
 

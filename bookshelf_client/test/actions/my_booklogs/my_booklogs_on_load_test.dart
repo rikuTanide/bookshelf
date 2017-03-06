@@ -14,7 +14,8 @@ void main() {
     var modelService = new ModelServiceMock()
       ..model = model;
     var firebase = new FirebaseFetchMyBookLogsResponseMock();
-    var urlLoadAction = new URLLoadAction(modelService, null, firebase,null, null);
+    var urlLoadAction = new URLLoadAction(
+        modelService, null, firebase, null, null, null);
     var params = new URLParams(myBookLogs: new MyBookLogs(2017, 1));
     await urlLoadAction.onLoad(params);
     expect(modelService.modelHistory, equals(<Model>[
