@@ -7,6 +7,7 @@ import 'package:bookshelf_client/model/my_booklogs.dart' as mMyBookLogs;
 import 'package:bookshelf_client/model/booklogs.dart' as mBookLogs;
 import 'package:bookshelf_client/model/my_stocks.dart' as mMyStocks;
 import 'package:bookshelf_client/model/stocks.dart' as mStocks;
+import 'package:bookshelf_client/model/setting.dart' as mSetting;
 import 'package:bookshelf_client/services/model_service.dart';
 
 class URLLoadAction {
@@ -73,6 +74,13 @@ class URLLoadAction {
         ..stocks = await ffStocks.fetchStockList();
       modelService.model =
       new Model.pageUpdate(modelService.model, stocks: stocks2);
+    } else if (params.setting != null) {
+      var setting = new mSetting.Setting()
+        ..editUsername = modelService.model.username
+        ..isLoading = false
+        ..isSaving = false;
+      modelService.model =
+      new Model.pageUpdate(modelService.model, setting: setting);
     }
   }
 
